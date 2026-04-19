@@ -9,11 +9,11 @@
 - [x] Tao requirements.txt
 - [x] Tao .env
 - [x] Tao test_connection.py
-- [ ] Tao virtual environment (venv)
-- [ ] Cai dependencies
-- [ ] Khoi dong PostgreSQL bang Docker
-- [ ] Chay test_connection.py
-- [ ] Khoi tao GitHub repo
+- [x] Tao virtual environment (venv)
+- [x] Cai dependencies
+- [ ] Khoi dong PostgreSQL bang Docker (Docker chua co san tren may)
+- [ ] Chay test_connection.py pass (ChromaDB OK, PostgreSQL auth fail)
+- [x] Khoi tao GitHub repo
 
 ## Thu 4 - 15/04: Doc 5 paper
 - [ ] Lewis et al. (2020)
@@ -35,7 +35,7 @@
 - [ ] Gui email nop thay
 
 ## Tong ket tuan 1
-- [ ] GitHub repo co commit dau tien
+- [x] GitHub repo co commit dau tien
 - [ ] Moi truong pass test_connection.py
 - [ ] 5 paper doc xong va co notes
 - [ ] De cuong da nop
