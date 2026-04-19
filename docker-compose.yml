@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: querionyx-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${PG_USER:-postgres}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-postgres}
+      POSTGRES_DB: ${PG_DB:-northwind}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/raw:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - querionyx-net
+    restart: unless-stopped
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: querionyx-chromadb
+    ports:
+      - "8000:8000"
+    environment:
+      IS_PERSISTENT: "True"
+      CHROMA_DB_IMPL: "duckdb+parquet"
+      PERSIST_DIRECTORY: "/chroma/data"
+    volumes:
+      - chromadb_data:/chroma/data
+    networks:
+      - querionyx-net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  chromadb_data:
+
+networks:
+  querionyx-net:
+    driver: bridge

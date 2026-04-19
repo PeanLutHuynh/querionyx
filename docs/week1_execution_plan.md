@@ -11,8 +11,8 @@
 - [x] Tao test_connection.py
 - [x] Tao virtual environment (venv)
 - [x] Cai dependencies
-- [ ] Khoi dong PostgreSQL bang Docker (Docker chua co san tren may)
-- [ ] Chay test_connection.py pass (ChromaDB OK, PostgreSQL auth fail)
+- [x] Khoi dong PostgreSQL bang Docker (docker-compose.yml + postgres:15-alpine + chromadb:latest)
+- [x] Chay test_connection.py pass (ChromaDB OK, PostgreSQL OK)
 - [x] Khoi tao GitHub repo
 
 ## Thu 4 - 15/04: Doc 5 paper
@@ -36,7 +36,7 @@
 
 ## Tong ket tuan 1
 - [x] GitHub repo co commit dau tien
-- [ ] Moi truong pass test_connection.py
-- [ ] 5 paper doc xong va co notes
-- [ ] De cuong da nop
+- [x] Moi truong pass test_connection.py (ChromaDB + PostgreSQL containerized)
+- [ ] 5 paper doc xong va co notes (in progress - Thu 4)
+- [ ] De cuong da nop (Thu 6)
 - [ ] Bao cao tuan 1 da gui kem
