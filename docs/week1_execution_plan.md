@@ -1,0 +1,42 @@
+# Week 1 Execution Plan - Querionyx
+
+## Thu 2 - 13/04: Hop Thay
+- [x] Da hop va co ket luan
+- [x] Luu notes vao file meeting notes
+
+## Thu 3 - 14/04: Setup moi truong
+- [x] Tao cau truc thu muc
+- [x] Tao requirements.txt
+- [x] Tao .env
+- [x] Tao test_connection.py
+- [ ] Tao virtual environment (venv)
+- [ ] Cai dependencies
+- [ ] Khoi dong PostgreSQL bang Docker
+- [ ] Chay test_connection.py
+- [ ] Khoi tao GitHub repo
+
+## Thu 4 - 15/04: Doc 5 paper
+- [ ] Lewis et al. (2020)
+- [ ] Yu et al. (2018)
+- [ ] Gao et al. (2023)
+- [ ] Gao et al. (2024)
+- [ ] Es et al. (2023)
+- [x] Da tao template notes cho 5 paper
+
+## Thu 5 - 16/04: Hoan thien de cuong
+- [ ] Dien day du bang dataset (3 nguon + Northwind)
+- [ ] Hoan thien bang evaluation metrics chuong 4
+- [ ] Lap lich trinh 10 tuan voi ngay cu the
+- [ ] Review lai toan bo cac diem da duoc feedback
+
+## Thu 6 - 17/04: Nop de cuong
+- [x] Da tao checklist truoc nop
+- [ ] Kiem tra xong tat ca items truoc khi gui
+- [ ] Gui email nop thay
+
+## Tong ket tuan 1
+- [ ] GitHub repo co commit dau tien
+- [ ] Moi truong pass test_connection.py
+- [ ] 5 paper doc xong va co notes
+- [ ] De cuong da nop
+- [ ] Bao cao tuan 1 da gui kem
