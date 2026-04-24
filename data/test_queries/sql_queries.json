@@ -1,0 +1,404 @@
+{
+  "queries": [
+    {
+      "id": "sql_001",
+      "question": "What are the first 10 product names in alphabetical order?",
+      "expected_sql": "SELECT product_name FROM products ORDER BY product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Alice Mutton\"\n  },\n  {\n    \"product_name\": \"Aniseed Syrup\"\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\"\n  },\n  {\n    \"product_name\": \"Camembert Pierrot\"\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\"\n  },\n  {\n    \"product_name\": \"Chai\"\n  },\n  {\n    \"product_name\": \"Chang\"\n  },\n  {\n    \"product_name\": \"Chartreuse verte\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Cajun Seasoning\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Gumbo Mix\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_002",
+      "question": "What are the first 10 customer company names in alphabetical order?",
+      "expected_sql": "SELECT company_name FROM customers ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Alfreds Futterkiste\"\n  },\n  {\n    \"company_name\": \"Ana Trujillo Emparedados y helados\"\n  },\n  {\n    \"company_name\": \"Antonio Moreno Taquería\"\n  },\n  {\n    \"company_name\": \"Around the Horn\"\n  },\n  {\n    \"company_name\": \"B's Beverages\"\n  },\n  {\n    \"company_name\": \"Berglunds snabbköp\"\n  },\n  {\n    \"company_name\": \"Blauer See Delikatessen\"\n  },\n  {\n    \"company_name\": \"Blondesddsl père et fils\"\n  },\n  {\n    \"company_name\": \"Bólido Comidas preparadas\"\n  },\n  {\n    \"company_name\": \"Bon app'\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_003",
+      "question": "What are the first 10 supplier company names in alphabetical order?",
+      "expected_sql": "SELECT company_name FROM suppliers ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Aux joyeux ecclésiastiques\"\n  },\n  {\n    \"company_name\": \"Bigfoot Breweries\"\n  },\n  {\n    \"company_name\": \"Cooperativa de Quesos 'Las Cabras'\"\n  },\n  {\n    \"company_name\": \"Escargots Nouveaux\"\n  },\n  {\n    \"company_name\": \"Exotic Liquids\"\n  },\n  {\n    \"company_name\": \"Forêts d'érables\"\n  },\n  {\n    \"company_name\": \"Formaggi Fortini s.r.l.\"\n  },\n  {\n    \"company_name\": \"G'day, Mate\"\n  },\n  {\n    \"company_name\": \"Gai pâturage\"\n  },\n  {\n    \"company_name\": \"Grandma Kelly's Homestead\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_004",
+      "question": "What are the first 10 category names in alphabetical order?",
+      "expected_sql": "SELECT category_name FROM categories ORDER BY category_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"category_name\": \"Beverages\"\n  },\n  {\n    \"category_name\": \"Condiments\"\n  },\n  {\n    \"category_name\": \"Confections\"\n  },\n  {\n    \"category_name\": \"Dairy Products\"\n  },\n  {\n    \"category_name\": \"Grains/Cereals\"\n  },\n  {\n    \"category_name\": \"Meat/Poultry\"\n  },\n  {\n    \"category_name\": \"Produce\"\n  },\n  {\n    \"category_name\": \"Seafood\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_005",
+      "question": "What are the first 10 shipper company names in alphabetical order?",
+      "expected_sql": "SELECT company_name FROM shippers ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Alliance Shippers\"\n  },\n  {\n    \"company_name\": \"DHL\"\n  },\n  {\n    \"company_name\": \"Federal Shipping\"\n  },\n  {\n    \"company_name\": \"Speedy Express\"\n  },\n  {\n    \"company_name\": \"United Package\"\n  },\n  {\n    \"company_name\": \"UPS\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_006",
+      "question": "What are the first 10 employee names in alphabetical order by last name?",
+      "expected_sql": "SELECT first_name, last_name FROM employees ORDER BY last_name, first_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"first_name\": \"Steven\",\n    \"last_name\": \"Buchanan\"\n  },\n  {\n    \"first_name\": \"Laura\",\n    \"last_name\": \"Callahan\"\n  },\n  {\n    \"first_name\": \"Nancy\",\n    \"last_name\": \"Davolio\"\n  },\n  {\n    \"first_name\": \"Anne\",\n    \"last_name\": \"Dodsworth\"\n  },\n  {\n    \"first_name\": \"Andrew\",\n    \"last_name\": \"Fuller\"\n  },\n  {\n    \"first_name\": \"Robert\",\n    \"last_name\": \"King\"\n  },\n  {\n    \"first_name\": \"Janet\",\n    \"last_name\": \"Leverling\"\n  },\n  {\n    \"first_name\": \"Margaret\",\n    \"last_name\": \"Peacock\"\n  },\n  {\n    \"first_name\": \"Michael\",\n    \"last_name\": \"Suyama\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_007",
+      "question": "What are the first 10 order IDs in ascending order?",
+      "expected_sql": "SELECT order_id FROM orders ORDER BY order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10248\n  },\n  {\n    \"order_id\": 10249\n  },\n  {\n    \"order_id\": 10250\n  },\n  {\n    \"order_id\": 10251\n  },\n  {\n    \"order_id\": 10252\n  },\n  {\n    \"order_id\": 10253\n  },\n  {\n    \"order_id\": 10254\n  },\n  {\n    \"order_id\": 10255\n  },\n  {\n    \"order_id\": 10256\n  },\n  {\n    \"order_id\": 10257\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_008",
+      "question": "What are the first 10 territory descriptions in alphabetical order?",
+      "expected_sql": "SELECT territory_description FROM territories ORDER BY territory_description LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"territory_description\": \"Atlanta\"\n  },\n  {\n    \"territory_description\": \"Austin\"\n  },\n  {\n    \"territory_description\": \"Beachwood\"\n  },\n  {\n    \"territory_description\": \"Bedford\"\n  },\n  {\n    \"territory_description\": \"Bellevue\"\n  },\n  {\n    \"territory_description\": \"Bentonville\"\n  },\n  {\n    \"territory_description\": \"Bloomfield Hills\"\n  },\n  {\n    \"territory_description\": \"Boston\"\n  },\n  {\n    \"territory_description\": \"Braintree\"\n  },\n  {\n    \"territory_description\": \"Cambridge\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_009",
+      "question": "What are the first 10 region descriptions in alphabetical order?",
+      "expected_sql": "SELECT region_description FROM region ORDER BY region_description LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"region_description\": \"Eastern\"\n  },\n  {\n    \"region_description\": \"Northern\"\n  },\n  {\n    \"region_description\": \"Southern\"\n  },\n  {\n    \"region_description\": \"Western\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_010",
+      "question": "What are the first 10 distinct ship countries from orders?",
+      "expected_sql": "SELECT DISTINCT ship_country FROM orders ORDER BY ship_country LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"ship_country\": \"Argentina\"\n  },\n  {\n    \"ship_country\": \"Austria\"\n  },\n  {\n    \"ship_country\": \"Belgium\"\n  },\n  {\n    \"ship_country\": \"Brazil\"\n  },\n  {\n    \"ship_country\": \"Canada\"\n  },\n  {\n    \"ship_country\": \"Denmark\"\n  },\n  {\n    \"ship_country\": \"Finland\"\n  },\n  {\n    \"ship_country\": \"France\"\n  },\n  {\n    \"ship_country\": \"Germany\"\n  },\n  {\n    \"ship_country\": \"Ireland\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "simple_select"
+    },
+    {
+      "id": "sql_011",
+      "question": "How many products are in each category?",
+      "expected_sql": "SELECT category_id, COUNT(*) AS product_count FROM products GROUP BY category_id ORDER BY product_count DESC, category_id;",
+      "expected_answer": "[\n  {\n    \"category_id\": 3,\n    \"product_count\": 13\n  },\n  {\n    \"category_id\": 1,\n    \"product_count\": 12\n  },\n  {\n    \"category_id\": 2,\n    \"product_count\": 12\n  },\n  {\n    \"category_id\": 8,\n    \"product_count\": 12\n  },\n  {\n    \"category_id\": 4,\n    \"product_count\": 10\n  },\n  {\n    \"category_id\": 5,\n    \"product_count\": 7\n  },\n  {\n    \"category_id\": 6,\n    \"product_count\": 6\n  },\n  {\n    \"category_id\": 7,\n    \"product_count\": 5\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_012",
+      "question": "What is the average unit price by category?",
+      "expected_sql": "SELECT category_id, ROUND(AVG(unit_price)::numeric, 2) AS avg_unit_price FROM products GROUP BY category_id ORDER BY avg_unit_price DESC, category_id;",
+      "expected_answer": "[\n  {\n    \"category_id\": 6,\n    \"avg_unit_price\": 54.01\n  },\n  {\n    \"category_id\": 1,\n    \"avg_unit_price\": 37.98\n  },\n  {\n    \"category_id\": 7,\n    \"avg_unit_price\": 32.37\n  },\n  {\n    \"category_id\": 4,\n    \"avg_unit_price\": 28.73\n  },\n  {\n    \"category_id\": 3,\n    \"avg_unit_price\": 25.16\n  },\n  {\n    \"category_id\": 2,\n    \"avg_unit_price\": 22.85\n  },\n  {\n    \"category_id\": 8,\n    \"avg_unit_price\": 20.68\n  },\n  {\n    \"category_id\": 5,\n    \"avg_unit_price\": 20.25\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_013",
+      "question": "What is the total units in stock by supplier?",
+      "expected_sql": "SELECT supplier_id, SUM(units_in_stock) AS total_units_in_stock FROM products GROUP BY supplier_id ORDER BY total_units_in_stock DESC, supplier_id;",
+      "expected_answer": "[\n  {\n    \"supplier_id\": 17,\n    \"total_units_in_stock\": 224\n  },\n  {\n    \"supplier_id\": 19,\n    \"total_units_in_stock\": 208\n  },\n  {\n    \"supplier_id\": 12,\n    \"total_units_in_stock\": 205\n  },\n  {\n    \"supplier_id\": 16,\n    \"total_units_in_stock\": 183\n  },\n  {\n    \"supplier_id\": 9,\n    \"total_units_in_stock\": 165\n  },\n  {\n    \"supplier_id\": 15,\n    \"total_units_in_stock\": 164\n  },\n  {\n    \"supplier_id\": 3,\n    \"total_units_in_stock\": 141\n  },\n  {\n    \"supplier_id\": 11,\n    \"total_units_in_stock\": 140\n  },\n  {\n    \"supplier_id\": 25,\n    \"total_units_in_stock\": 136\n  },\n  {\n    \"supplier_id\": 2,\n    \"total_units_in_stock\": 133\n  },\n  {\n    \"supplier_id\": 23,\n    \"total_units_in_stock\": 132\n  },\n  {\n    \"supplier_id\": 29,\n    \"total_units_in_stock\": 130\n  },\n  {\n    \"supplier_id\": 8,\n    \"total_units_in_stock\": 113\n  },\n  {\n    \"supplier_id\": 7,\n    \"total_units_in_stock\": 110\n  },\n  {\n    \"supplier_id\": 5,\n    \"total_units_in_stock\": 108\n  },\n  {\n    \"supplier_id\": 21,\n    \"total_units_in_stock\": 100\n  },\n  {\n    \"supplier_id\": 6,\n    \"total_units_in_stock\": 98\n  },\n  {\n    \"supplier_id\": 28,\n    \"total_units_in_stock\": 98\n  },\n  {\n    \"supplier_id\": 18,\n    \"total_units_in_stock\": 86\n  },\n  {\n    \"supplier_id\": 20,\n    \"total_units_in_stock\": 70\n  },\n  {\n    \"supplier_id\": 4,\n    \"total_units_in_stock\": 64\n  },\n  {\n    \"supplier_id\": 27,\n    \"total_units_in_stock\": 62\n  },\n  {\n    \"supplier_id\": 24,\n    \"total_units_in_stock\": 58\n  },\n  {\n    \"supplier_id\": 26,\n    \"total_units_in_stock\": 57\n  },\n  {\n    \"supplier_id\": 22,\n    \"total_units_in_stock\": 51\n  },\n  {\n    \"supplier_id\": 1,\n    \"total_units_in_stock\": 30\n  },\n  {\n    \"supplier_id\": 14,\n    \"total_units_in_stock\": 23\n  },\n  {\n    \"supplier_id\": 10,\n    \"total_units_in_stock\": 20\n  },\n  {\n    \"supplier_id\": 13,\n    \"total_units_in_stock\": 10\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_014",
+      "question": "How many orders are there per ship country?",
+      "expected_sql": "SELECT ship_country, COUNT(*) AS order_count FROM orders GROUP BY ship_country ORDER BY order_count DESC, ship_country;",
+      "expected_answer": "[\n  {\n    \"ship_country\": \"Germany\",\n    \"order_count\": 122\n  },\n  {\n    \"ship_country\": \"USA\",\n    \"order_count\": 122\n  },\n  {\n    \"ship_country\": \"Brazil\",\n    \"order_count\": 83\n  },\n  {\n    \"ship_country\": \"France\",\n    \"order_count\": 77\n  },\n  {\n    \"ship_country\": \"UK\",\n    \"order_count\": 56\n  },\n  {\n    \"ship_country\": \"Venezuela\",\n    \"order_count\": 46\n  },\n  {\n    \"ship_country\": \"Austria\",\n    \"order_count\": 40\n  },\n  {\n    \"ship_country\": \"Sweden\",\n    \"order_count\": 37\n  },\n  {\n    \"ship_country\": \"Canada\",\n    \"order_count\": 30\n  },\n  {\n    \"ship_country\": \"Italy\",\n    \"order_count\": 28\n  },\n  {\n    \"ship_country\": \"Mexico\",\n    \"order_count\": 28\n  },\n  {\n    \"ship_country\": \"Spain\",\n    \"order_count\": 23\n  },\n  {\n    \"ship_country\": \"Finland\",\n    \"order_count\": 22\n  },\n  {\n    \"ship_country\": \"Belgium\",\n    \"order_count\": 19\n  },\n  {\n    \"ship_country\": \"Ireland\",\n    \"order_count\": 19\n  },\n  {\n    \"ship_country\": \"Denmark\",\n    \"order_count\": 18\n  },\n  {\n    \"ship_country\": \"Switzerland\",\n    \"order_count\": 18\n  },\n  {\n    \"ship_country\": \"Argentina\",\n    \"order_count\": 16\n  },\n  {\n    \"ship_country\": \"Portugal\",\n    \"order_count\": 13\n  },\n  {\n    \"ship_country\": \"Poland\",\n    \"order_count\": 7\n  },\n  {\n    \"ship_country\": \"Norway\",\n    \"order_count\": 6\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_015",
+      "question": "What is the average freight by shipping method?",
+      "expected_sql": "SELECT ship_via, ROUND(AVG(freight)::numeric, 2) AS avg_freight FROM orders GROUP BY ship_via ORDER BY avg_freight DESC, ship_via;",
+      "expected_answer": "[\n  {\n    \"ship_via\": 2,\n    \"avg_freight\": 86.64\n  },\n  {\n    \"ship_via\": 3,\n    \"avg_freight\": 80.44\n  },\n  {\n    \"ship_via\": 1,\n    \"avg_freight\": 65\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_016",
+      "question": "How many employees are there per country?",
+      "expected_sql": "SELECT country, COUNT(*) AS employee_count FROM employees GROUP BY country ORDER BY employee_count DESC, country;",
+      "expected_answer": "[\n  {\n    \"country\": \"USA\",\n    \"employee_count\": 5\n  },\n  {\n    \"country\": \"UK\",\n    \"employee_count\": 4\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_017",
+      "question": "How many customers are there per country?",
+      "expected_sql": "SELECT country, COUNT(*) AS customer_count FROM customers GROUP BY country ORDER BY customer_count DESC, country;",
+      "expected_answer": "[\n  {\n    \"country\": \"USA\",\n    \"customer_count\": 13\n  },\n  {\n    \"country\": \"France\",\n    \"customer_count\": 11\n  },\n  {\n    \"country\": \"Germany\",\n    \"customer_count\": 11\n  },\n  {\n    \"country\": \"Brazil\",\n    \"customer_count\": 9\n  },\n  {\n    \"country\": \"UK\",\n    \"customer_count\": 7\n  },\n  {\n    \"country\": \"Mexico\",\n    \"customer_count\": 5\n  },\n  {\n    \"country\": \"Spain\",\n    \"customer_count\": 5\n  },\n  {\n    \"country\": \"Venezuela\",\n    \"customer_count\": 4\n  },\n  {\n    \"country\": \"Argentina\",\n    \"customer_count\": 3\n  },\n  {\n    \"country\": \"Canada\",\n    \"customer_count\": 3\n  },\n  {\n    \"country\": \"Italy\",\n    \"customer_count\": 3\n  },\n  {\n    \"country\": \"Austria\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Belgium\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Denmark\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Finland\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Portugal\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Sweden\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Switzerland\",\n    \"customer_count\": 2\n  },\n  {\n    \"country\": \"Ireland\",\n    \"customer_count\": 1\n  },\n  {\n    \"country\": \"Norway\",\n    \"customer_count\": 1\n  },\n  {\n    \"country\": \"Poland\",\n    \"customer_count\": 1\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_018",
+      "question": "What is the total units on order by category?",
+      "expected_sql": "SELECT category_id, SUM(units_on_order) AS total_units_on_order FROM products GROUP BY category_id ORDER BY total_units_on_order DESC, category_id;",
+      "expected_answer": "[\n  {\n    \"category_id\": 3,\n    \"total_units_on_order\": 180\n  },\n  {\n    \"category_id\": 2,\n    \"total_units_on_order\": 170\n  },\n  {\n    \"category_id\": 4,\n    \"total_units_on_order\": 140\n  },\n  {\n    \"category_id\": 8,\n    \"total_units_on_order\": 120\n  },\n  {\n    \"category_id\": 5,\n    \"total_units_on_order\": 90\n  },\n  {\n    \"category_id\": 1,\n    \"total_units_on_order\": 60\n  },\n  {\n    \"category_id\": 7,\n    \"total_units_on_order\": 20\n  },\n  {\n    \"category_id\": 6,\n    \"total_units_on_order\": 0\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_019",
+      "question": "How many products are discontinued versus active?",
+      "expected_sql": "SELECT discontinued, COUNT(*) AS product_count FROM products GROUP BY discontinued ORDER BY discontinued;",
+      "expected_answer": "[\n  {\n    \"discontinued\": 0,\n    \"product_count\": 67\n  },\n  {\n    \"discontinued\": 1,\n    \"product_count\": 10\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_020",
+      "question": "What is the average units in stock by discontinued status?",
+      "expected_sql": "SELECT discontinued, ROUND(AVG(units_in_stock)::numeric, 2) AS avg_units_in_stock FROM products GROUP BY discontinued ORDER BY discontinued;",
+      "expected_answer": "[\n  {\n    \"discontinued\": 0,\n    \"avg_units_in_stock\": 44.21\n  },\n  {\n    \"discontinued\": 1,\n    \"avg_units_in_stock\": 15.7\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "aggregate"
+    },
+    {
+      "id": "sql_021",
+      "question": "List product names together with their category names.",
+      "expected_sql": "SELECT p.product_name, c.category_name FROM products p JOIN categories c ON p.category_id = c.category_id ORDER BY p.product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Alice Mutton\",\n    \"category_name\": \"Meat/Poultry\"\n  },\n  {\n    \"product_name\": \"Aniseed Syrup\",\n    \"category_name\": \"Condiments\"\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\",\n    \"category_name\": \"Seafood\"\n  },\n  {\n    \"product_name\": \"Camembert Pierrot\",\n    \"category_name\": \"Dairy Products\"\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"category_name\": \"Seafood\"\n  },\n  {\n    \"product_name\": \"Chai\",\n    \"category_name\": \"Beverages\"\n  },\n  {\n    \"product_name\": \"Chang\",\n    \"category_name\": \"Beverages\"\n  },\n  {\n    \"product_name\": \"Chartreuse verte\",\n    \"category_name\": \"Beverages\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Cajun Seasoning\",\n    \"category_name\": \"Condiments\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Gumbo Mix\",\n    \"category_name\": \"Condiments\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_022",
+      "question": "List product names together with their supplier company names.",
+      "expected_sql": "SELECT p.product_name, s.company_name AS supplier_name FROM products p JOIN suppliers s ON p.supplier_id = s.supplier_id ORDER BY p.product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Alice Mutton\",\n    \"supplier_name\": \"Pavlova, Ltd.\"\n  },\n  {\n    \"product_name\": \"Aniseed Syrup\",\n    \"supplier_name\": \"Exotic Liquids\"\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\",\n    \"supplier_name\": \"New England Seafood Cannery\"\n  },\n  {\n    \"product_name\": \"Camembert Pierrot\",\n    \"supplier_name\": \"Gai pâturage\"\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"supplier_name\": \"Pavlova, Ltd.\"\n  },\n  {\n    \"product_name\": \"Chai\",\n    \"supplier_name\": \"Specialty Biscuits, Ltd.\"\n  },\n  {\n    \"product_name\": \"Chang\",\n    \"supplier_name\": \"Exotic Liquids\"\n  },\n  {\n    \"product_name\": \"Chartreuse verte\",\n    \"supplier_name\": \"Aux joyeux ecclésiastiques\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Cajun Seasoning\",\n    \"supplier_name\": \"New Orleans Cajun Delights\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Gumbo Mix\",\n    \"supplier_name\": \"New Orleans Cajun Delights\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_023",
+      "question": "List customer company names together with their order counts.",
+      "expected_sql": "SELECT c.company_name, COUNT(o.order_id) AS order_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY order_count DESC, c.company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Save-a-lot Markets\",\n    \"order_count\": 31\n  },\n  {\n    \"company_name\": \"Ernst Handel\",\n    \"order_count\": 30\n  },\n  {\n    \"company_name\": \"QUICK-Stop\",\n    \"order_count\": 28\n  },\n  {\n    \"company_name\": \"Folk och fä HB\",\n    \"order_count\": 19\n  },\n  {\n    \"company_name\": \"Hungry Owl All-Night Grocers\",\n    \"order_count\": 19\n  },\n  {\n    \"company_name\": \"Berglunds snabbköp\",\n    \"order_count\": 18\n  },\n  {\n    \"company_name\": \"HILARION-Abastos\",\n    \"order_count\": 18\n  },\n  {\n    \"company_name\": \"Rattlesnake Canyon Grocery\",\n    \"order_count\": 18\n  },\n  {\n    \"company_name\": \"Bon app'\",\n    \"order_count\": 17\n  },\n  {\n    \"company_name\": \"Frankenversand\",\n    \"order_count\": 15\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_024",
+      "question": "List employee names together with their order counts.",
+      "expected_sql": "SELECT e.first_name || ' ' || e.last_name AS employee_name, COUNT(o.order_id) AS order_count FROM employees e JOIN orders o ON e.employee_id = o.employee_id GROUP BY employee_name ORDER BY order_count DESC, employee_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"employee_name\": \"Margaret Peacock\",\n    \"order_count\": 156\n  },\n  {\n    \"employee_name\": \"Janet Leverling\",\n    \"order_count\": 127\n  },\n  {\n    \"employee_name\": \"Nancy Davolio\",\n    \"order_count\": 123\n  },\n  {\n    \"employee_name\": \"Laura Callahan\",\n    \"order_count\": 104\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"order_count\": 96\n  },\n  {\n    \"employee_name\": \"Robert King\",\n    \"order_count\": 72\n  },\n  {\n    \"employee_name\": \"Michael Suyama\",\n    \"order_count\": 67\n  },\n  {\n    \"employee_name\": \"Anne Dodsworth\",\n    \"order_count\": 43\n  },\n  {\n    \"employee_name\": \"Steven Buchanan\",\n    \"order_count\": 42\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_025",
+      "question": "List shipper company names together with their shipment counts.",
+      "expected_sql": "SELECT s.company_name, COUNT(o.order_id) AS shipment_count FROM shippers s JOIN orders o ON s.shipper_id = o.ship_via GROUP BY s.company_name ORDER BY shipment_count DESC, s.company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"United Package\",\n    \"shipment_count\": 326\n  },\n  {\n    \"company_name\": \"Federal Shipping\",\n    \"shipment_count\": 255\n  },\n  {\n    \"company_name\": \"Speedy Express\",\n    \"shipment_count\": 249\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_026",
+      "question": "List product names together with sold quantity across all order details.",
+      "expected_sql": "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Camembert Pierrot\",\n    \"total_quantity_sold\": 1577\n  },\n  {\n    \"product_name\": \"Raclette Courdavault\",\n    \"total_quantity_sold\": 1496\n  },\n  {\n    \"product_name\": \"Gorgonzola Telino\",\n    \"total_quantity_sold\": 1397\n  },\n  {\n    \"product_name\": \"Gnocchi di nonna Alice\",\n    \"total_quantity_sold\": 1263\n  },\n  {\n    \"product_name\": \"Pavlova\",\n    \"total_quantity_sold\": 1158\n  },\n  {\n    \"product_name\": \"Rhönbräu Klosterbier\",\n    \"total_quantity_sold\": 1155\n  },\n  {\n    \"product_name\": \"Guaraná Fantástica\",\n    \"total_quantity_sold\": 1125\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\",\n    \"total_quantity_sold\": 1103\n  },\n  {\n    \"product_name\": \"Tarte au sucre\",\n    \"total_quantity_sold\": 1083\n  },\n  {\n    \"product_name\": \"Chang\",\n    \"total_quantity_sold\": 1057\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_027",
+      "question": "List customer company names together with their latest order date.",
+      "expected_sql": "SELECT c.company_name, MAX(o.order_date) AS latest_order_date FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY latest_order_date DESC, c.company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Bon app'\",\n    \"latest_order_date\": \"1998-05-06\"\n  },\n  {\n    \"company_name\": \"Rattlesnake Canyon Grocery\",\n    \"latest_order_date\": \"1998-05-06\"\n  },\n  {\n    \"company_name\": \"Richter Supermarkt\",\n    \"latest_order_date\": \"1998-05-06\"\n  },\n  {\n    \"company_name\": \"Simons bistro\",\n    \"latest_order_date\": \"1998-05-06\"\n  },\n  {\n    \"company_name\": \"Ernst Handel\",\n    \"latest_order_date\": \"1998-05-05\"\n  },\n  {\n    \"company_name\": \"Lehmanns Marktstand\",\n    \"latest_order_date\": \"1998-05-05\"\n  },\n  {\n    \"company_name\": \"LILA-Supermercado\",\n    \"latest_order_date\": \"1998-05-05\"\n  },\n  {\n    \"company_name\": \"Pericles Comidas clásicas\",\n    \"latest_order_date\": \"1998-05-05\"\n  },\n  {\n    \"company_name\": \"Drachenblut Delikatessen\",\n    \"latest_order_date\": \"1998-05-04\"\n  },\n  {\n    \"company_name\": \"Queen Cozinha\",\n    \"latest_order_date\": \"1998-05-04\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_028",
+      "question": "List order IDs together with customer company names for the first 10 orders.",
+      "expected_sql": "SELECT o.order_id, c.company_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id ORDER BY o.order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10248,\n    \"company_name\": \"Vins et alcools Chevalier\"\n  },\n  {\n    \"order_id\": 10249,\n    \"company_name\": \"Toms Spezialitäten\"\n  },\n  {\n    \"order_id\": 10250,\n    \"company_name\": \"Hanari Carnes\"\n  },\n  {\n    \"order_id\": 10251,\n    \"company_name\": \"Victuailles en stock\"\n  },\n  {\n    \"order_id\": 10252,\n    \"company_name\": \"Suprêmes délices\"\n  },\n  {\n    \"order_id\": 10253,\n    \"company_name\": \"Hanari Carnes\"\n  },\n  {\n    \"order_id\": 10254,\n    \"company_name\": \"Chop-suey Chinese\"\n  },\n  {\n    \"order_id\": 10255,\n    \"company_name\": \"Richter Supermarkt\"\n  },\n  {\n    \"order_id\": 10256,\n    \"company_name\": \"Wellington Importadora\"\n  },\n  {\n    \"order_id\": 10257,\n    \"company_name\": \"HILARION-Abastos\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_029",
+      "question": "List order IDs together with employee names for the first 10 orders.",
+      "expected_sql": "SELECT o.order_id, e.first_name || ' ' || e.last_name AS employee_name FROM orders o JOIN employees e ON o.employee_id = e.employee_id ORDER BY o.order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10248,\n    \"employee_name\": \"Steven Buchanan\"\n  },\n  {\n    \"order_id\": 10249,\n    \"employee_name\": \"Michael Suyama\"\n  },\n  {\n    \"order_id\": 10250,\n    \"employee_name\": \"Margaret Peacock\"\n  },\n  {\n    \"order_id\": 10251,\n    \"employee_name\": \"Janet Leverling\"\n  },\n  {\n    \"order_id\": 10252,\n    \"employee_name\": \"Margaret Peacock\"\n  },\n  {\n    \"order_id\": 10253,\n    \"employee_name\": \"Janet Leverling\"\n  },\n  {\n    \"order_id\": 10254,\n    \"employee_name\": \"Steven Buchanan\"\n  },\n  {\n    \"order_id\": 10255,\n    \"employee_name\": \"Anne Dodsworth\"\n  },\n  {\n    \"order_id\": 10256,\n    \"employee_name\": \"Janet Leverling\"\n  },\n  {\n    \"order_id\": 10257,\n    \"employee_name\": \"Margaret Peacock\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_030",
+      "question": "List order IDs together with shipper company names for the first 10 orders.",
+      "expected_sql": "SELECT o.order_id, s.company_name AS shipper_name FROM orders o JOIN shippers s ON o.ship_via = s.shipper_id ORDER BY o.order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10248,\n    \"shipper_name\": \"Federal Shipping\"\n  },\n  {\n    \"order_id\": 10249,\n    \"shipper_name\": \"Speedy Express\"\n  },\n  {\n    \"order_id\": 10250,\n    \"shipper_name\": \"United Package\"\n  },\n  {\n    \"order_id\": 10251,\n    \"shipper_name\": \"Speedy Express\"\n  },\n  {\n    \"order_id\": 10252,\n    \"shipper_name\": \"United Package\"\n  },\n  {\n    \"order_id\": 10253,\n    \"shipper_name\": \"United Package\"\n  },\n  {\n    \"order_id\": 10254,\n    \"shipper_name\": \"United Package\"\n  },\n  {\n    \"order_id\": 10255,\n    \"shipper_name\": \"Federal Shipping\"\n  },\n  {\n    \"order_id\": 10256,\n    \"shipper_name\": \"United Package\"\n  },\n  {\n    \"order_id\": 10257,\n    \"shipper_name\": \"Federal Shipping\"\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_031",
+      "question": "List category names together with product counts.",
+      "expected_sql": "SELECT c.category_name, COUNT(p.product_id) AS product_count FROM categories c JOIN products p ON c.category_id = p.category_id GROUP BY c.category_name ORDER BY product_count DESC, c.category_name;",
+      "expected_answer": "[\n  {\n    \"category_name\": \"Confections\",\n    \"product_count\": 13\n  },\n  {\n    \"category_name\": \"Beverages\",\n    \"product_count\": 12\n  },\n  {\n    \"category_name\": \"Condiments\",\n    \"product_count\": 12\n  },\n  {\n    \"category_name\": \"Seafood\",\n    \"product_count\": 12\n  },\n  {\n    \"category_name\": \"Dairy Products\",\n    \"product_count\": 10\n  },\n  {\n    \"category_name\": \"Grains/Cereals\",\n    \"product_count\": 7\n  },\n  {\n    \"category_name\": \"Meat/Poultry\",\n    \"product_count\": 6\n  },\n  {\n    \"category_name\": \"Produce\",\n    \"product_count\": 5\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_032",
+      "question": "List supplier company names together with average product unit price.",
+      "expected_sql": "SELECT s.company_name, ROUND(AVG(p.unit_price)::numeric, 2) AS avg_unit_price FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY avg_unit_price DESC, s.company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Aux joyeux ecclésiastiques\",\n    \"avg_unit_price\": 140.75\n  },\n  {\n    \"company_name\": \"Tokyo Traders\",\n    \"avg_unit_price\": 46\n  },\n  {\n    \"company_name\": \"Plutzer Lebensmittelgroßmärkte AG\",\n    \"avg_unit_price\": 44.68\n  },\n  {\n    \"company_name\": \"Gai pâturage\",\n    \"avg_unit_price\": 44.5\n  },\n  {\n    \"company_name\": \"Forêts d'érables\",\n    \"avg_unit_price\": 38.9\n  },\n  {\n    \"company_name\": \"Pavlova, Ltd.\",\n    \"avg_unit_price\": 35.57\n  },\n  {\n    \"company_name\": \"Grandma Kelly's Homestead\",\n    \"avg_unit_price\": 31.67\n  },\n  {\n    \"company_name\": \"G'day, Mate\",\n    \"avg_unit_price\": 30.93\n  },\n  {\n    \"company_name\": \"Heli Süßwaren GmbH & Co. KG\",\n    \"avg_unit_price\": 29.71\n  },\n  {\n    \"company_name\": \"Cooperativa de Quesos 'Las Cabras'\",\n    \"avg_unit_price\": 29.5\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_033",
+      "question": "List product names together with revenue generated from order details.",
+      "expected_sql": "SELECT p.product_name, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS revenue FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY revenue DESC, p.product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Côte de Blaye\",\n    \"revenue\": 141396.74\n  },\n  {\n    \"product_name\": \"Thüringer Rostbratwurst\",\n    \"revenue\": 80368.67\n  },\n  {\n    \"product_name\": \"Raclette Courdavault\",\n    \"revenue\": 71155.7\n  },\n  {\n    \"product_name\": \"Tarte au sucre\",\n    \"revenue\": 47234.97\n  },\n  {\n    \"product_name\": \"Camembert Pierrot\",\n    \"revenue\": 46825.48\n  },\n  {\n    \"product_name\": \"Gnocchi di nonna Alice\",\n    \"revenue\": 42593.06\n  },\n  {\n    \"product_name\": \"Manjimup Dried Apples\",\n    \"revenue\": 41819.65\n  },\n  {\n    \"product_name\": \"Alice Mutton\",\n    \"revenue\": 32698.38\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"revenue\": 29171.87\n  },\n  {\n    \"product_name\": \"Rössle Sauerkraut\",\n    \"revenue\": 25696.64\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_034",
+      "question": "List order IDs together with the number of line items in each order.",
+      "expected_sql": "SELECT o.order_id, COUNT(od.product_id) AS line_item_count FROM orders o JOIN order_details od ON o.order_id = od.order_id GROUP BY o.order_id ORDER BY line_item_count DESC, o.order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 11077,\n    \"line_item_count\": 25\n  },\n  {\n    \"order_id\": 10657,\n    \"line_item_count\": 6\n  },\n  {\n    \"order_id\": 10847,\n    \"line_item_count\": 6\n  },\n  {\n    \"order_id\": 10979,\n    \"line_item_count\": 6\n  },\n  {\n    \"order_id\": 10273,\n    \"line_item_count\": 5\n  },\n  {\n    \"order_id\": 10294,\n    \"line_item_count\": 5\n  },\n  {\n    \"order_id\": 10309,\n    \"line_item_count\": 5\n  },\n  {\n    \"order_id\": 10324,\n    \"line_item_count\": 5\n  },\n  {\n    \"order_id\": 10325,\n    \"line_item_count\": 5\n  },\n  {\n    \"order_id\": 10337,\n    \"line_item_count\": 5\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_035",
+      "question": "List customer company names together with the number of distinct ship countries in their orders.",
+      "expected_sql": "SELECT c.company_name, COUNT(DISTINCT o.ship_country) AS ship_country_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY ship_country_count DESC, c.company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Alfreds Futterkiste\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Ana Trujillo Emparedados y helados\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Antonio Moreno Taquería\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Around the Horn\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"B's Beverages\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Berglunds snabbköp\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Blauer See Delikatessen\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Blondesddsl père et fils\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Bólido Comidas preparadas\",\n    \"ship_country_count\": 1\n  },\n  {\n    \"company_name\": \"Bon app'\",\n    \"ship_country_count\": 1\n  }\n]",
+      "difficulty": "medium",
+      "query_type": "join"
+    },
+    {
+      "id": "sql_036",
+      "question": "What is the total revenue per order for the top 10 orders?",
+      "expected_sql": "SELECT o.order_id, c.company_name, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS order_revenue FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY o.order_id, c.company_name ORDER BY order_revenue DESC, o.order_id LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10865,\n    \"company_name\": \"QUICK-Stop\",\n    \"order_revenue\": 16387.5\n  },\n  {\n    \"order_id\": 10981,\n    \"company_name\": \"Hanari Carnes\",\n    \"order_revenue\": 15810\n  },\n  {\n    \"order_id\": 11030,\n    \"company_name\": \"Save-a-lot Markets\",\n    \"order_revenue\": 12615.05\n  },\n  {\n    \"order_id\": 10889,\n    \"company_name\": \"Rattlesnake Canyon Grocery\",\n    \"order_revenue\": 11380\n  },\n  {\n    \"order_id\": 10417,\n    \"company_name\": \"Simons bistro\",\n    \"order_revenue\": 11188.4\n  },\n  {\n    \"order_id\": 10817,\n    \"company_name\": \"Königlich Essen\",\n    \"order_revenue\": 10952.84\n  },\n  {\n    \"order_id\": 10897,\n    \"company_name\": \"Hungry Owl All-Night Grocers\",\n    \"order_revenue\": 10835.24\n  },\n  {\n    \"order_id\": 10479,\n    \"company_name\": \"Rattlesnake Canyon Grocery\",\n    \"order_revenue\": 10495.6\n  },\n  {\n    \"order_id\": 10540,\n    \"company_name\": \"QUICK-Stop\",\n    \"order_revenue\": 10191.7\n  },\n  {\n    \"order_id\": 10691,\n    \"company_name\": \"QUICK-Stop\",\n    \"order_revenue\": 10164.8\n  }\n]",
+      "difficulty": "hard",
+      "query_type": "complex"
+    },
+    {
+      "id": "sql_037",
+      "question": "List product names with their category names and supplier names.",
+      "expected_sql": "SELECT p.product_name, c.category_name, s.company_name AS supplier_name FROM products p JOIN categories c ON p.category_id = c.category_id JOIN suppliers s ON p.supplier_id = s.supplier_id ORDER BY p.product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Alice Mutton\",\n    \"category_name\": \"Meat/Poultry\",\n    \"supplier_name\": \"Pavlova, Ltd.\"\n  },\n  {\n    \"product_name\": \"Aniseed Syrup\",\n    \"category_name\": \"Condiments\",\n    \"supplier_name\": \"Exotic Liquids\"\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\",\n    \"category_name\": \"Seafood\",\n    \"supplier_name\": \"New England Seafood Cannery\"\n  },\n  {\n    \"product_name\": \"Camembert Pierrot\",\n    \"category_name\": \"Dairy Products\",\n    \"supplier_name\": \"Gai pâturage\"\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"category_name\": \"Seafood\",\n    \"supplier_name\": \"Pavlova, Ltd.\"\n  },\n  {\n    \"product_name\": \"Chai\",\n    \"category_name\": \"Beverages\",\n    \"supplier_name\": \"Specialty Biscuits, Ltd.\"\n  },\n  {\n    \"product_name\": \"Chang\",\n    \"category_name\": \"Beverages\",\n    \"supplier_name\": \"Exotic Liquids\"\n  },\n  {\n    \"product_name\": \"Chartreuse verte\",\n    \"category_name\": \"Beverages\",\n    \"supplier_name\": \"Aux joyeux ecclésiastiques\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Cajun Seasoning\",\n    \"category_name\": \"Condiments\",\n    \"supplier_name\": \"New Orleans Cajun Delights\"\n  },\n  {\n    \"product_name\": \"Chef Anton's Gumbo Mix\",\n    \"category_name\": \"Condiments\",\n    \"supplier_name\": \"New Orleans Cajun Delights\"\n  }\n]",
+      "difficulty": "hard",
+      "query_type": "complex"
+    },
+    {
+      "id": "sql_038",
+      "question": "List employee names with the territories they cover.",
+      "expected_sql": "SELECT e.first_name || ' ' || e.last_name AS employee_name, t.territory_description FROM employees e JOIN employee_territories et ON e.employee_id = et.employee_id JOIN territories t ON et.territory_id = t.territory_id ORDER BY employee_name, territory_description LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Bedford\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Boston\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Braintree\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Cambridge\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Georgetow\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Louisville\"\n  },\n  {\n    \"employee_name\": \"Andrew Fuller\",\n    \"territory_description\": \"Westboro\"\n  },\n  {\n    \"employee_name\": \"Anne Dodsworth\",\n    \"territory_description\": \"Bloomfield Hills\"\n  },\n  {\n    \"employee_name\": \"Anne Dodsworth\",\n    \"territory_description\": \"Hollis\"\n  },\n  {\n    \"employee_name\": \"Anne Dodsworth\",\n    \"territory_description\": \"Minneapolis\"\n  }\n]",
+      "difficulty": "hard",
+      "query_type": "complex"
+    },
+    {
+      "id": "sql_039",
+      "question": "Which products are priced above the overall average product price?",
+      "expected_sql": "SELECT product_name, unit_price FROM products WHERE unit_price > (SELECT AVG(unit_price) FROM products) ORDER BY unit_price DESC LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Côte de Blaye\",\n    \"unit_price\": 263.5\n  },\n  {\n    \"product_name\": \"Thüringer Rostbratwurst\",\n    \"unit_price\": 123.79\n  },\n  {\n    \"product_name\": \"Mishi Kobe Niku\",\n    \"unit_price\": 97.0\n  },\n  {\n    \"product_name\": \"Sir Rodney's Marmalade\",\n    \"unit_price\": 81.0\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"unit_price\": 62.5\n  },\n  {\n    \"product_name\": \"Raclette Courdavault\",\n    \"unit_price\": 55.0\n  },\n  {\n    \"product_name\": \"Manjimup Dried Apples\",\n    \"unit_price\": 53.0\n  },\n  {\n    \"product_name\": \"Tarte au sucre\",\n    \"unit_price\": 49.3\n  },\n  {\n    \"product_name\": \"Ipoh Coffee\",\n    \"unit_price\": 46.0\n  },\n  {\n    \"product_name\": \"Rössle Sauerkraut\",\n    \"unit_price\": 45.6\n  }\n]",
+      "difficulty": "hard",
+      "query_type": "complex"
+    },
+    {
+      "id": "sql_040",
+      "question": "Which customers have placed more than five orders?",
+      "expected_sql": "SELECT company_name FROM customers WHERE customer_id IN (SELECT customer_id FROM orders GROUP BY customer_id HAVING COUNT(*) > 5) ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Alfreds Futterkiste\"\n  },\n  {\n    \"company_name\": \"Antonio Moreno Taquería\"\n  },\n  {\n    \"company_name\": \"Around the Horn\"\n  },\n  {\n    \"company_name\": \"B's Beverages\"\n  },\n  {\n    \"company_name\": \"Berglunds snabbköp\"\n  },\n  {\n    \"company_name\": \"Blauer See Delikatessen\"\n  },\n  {\n    \"company_name\": \"Blondesddsl père et fils\"\n  },\n  {\n    \"company_name\": \"Bon app'\"\n  },\n  {\n    \"company_name\": \"Bottom-Dollar Markets\"\n  },\n  {\n    \"company_name\": \"Cactus Comidas para llevar\"\n  }\n]",
+      "difficulty": "hard",
+      "query_type": "complex"
+    },
+    {
+      "id": "sql_041",
+      "question": "What are the top 5 most expensive products?",
+      "expected_sql": "SELECT product_name, unit_price FROM products ORDER BY unit_price DESC LIMIT 5;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Côte de Blaye\",\n    \"unit_price\": 263.5\n  },\n  {\n    \"product_name\": \"Thüringer Rostbratwurst\",\n    \"unit_price\": 123.79\n  },\n  {\n    \"product_name\": \"Mishi Kobe Niku\",\n    \"unit_price\": 97.0\n  },\n  {\n    \"product_name\": \"Sir Rodney's Marmalade\",\n    \"unit_price\": 81.0\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"unit_price\": 62.5\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_042",
+      "question": "What are the top 5 products with the highest stock?",
+      "expected_sql": "SELECT product_name, units_in_stock FROM products ORDER BY units_in_stock DESC LIMIT 5;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Rhönbräu Klosterbier\",\n    \"units_in_stock\": 125\n  },\n  {\n    \"product_name\": \"Boston Crab Meat\",\n    \"units_in_stock\": 123\n  },\n  {\n    \"product_name\": \"Grandma's Boysenberry Spread\",\n    \"units_in_stock\": 120\n  },\n  {\n    \"product_name\": \"Pâté chinois\",\n    \"units_in_stock\": 115\n  },\n  {\n    \"product_name\": \"Sirop d'érable\",\n    \"units_in_stock\": 113\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_043",
+      "question": "Which customers are located in the USA?",
+      "expected_sql": "SELECT company_name, city, country FROM customers WHERE country = 'USA' ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Great Lakes Food Market\",\n    \"city\": \"Eugene\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Hungry Coyote Import Store\",\n    \"city\": \"Elgin\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Lazy K Kountry Store\",\n    \"city\": \"Walla Walla\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Let's Stop N Shop\",\n    \"city\": \"San Francisco\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Lonesome Pine Restaurant\",\n    \"city\": \"Portland\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Old World Delicatessen\",\n    \"city\": \"Anchorage\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Rattlesnake Canyon Grocery\",\n    \"city\": \"Albuquerque\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Save-a-lot Markets\",\n    \"city\": \"Boise\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"Split Rail Beer & Ale\",\n    \"city\": \"Lander\",\n    \"country\": \"USA\"\n  },\n  {\n    \"company_name\": \"The Big Cheese\",\n    \"city\": \"Portland\",\n    \"country\": \"USA\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_044",
+      "question": "Which orders were placed in 1997 with the highest freight values?",
+      "expected_sql": "SELECT order_id, order_date, freight FROM orders WHERE order_date >= DATE '1997-01-01' AND order_date < DATE '1998-01-01' ORDER BY freight DESC LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10540,\n    \"order_date\": \"1997-05-19\",\n    \"freight\": 1007.64\n  },\n  {\n    \"order_id\": 10691,\n    \"order_date\": \"1997-10-03\",\n    \"freight\": 810.05\n  },\n  {\n    \"order_id\": 10514,\n    \"order_date\": \"1997-04-22\",\n    \"freight\": 789.95\n  },\n  {\n    \"order_id\": 10479,\n    \"order_date\": \"1997-03-19\",\n    \"freight\": 708.95\n  },\n  {\n    \"order_id\": 10612,\n    \"order_date\": \"1997-07-28\",\n    \"freight\": 544.08\n  },\n  {\n    \"order_id\": 10634,\n    \"order_date\": \"1997-08-15\",\n    \"freight\": 487.38\n  },\n  {\n    \"order_id\": 10633,\n    \"order_date\": \"1997-08-15\",\n    \"freight\": 477.9\n  },\n  {\n    \"order_id\": 10430,\n    \"order_date\": \"1997-01-30\",\n    \"freight\": 458.78\n  },\n  {\n    \"order_id\": 10694,\n    \"order_date\": \"1997-10-06\",\n    \"freight\": 398.36\n  },\n  {\n    \"order_id\": 10678,\n    \"order_date\": \"1997-09-23\",\n    \"freight\": 388.98\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_045",
+      "question": "Which employees were hired after 1993?",
+      "expected_sql": "SELECT first_name, last_name, hire_date FROM employees WHERE hire_date > DATE '1993-12-31' ORDER BY hire_date LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"first_name\": \"Robert\",\n    \"last_name\": \"King\",\n    \"hire_date\": \"1994-01-02\"\n  },\n  {\n    \"first_name\": \"Laura\",\n    \"last_name\": \"Callahan\",\n    \"hire_date\": \"1994-03-05\"\n  },\n  {\n    \"first_name\": \"Anne\",\n    \"last_name\": \"Dodsworth\",\n    \"hire_date\": \"1994-11-15\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_046",
+      "question": "Which suppliers are based in the USA?",
+      "expected_sql": "SELECT company_name, city FROM suppliers WHERE country = 'USA' ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Bigfoot Breweries\",\n    \"city\": \"Bend\"\n  },\n  {\n    \"company_name\": \"Grandma Kelly's Homestead\",\n    \"city\": \"Ann Arbor\"\n  },\n  {\n    \"company_name\": \"New England Seafood Cannery\",\n    \"city\": \"Boston\"\n  },\n  {\n    \"company_name\": \"New Orleans Cajun Delights\",\n    \"city\": \"New Orleans\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_047",
+      "question": "Which products have stock below their reorder level?",
+      "expected_sql": "SELECT product_name, units_in_stock, reorder_level FROM products WHERE units_in_stock < reorder_level ORDER BY (reorder_level - units_in_stock) DESC, product_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Gorgonzola Telino\",\n    \"units_in_stock\": 0,\n    \"reorder_level\": 20\n  },\n  {\n    \"product_name\": \"Louisiana Hot Spiced Okra\",\n    \"units_in_stock\": 4,\n    \"reorder_level\": 20\n  },\n  {\n    \"product_name\": \"Mascarpone Fabioli\",\n    \"units_in_stock\": 9,\n    \"reorder_level\": 25\n  },\n  {\n    \"product_name\": \"Outback Lager\",\n    \"units_in_stock\": 15,\n    \"reorder_level\": 30\n  },\n  {\n    \"product_name\": \"Gravad lax\",\n    \"units_in_stock\": 11,\n    \"reorder_level\": 25\n  },\n  {\n    \"product_name\": \"Aniseed Syrup\",\n    \"units_in_stock\": 13,\n    \"reorder_level\": 25\n  },\n  {\n    \"product_name\": \"Chocolade\",\n    \"units_in_stock\": 15,\n    \"reorder_level\": 25\n  },\n  {\n    \"product_name\": \"Rogede sild\",\n    \"units_in_stock\": 5,\n    \"reorder_level\": 15\n  },\n  {\n    \"product_name\": \"Gnocchi di nonna Alice\",\n    \"units_in_stock\": 21,\n    \"reorder_level\": 30\n  },\n  {\n    \"product_name\": \"Scottish Longbreads\",\n    \"units_in_stock\": 6,\n    \"reorder_level\": 15\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_048",
+      "question": "Which orders have freight above 100?",
+      "expected_sql": "SELECT order_id, freight FROM orders WHERE freight > 100 ORDER BY freight DESC LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"order_id\": 10540,\n    \"freight\": 1007.64\n  },\n  {\n    \"order_id\": 10372,\n    \"freight\": 890.78\n  },\n  {\n    \"order_id\": 11030,\n    \"freight\": 830.75\n  },\n  {\n    \"order_id\": 10691,\n    \"freight\": 810.05\n  },\n  {\n    \"order_id\": 10514,\n    \"freight\": 789.95\n  },\n  {\n    \"order_id\": 11017,\n    \"freight\": 754.26\n  },\n  {\n    \"order_id\": 10816,\n    \"freight\": 719.78\n  },\n  {\n    \"order_id\": 10479,\n    \"freight\": 708.95\n  },\n  {\n    \"order_id\": 10983,\n    \"freight\": 657.54\n  },\n  {\n    \"order_id\": 11032,\n    \"freight\": 606.19\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_049",
+      "question": "Which active products are priced above 50?",
+      "expected_sql": "SELECT product_name, unit_price FROM products WHERE discontinued = 0 AND unit_price > 50 ORDER BY unit_price DESC LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"product_name\": \"Côte de Blaye\",\n    \"unit_price\": 263.5\n  },\n  {\n    \"product_name\": \"Sir Rodney's Marmalade\",\n    \"unit_price\": 81.0\n  },\n  {\n    \"product_name\": \"Carnarvon Tigers\",\n    \"unit_price\": 62.5\n  },\n  {\n    \"product_name\": \"Raclette Courdavault\",\n    \"unit_price\": 55.0\n  },\n  {\n    \"product_name\": \"Manjimup Dried Apples\",\n    \"unit_price\": 53.0\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    },
+    {
+      "id": "sql_050",
+      "question": "Which customers are located in Germany?",
+      "expected_sql": "SELECT company_name, city FROM customers WHERE country = 'Germany' ORDER BY company_name LIMIT 10;",
+      "expected_answer": "[\n  {\n    \"company_name\": \"Alfreds Futterkiste\",\n    \"city\": \"Berlin\"\n  },\n  {\n    \"company_name\": \"Blauer See Delikatessen\",\n    \"city\": \"Mannheim\"\n  },\n  {\n    \"company_name\": \"Die Wandernde Kuh\",\n    \"city\": \"Stuttgart\"\n  },\n  {\n    \"company_name\": \"Drachenblut Delikatessen\",\n    \"city\": \"Aachen\"\n  },\n  {\n    \"company_name\": \"Frankenversand\",\n    \"city\": \"München\"\n  },\n  {\n    \"company_name\": \"Königlich Essen\",\n    \"city\": \"Brandenburg\"\n  },\n  {\n    \"company_name\": \"Lehmanns Marktstand\",\n    \"city\": \"Frankfurt a.M.\"\n  },\n  {\n    \"company_name\": \"Morgenstern Gesundkost\",\n    \"city\": \"Leipzig\"\n  },\n  {\n    \"company_name\": \"Ottilies Käseladen\",\n    \"city\": \"Köln\"\n  },\n  {\n    \"company_name\": \"QUICK-Stop\",\n    \"city\": \"Cunewalde\"\n  }\n]",
+      "difficulty": "easy",
+      "query_type": "filter"
+    }
+  ]
+}
