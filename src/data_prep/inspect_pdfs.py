@@ -18,6 +18,10 @@ class PdfInspectionResult:
     page_count: int
     first_page_char_count: int
     has_text_layer: bool
+    sampled_pages: int
+    avg_sample_chars: int
+    extraction_quality: str
+    ocr_recommended: bool
     note: str
 
 
@@ -25,15 +29,51 @@ def inspect_pdf(pdf_path: Path) -> PdfInspectionResult:
     with fitz.open(pdf_path) as document:
         page_count = document.page_count
         first_page_text = document.load_page(0).get_text("text").strip() if page_count else ""
-        char_count = len(first_page_text)
-        has_text_layer = char_count > 100
-        note = "OK" if has_text_layer else "Cần OCR"
+        first_page_char_count = len(first_page_text)
+
+        sample_indexes = sorted(
+            {
+                index
+                for index in [0, 1, 2, max(page_count // 2, 0), max(page_count - 1, 0)]
+                if 0 <= index < page_count
+            }
+        )
+        sample_texts = [document.load_page(index).get_text("text") for index in sample_indexes]
+        sample_lengths = [len((text or "").strip()) for text in sample_texts]
+
+        has_text_layer = any(length > 100 for length in sample_lengths) or first_page_char_count > 100
+
+        merged_text = " ".join(" ".join((text or "").split()) for text in sample_texts).strip()
+        if merged_text:
+            alpha_ratio = sum(character.isalpha() for character in merged_text) / len(merged_text)
+            tokens = merged_text.split()
+            single_char_ratio = (sum(len(token) == 1 for token in tokens) / len(tokens)) if tokens else 1.0
+        else:
+            alpha_ratio = 0.0
+            single_char_ratio = 1.0
+
+        if not has_text_layer:
+            extraction_quality = "No text layer"
+            ocr_recommended = True
+            note = "Cần OCR"
+        elif alpha_ratio < 0.45 or single_char_ratio > 0.35:
+            extraction_quality = "Text layer but noisy"
+            ocr_recommended = True
+            note = "OCR recommended"
+        else:
+            extraction_quality = "Digital text"
+            ocr_recommended = False
+            note = "OK"
 
     return PdfInspectionResult(
         file_name=pdf_path.name,
         page_count=page_count,
-        first_page_char_count=char_count,
+        first_page_char_count=first_page_char_count,
         has_text_layer=has_text_layer,
+        sampled_pages=len(sample_indexes),
+        avg_sample_chars=(sum(sample_lengths) // len(sample_lengths)) if sample_lengths else 0,
+        extraction_quality=extraction_quality,
+        ocr_recommended=ocr_recommended,
         note=note,
     )
 
@@ -44,13 +84,14 @@ def build_markdown(results: list[PdfInspectionResult], source_dir: Path) -> str:
     lines.append("")
     lines.append(f"Source folder: `{source_dir}`")
     lines.append("")
-    lines.append("| File | Pages | First Page Characters | Text Layer | Note |")
-    lines.append("| --- | ---: | ---: | --- | --- |")
+    lines.append("| File | Pages | First Page Characters | Text Layer | Sampled Pages | Avg Sample Characters | Extraction Quality | OCR Recommended | Note |")
+    lines.append("| --- | ---: | ---: | --- | ---: | ---: | --- | --- | --- |")
 
     for result in results:
         text_layer_label = "Yes" if result.has_text_layer else "No"
+        ocr_label = "Yes" if result.ocr_recommended else "No"
         lines.append(
-            f"| {result.file_name} | {result.page_count} | {result.first_page_char_count} | {text_layer_label} | {result.note} |"
+            f"| {result.file_name} | {result.page_count} | {result.first_page_char_count} | {text_layer_label} | {result.sampled_pages} | {result.avg_sample_chars} | {result.extraction_quality} | {ocr_label} | {result.note} |"
         )
 
     lines.append("")
@@ -58,7 +99,10 @@ def build_markdown(results: list[PdfInspectionResult], source_dir: Path) -> str:
     lines.append("")
     lines.append(f"- Total PDF files: {len(results)}")
     lines.append(f"- Files with text layer: {sum(1 for result in results if result.has_text_layer)}")
-    lines.append(f"- Files needing OCR: {sum(1 for result in results if not result.has_text_layer)}")
+    lines.append(f"- Files with digital text quality: {sum(1 for result in results if result.extraction_quality == 'Digital text')}")
+    lines.append(f"- Files with noisy text layer: {sum(1 for result in results if result.extraction_quality == 'Text layer but noisy')}")
+    lines.append(f"- Files needing OCR (no text layer): {sum(1 for result in results if result.extraction_quality == 'No text layer')}")
+    lines.append(f"- Files with OCR recommended: {sum(1 for result in results if result.ocr_recommended)}")
     lines.append("")
     return "\n".join(lines)
 
@@ -90,7 +134,7 @@ def main() -> int:
 
     for result in results:
         print(
-            f"{result.file_name} | pages={result.page_count} | first_page_chars={result.first_page_char_count} | text_layer={result.has_text_layer} | {result.note}"
+            f"{result.file_name} | pages={result.page_count} | first_page_chars={result.first_page_char_count} | text_layer={result.has_text_layer} | quality={result.extraction_quality} | ocr_recommended={result.ocr_recommended} | {result.note}"
         )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
