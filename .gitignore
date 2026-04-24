@@ -4,3 +4,5 @@ __pycache__/
 .env
 .chroma/
 .pytest_cache/
+data/raw/annual_reports/*.pdf
+.settings.json
