@@ -10,6 +10,7 @@ This audit verifies that Week 3 metrics and pipeline behavior are reproducible a
 | Chroma collection embedding metadata | PASS | `querionyx_v1` metadata records `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` |
 | Chroma collection loadable | PASS | `9670` chunks |
 | Eval embedding model | PASS | Defaults to the same model as `RAGPipelineV1` |
+| Chunking strategy consistency | PASS | Recursive Splitting used consistently in both indexing and evaluation for RAG V1 |
 
 Conclusion: RAG index and RAG evaluation are in the same embedding space.
 

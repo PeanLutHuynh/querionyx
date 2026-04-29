@@ -1,5 +1,19 @@
 # Week 3 Summary - Querionyx V1 Baselines
 
+## Chunking Strategy Decision (V1 Baseline)
+
+Although three chunking strategies (Fixed-size, Recursive Splitting, Semantic Chunking) were explored in Week 2, only **Recursive Splitting** was selected for the RAG V1 baseline.
+
+This decision was made based on preliminary observations:
+
+- Better structural alignment with document sections (paragraph → sentence hierarchy)
+- More stable retrieval behavior during initial experiments
+- Simpler and more reproducible setup for baseline evaluation
+
+Other strategies (Fixed-size and Semantic Chunking) are **not discarded**, but deferred to Week 4 as part of the RAG V2 upgrade (Hybrid Search + improved chunking).
+
+Therefore, RAG V1 results should be interpreted as a **controlled baseline using a single chunking strategy**, rather than a comparative study across chunking methods.
+
 ## 1. RAG V1 Baseline Results
 
 RAG V1 was evaluated as an offline retrieval baseline using ChromaDB cosine retrieval with `top_k=5`. The automatic evaluation used 20 unstructured annual-report questions; the first 10 were scored with embedding-based Context Precision and Context Recall.
