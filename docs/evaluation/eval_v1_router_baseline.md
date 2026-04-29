@@ -19,7 +19,7 @@
 |---|---|---|---|
 | UNSTRUCTURED (RAG) | 20 | 100.00% | Document-based questions |
 | STRUCTURED (SQL) | 20 | 100.00% | Database queries |
-| HYBRID | 20 | 75.00% | Require both sources - **Expected ~0%** |
+| HYBRID | 20 | 75.00% | Mixed RAG + SQL queries; succeeds when explicit keywords are present |
 
 ## Latency Analysis
 
@@ -77,9 +77,9 @@
 
 ## Key Findings
 
-1. **HYBRID Accuracy Expected ~0%**
-   - Rule-based router cannot handle HYBRID queries that require both RAG and SQL sources.
-   - This establishes the baseline justification for implementing LLM-based Router (V2) in week 4.
+1. **HYBRID detection depends on explicit keywords**
+   - Rule-based routing can detect HYBRID queries when both RAG and SQL keywords are explicit.
+   - Failures occur when the SQL side is implicit or semantic, motivating LLM-based Router (V2) in week 4.
 
 2. **UNSTRUCTURED and STRUCTURED handling**
    - Rule-based keyword matching works well for clear intent signals.

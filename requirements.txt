@@ -3,7 +3,9 @@ uvicorn
 langchain
 langchain-openai
 langchain-community
+langchain-ollama
 chromadb
+sentence-transformers
 psycopg2-binary
 pymupdf
 rank-bm25

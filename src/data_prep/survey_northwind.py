@@ -13,7 +13,7 @@ import psycopg2
 from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_REPORT_PATH = PROJECT_ROOT / "docs" / "northwind_schema.md"
+SCHEMA_REPORT_PATH = PROJECT_ROOT / "docs" / "data_prep" / "northwind_schema.md"
 QUERY_DATA_PATH = PROJECT_ROOT / "data" / "test_queries" / "sql_queries.json"
 SQL_DUMP_PATH = PROJECT_ROOT / ".tmp" / "northwind_psql" / "northwind.sql"
 CORE_TABLES = [

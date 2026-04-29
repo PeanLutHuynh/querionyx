@@ -14,7 +14,7 @@ from sentence_transformers import SentenceTransformer
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_REPORTS_DIR = PROJECT_ROOT / "data" / "raw" / "annual_reports"
-NOTES_PATH = PROJECT_ROOT / "docs" / "chunking_notes.md"
+NOTES_PATH = PROJECT_ROOT / "docs" / "data_prep" / "chunking_notes.md"
 PICKLE_PATH = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
 
 

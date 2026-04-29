@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_INPUT_DIR = PROJECT_ROOT / "data" / "raw" / "annual_reports"
-DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "docs" / "pdf_inspection.md"
+DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "docs" / "data_prep" / "pdf_inspection.md"
 
 
 @dataclass(frozen=True)

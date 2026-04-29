@@ -6,3 +6,5 @@ __pycache__/
 .pytest_cache/
 data/raw/annual_reports/*.pdf
 .settings.json
+data/models/
+data/chroma_db/

@@ -13,7 +13,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.router.rule_based_router import RuleBasedRouter
 
 TEST_QUERIES_FILE = PROJECT_ROOT / "data" / "test_queries" / "router_eval_60.json"
-OUTPUT_MARKDOWN = PROJECT_ROOT / "docs" / "eval_v1_router_baseline.md"
+OUTPUT_MARKDOWN = PROJECT_ROOT / "docs" / "evaluation" / "eval_v1_router_baseline.md"
 
 
 def load_test_queries(file_path: Path) -> dict:
@@ -134,7 +134,7 @@ def build_markdown_report(results: dict, metrics: dict) -> str:
     lines.append("|---|---|---|---|")
     lines.append(f"| UNSTRUCTURED (RAG) | 20 | {metrics['unstructured_accuracy']:.2%} | Document-based questions |")
     lines.append(f"| STRUCTURED (SQL) | 20 | {metrics['structured_accuracy']:.2%} | Database queries |")
-    lines.append(f"| HYBRID | 20 | {metrics['hybrid_accuracy']:.2%} | Require both sources - **Expected ~0%** |")
+    lines.append(f"| HYBRID | 20 | {metrics['hybrid_accuracy']:.2%} | Mixed RAG + SQL queries; succeeds when explicit keywords are present |")
     lines.append("")
 
     # Latency analysis
@@ -176,15 +176,15 @@ def build_markdown_report(results: dict, metrics: dict) -> str:
             lines.append(f"- Reasoning: {pred['reasoning']}")
             lines.append("")
     else:
-        lines.append("✅ No errors found!")
+        lines.append("No errors found!")
         lines.append("")
 
     # Key findings
     lines.append("## Key Findings")
     lines.append("")
-    lines.append("1. **HYBRID Accuracy Expected ~0%**")
-    lines.append("   - Rule-based router cannot handle HYBRID queries that require both RAG and SQL sources.")
-    lines.append("   - This establishes the baseline justification for implementing LLM-based Router (V2) in week 4.")
+    lines.append("1. **HYBRID detection depends on explicit keywords**")
+    lines.append("   - Rule-based routing can detect HYBRID queries when both RAG and SQL keywords are explicit.")
+    lines.append("   - Failures occur when the SQL side is implicit or semantic, motivating LLM-based Router (V2) in week 4.")
     lines.append("")
     lines.append("2. **UNSTRUCTURED and STRUCTURED handling**")
     lines.append("   - Rule-based keyword matching works well for clear intent signals.")
@@ -236,10 +236,10 @@ def main():
     with open(OUTPUT_MARKDOWN, "w", encoding="utf-8") as f:
         f.write(markdown_report)
 
-    print(f"✅ Report saved to {OUTPUT_MARKDOWN}")
+    print(f"Report saved to {OUTPUT_MARKDOWN}")
 
     # Also save detailed results as JSON for later reference
-    results_json_path = PROJECT_ROOT / "docs" / "eval_v1_router_results.json"
+    results_json_path = PROJECT_ROOT / "docs" / "evaluation" / "eval_v1_router_results.json"
     with open(results_json_path, "w", encoding="utf-8") as f:
         json.dump(
             {
@@ -251,7 +251,7 @@ def main():
             indent=2,
             ensure_ascii=False,
         )
-    print(f"✅ Detailed results saved to {results_json_path}")
+    print(f"Detailed results saved to {results_json_path}")
 
 
 if __name__ == "__main__":

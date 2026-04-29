@@ -70,7 +70,10 @@ querionyx/
 │   └── test_queries/     # Test query sets
 ├── tests/                # Unit tests
 ├── docs/
-│   └── paper_notes.md    # 5 papers reviewed (Lewis, Yu, Gao x2, Es)
+│   ├── data_prep/        # PDF, chunking, and schema inspection notes
+│   ├── evaluation/       # Router/RAG evaluation reports and templates
+│   ├── research/         # Paper notes
+│   └── week3/            # Week 3 summary and validation audit
 │   
 ├── .env                  # Environment variables (git-ignored)
 ├── .env.example          # Example env template
