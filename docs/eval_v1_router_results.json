@@ -1,0 +1,33 @@
+{
+  "metrics": {
+    "overall_accuracy": 0.9166666666666666,
+    "unstructured_accuracy": 1.0,
+    "structured_accuracy": 1.0,
+    "hybrid_accuracy": 0.75,
+    "avg_latency_ms": 0.01749500000490419,
+    "min_latency_ms": 0.011399999493733048,
+    "max_latency_ms": 0.05369999780668877,
+    "p50_latency_ms": 0.016500001947861165,
+    "p95_latency_ms": 0.02479999966453761,
+    "correct_count": 55,
+    "incorrect_count": 5
+  },
+  "confusion_matrix": {
+    "RAG": {
+      "RAG": 20,
+      "SQL": 0,
+      "HYBRID": 0
+    },
+    "SQL": {
+      "RAG": 0,
+      "SQL": 20,
+      "HYBRID": 0
+    },
+    "HYBRID": {
+      "RAG": 5,
+      "SQL": 0,
+      "HYBRID": 15
+    }
+  },
+  "total_predictions": 60
+}
