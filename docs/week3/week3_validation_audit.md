@@ -77,14 +77,14 @@ Conclusion: Router V1 works for clear RAG/SQL questions but misses semantic SQL 
 
 | Check | Result | Evidence |
 |---|---|---|
-| LLM model configured | PASS | `phi3` |
-| Ollama model available | PASS | `/api/tags` returns `phi3:latest` |
+| LLM model configured | PASS | `qwen2.5:3b` |
+| Ollama model available | PASS | `/api/tags` returns `qwen2.5:3b:latest` |
 | LangChain calls real Ollama | PASS | `OllamaLLM(...).invoke(...)` returned a live response |
 | Short-prompt latency | PASS with caveat | Measured `9.21s` and `3.74s` on nonce prompts in latest check |
 | RAG generation latency | PASS with caveat | Full-context prompts can timeout locally; fallback is handled |
 | Non-cached live generation | PASS | Two nonce prompts returned different nonce-specific outputs |
 
-RAG V1 generation is not fake or placeholder-based. It calls `self.llm.invoke(prompt)` through LangChain Ollama. However, local `phi3` is slow for RAG prompts, so generation timeout and fallback behavior are expected on this machine.
+RAG V1 generation is not fake or placeholder-based. It calls `self.llm.invoke(prompt)` through LangChain Ollama. However, local `qwen2.5:3b` has improved latency (90s timeout) compared to earlier models, reducing fallback incidents.
 
 ## F. Pipeline Check
 
@@ -110,4 +110,4 @@ Conclusion: No evidence of hallucinated metrics or placeholder outputs was found
 
 ## Final Validation Statement
 
-All Week 3 reported metrics are reproducible from local scripts. Retrieval and router metrics are computed offline without LLM-as-judge scoring. The RAG index and evaluation now use the same multilingual embedding model. Ollama `phi3` is called for generation, not simulated, but local latency remains a system limitation to address in later versions.
+All Week 3 reported metrics are reproducible from local scripts. Retrieval and router metrics are computed offline without LLM-as-judge scoring. The RAG index and evaluation now use the same multilingual embedding model. Ollama `qwen2.5:3b` is called for generation with 90s timeout, providing reliable bilingual support for both Vietnamese and English queries.

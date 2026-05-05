@@ -5,7 +5,7 @@ Architecture:
 - Embeddings: multilingual sentence-transformers model, cached locally
 - Vector Store: ChromaDB persistent collection
 - Retrieval: Top-5 cosine similarity
-- Generation: Ollama phi3 via LangChain OllamaLLM
+- Generation: Ollama qwen2.5:3b via LangChain OllamaLLM
 - Source Attribution: citation of filename + page number
 - Anti-hallucination: fixed Vietnamese not-found response
 """
@@ -30,7 +30,7 @@ EMBEDDING_CACHE_DIR = PROJECT_ROOT / "data" / "models" / "sentence_transformers"
 COLLECTION_NAME = "querionyx_v1"
 
 DEFAULT_EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-DEFAULT_LLM_MODEL = "phi3"
+DEFAULT_LLM_MODEL = "qwen2.5:3b"
 NOT_FOUND_MESSAGE = "Tôi không tìm thấy thông tin này trong tài liệu."
 NOT_FOUND_MESSAGES = {
     "vi": NOT_FOUND_MESSAGE,
@@ -290,7 +290,7 @@ class RAGPipelineV1:
         return sorted(citations)
 
     def _select_generation_chunks(self, context_chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Keep the strongest unique chunks small enough for local phi3."""
+        """Keep the strongest unique chunks small enough for local LLM processing."""
         selected = []
         seen = set()
 

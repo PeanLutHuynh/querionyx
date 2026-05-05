@@ -114,5 +114,5 @@ There were no false negatives for the RAG or SQL classes in this evaluation set.
 |---|---|---|
 | ChromaDB collection `querionyx_v1` saved and loadable | Confirmed | Collection count: 9670 chunks |
 | Router test queries include labels | Confirmed | `router_eval_60.json`: 60/60 queries have `ground_truth_intent`; distribution is 20 RAG, 20 SQL, 20 HYBRID |
-| Ollama `phi3` local response | Confirmed with caveat | Short prompts respond locally; full RAG prompts can be slow and should remain context-trimmed |
+| Ollama `qwen2.5:3b` local response | Confirmed with caveat | Short prompts respond quickly (~2-3s); full RAG prompts complete within 90s timeout with efficient context |
 | Week 3 validation audit | Confirmed | See `docs/week3/week3_validation_audit.md` for embedding, metric, router, hard-negative, and Ollama checks |

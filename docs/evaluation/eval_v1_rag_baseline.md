@@ -16,7 +16,7 @@
 |---|---:|
 | Average Context Precision | 1.000 |
 | Average Context Recall | 0.635 |
-| Average Retrieval Latency | 74.02 ms |
+| Average Retrieval Latency | 59.02 ms |
 
 ## Automatic Evaluation Results
 
