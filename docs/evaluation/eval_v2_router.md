@@ -13,37 +13,37 @@
 | RAG Accuracy | 100.00% |
 | SQL Accuracy | 100.00% |
 | HYBRID Accuracy | 75.00% |
-| Avg Latency | 0.017 ms |
-| P95 Latency | 0.021 ms |
+| Avg Latency | 0.018 ms |
+| P95 Latency | 0.026 ms |
 
 ## V2 (LLM-based) Summary
 
 | Metric | Value |
 |---|---|
-| Overall Accuracy | 91.67% |
+| Overall Accuracy | 96.67% |
 | RAG Accuracy | 100.00% |
 | SQL Accuracy | 100.00% |
-| HYBRID Accuracy | 75.00% |
-| Avg Latency | 2328.438 ms |
-| P95 Latency | 6791.440 ms |
-| LLM Call Rate | 25.00% |
-| Rule-based Skips | 45 / 60 |
+| HYBRID Accuracy | 90.00% |
+| Avg Latency | 1149.282 ms |
+| P95 Latency | 5796.996 ms |
+| LLM Call Rate | 8.33% |
+| Rule-based Skips | 55 / 60 |
 
 ## V1 vs V2 Comparison
 
 | Metric | V1 | V2 | Change |
 |---|---|---|---|
-| Overall Accuracy | 91.67% | 91.67% | +0.00% |
+| Overall Accuracy | 91.67% | 96.67% | +5.00% |
 | RAG Accuracy | 100.00% | 100.00% | +0.00% |
 | SQL Accuracy | 100.00% | 100.00% | +0.00% |
-| HYBRID Accuracy | 75.00% | 75.00% | +0.00% |
-| Avg Latency (ms) | 0.02 | 2328.44 | +2328.42 |
+| HYBRID Accuracy | 75.00% | 90.00% | +15.00% |
+| Avg Latency (ms) | 0.02 | 1149.28 | +1149.26 |
 
 ## V2 Efficiency Analysis
 
-- **LLM Calls:** 15 / 60 (25.0%)
-- **Rule-based Shortcuts:** 45 queries skipped LLM (direct rule-based)
-- **Efficiency Gain:** 75.0% reduction in LLM calls vs full LLM classification
+- **LLM Calls:** 5 / 60 (8.3%)
+- **Rule-based Shortcuts:** 55 queries skipped LLM (direct rule-based)
+- **Efficiency Gain:** 91.7% reduction in LLM calls vs full LLM classification
 
 ## Confusion Matrices
 
@@ -61,15 +61,12 @@
 |---|---|---|---|
 | RAG | 20 | 0 | 0 |
 | SQL | 0 | 20 | 0 |
-| HYBRID | 5 | 0 | 15 |
+| HYBRID | 2 | 0 | 18 |
 
 ## Error Analysis - V2 Misclassifications
 
 | Query | Ground Truth | Predicted | Confidence | Method |
 |---|---|---|---|---|
-| Vinamilk mô tả lợi thế cạnh tranh thế nào và danh ... | HYBRID | RAG | 0.99 | Rule-based |
-| Kế hoạch tăng trưởng của FPT là gì và nhân viên nà... | HYBRID | RAG | 0.99 | Rule-based |
-| Chính sách phát triển nhân sự của Vinamilk ra sao ... | HYBRID | RAG | 0.99 | Rule-based |
 | Masan có những sản phẩm chính nào và danh mục nào ... | HYBRID | RAG | 0.99 | Rule-based |
 | Kế hoạch mở rộng thị trường của FPT là gì và tính ... | HYBRID | RAG | 0.99 | Rule-based |
 
@@ -77,7 +74,7 @@
 
 ## Key Findings
 
-1. **Accuracy Improvement:** V2 achieves 91.67% vs V1's 91.67%
-2. **LLM Efficiency:** Only 25.0% of queries require LLM calls, reducing latency for 45 high-confidence queries
-3. **HYBRID Detection:** V2 correctly identifies HYBRID queries at 75.00% accuracy
-4. **Latency Trade-off:** V2 latency is 2328.4ms (LLM calls add 2328.4ms)
+1. **Accuracy Improvement:** V2 achieves 96.67% vs V1's 91.67%
+2. **LLM Efficiency:** Only 8.3% of queries require LLM calls, reducing latency for 55 high-confidence queries
+3. **HYBRID Detection:** V2 correctly identifies HYBRID queries at 90.00% accuracy
+4. **Latency Trade-off:** V2 latency is 1149.3ms (LLM calls add 1149.3ms)

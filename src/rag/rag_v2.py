@@ -272,8 +272,9 @@ class RAGPipelineV2:
             raise RuntimeError("Collection not loaded. Call load_chunks() first.")
 
         n_results = top_k or self.dense_top_k
+        expanded_query = self._expand_query(query)
         query_embedding = self.embeddings_model.encode(
-            query,
+            expanded_query,
             normalize_embeddings=True,
         ).tolist()
 
@@ -305,7 +306,8 @@ class RAGPipelineV2:
             raise RuntimeError("BM25 index not loaded. Call load_chunks() first.")
 
         n_results = top_k or self.sparse_top_k
-        query_tokens = query.lower().split()
+        expanded_query = self._expand_query(query)
+        query_tokens = expanded_query.lower().split()
         scores = self.bm25_index.get_scores(query_tokens)
 
         # Get top-k indices
@@ -327,7 +329,12 @@ class RAGPipelineV2:
 
         return retrieved
 
-    def _reciprocal_rank_fusion(self, dense_results: List[Dict], sparse_results: List[Dict]) -> List[Dict]:
+    def _reciprocal_rank_fusion(
+        self,
+        dense_results: List[Dict],
+        sparse_results: List[Dict],
+        final_top_k: Optional[int] = None,
+    ) -> List[Dict]:
         """Fuse rankings using Reciprocal Rank Fusion (RRF)."""
         # Build RRF scores: RRF(d) = sum over all systems of 1/(k + rank(d))
         rrf_scores = {}
@@ -350,7 +357,8 @@ class RAGPipelineV2:
         sorted_keys = sorted(rrf_scores.keys(), key=lambda k: rrf_scores[k], reverse=True)
         fused_results = []
 
-        for rank, key in enumerate(sorted_keys[: self.final_top_k]):
+        limit = final_top_k or self.final_top_k
+        for rank, key in enumerate(sorted_keys[:limit]):
             result = chunk_map[key].copy()
             result["rrf_score"] = rrf_scores[key]
             result["fusion_rank"] = rank + 1
@@ -358,12 +366,91 @@ class RAGPipelineV2:
 
         return fused_results
 
-    def retrieve_hybrid(self, query: str) -> List[Dict[str, Any]]:
+    def retrieve_hybrid(self, query: str, final_top_k: Optional[int] = None) -> List[Dict[str, Any]]:
         """Retrieve using hybrid search: dense + sparse with RRF fusion."""
         dense_results = self.retrieve_dense(query)
         sparse_results = self.retrieve_sparse(query)
-        fused_results = self._reciprocal_rank_fusion(dense_results, sparse_results)
-        return fused_results
+
+        mentioned_companies = self._detect_companies(query)
+        if mentioned_companies:
+            dense_filtered = self._filter_by_company(dense_results, mentioned_companies)
+            sparse_filtered = self._filter_by_company(sparse_results, mentioned_companies)
+            if dense_filtered and sparse_filtered:
+                dense_results = dense_filtered
+                sparse_results = sparse_filtered
+
+        fused_results = self._reciprocal_rank_fusion(
+            dense_results,
+            sparse_results,
+            final_top_k=final_top_k,
+        )
+
+        # Rerank only a small preselected pool to avoid over-aggressive reshuffling
+        target_k = final_top_k or self.final_top_k
+        preselect_k = min(len(fused_results), max(target_k, 5))
+        preselected = fused_results[:preselect_k]
+        reranked = self._rerank_answer_quality(query, preselected, mentioned_companies)
+        return reranked[:target_k]
+
+    @staticmethod
+    def _detect_companies(query: str) -> List[str]:
+        query_lower = query.lower()
+        companies = []
+        for company in ("fpt", "vinamilk", "masan"):
+            if company in query_lower:
+                companies.append(company)
+        return companies
+
+    @staticmethod
+    def _filter_by_company(results: List[Dict[str, Any]], companies: List[str]) -> List[Dict[str, Any]]:
+        filtered = [r for r in results if any(c in r.get("source", "").lower() for c in companies)]
+        return filtered
+
+    def _rerank_answer_quality(
+        self,
+        query: str,
+        fused_results: List[Dict[str, Any]],
+        companies: List[str],
+    ) -> List[Dict[str, Any]]:
+        if not fused_results:
+            return fused_results
+
+        # Use original query terms for rerank to reduce expansion-driven drift
+        query_lower = query.lower()
+        keywords = [t for t in query_lower.split() if len(t) > 3]
+
+        def score_chunk(chunk: Dict[str, Any]) -> float:
+            text = chunk.get("text", "").lower()
+            rrf_score = float(chunk.get("rrf_score", 0.0))
+            keyword_hits = sum(1 for kw in keywords if kw in text)
+            company_hits = sum(1 for c in companies if c in text)
+            length = len(text)
+            length_score = max(0.0, 1.0 - abs(length - 500) / 500)
+            return rrf_score + (0.03 * keyword_hits) + (0.05 * company_hits) + (0.01 * length_score)
+
+        return sorted(fused_results, key=score_chunk, reverse=True)
+
+    @staticmethod
+    def _expand_query(query: str) -> str:
+        """Lightweight synonym expansion for Vietnamese query gaps."""
+        expansions = {
+            "cơ hội": ["opportunity", "growth", "potential"],
+            "rủi ro": ["risk", "threat"],
+            "chiến lược": ["strategy", "plan"],
+            "kế hoạch": ["plan", "roadmap"],
+            "tăng trưởng": ["growth"],
+        }
+
+        query_lower = query.lower()
+        extra_terms = []
+        for key, synonyms in expansions.items():
+            if key in query_lower:
+                extra_terms.extend(synonyms)
+
+        if not extra_terms:
+            return query
+
+        return f"{query} {' '.join(extra_terms)}"
 
     def _has_sufficient_context(self, context_chunks: List[Dict[str, Any]]) -> bool:
         """Check if retrieved context is sufficient for reliable generation."""
@@ -372,11 +459,10 @@ class RAGPipelineV2:
 
         # For V2 hybrid search, check RRF scores for meaningful fusion signals
         if context_chunks and "rrf_score" in context_chunks[0]:
-            # RRF score threshold: need meaningful fusion across both dense and sparse
-            # Lower threshold = more conservative (better fail-closed behavior)
+            # Require a stronger fusion signal to avoid hallucination
             best_rrf_score = context_chunks[0].get("rrf_score", 0)
-            # RRF scores range 0-2 (1/60 to 2/60), so require at least 0.02 (decent fusion)
-            return best_rrf_score >= 0.015  # Stricter threshold for fail-closed
+            has_sufficient_length = any(len(chunk.get("text", "")) >= 200 for chunk in context_chunks)
+            return best_rrf_score >= 0.02 and has_sufficient_length
         
         # Fallback to distance-based threshold for dense-only
         if context_chunks and "distance" in context_chunks[0]:

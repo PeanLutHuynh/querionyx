@@ -7,7 +7,7 @@ Architecture:
 - Hybrid Execution Logic:
   - High confidence (rule-based): skip LLM call, use rule-based result
   - Ambiguous/Hybrid signals: call LLM for classification
-  - Confidence thresholds: >=0.7 single module, 0.4-0.7 HYBRID, <0.4 HYBRID fallback
+    - Confidence thresholds: >=0.8 single module, 0.4-0.7 HYBRID, <0.4 HYBRID fallback
 - Efficiency: Minimize LLM calls with rule-based pre-filtering
 """
 
@@ -252,30 +252,69 @@ class LLMRouterV2:
         parsed = self._parse_llm_output(output)
         return parsed
 
-    def _should_use_rule_based(self, question: str) -> bool:
+    @staticmethod
+    def _analyze_query(question: str) -> dict:
+        normalized = question.lower()
+        has_rag_signal = any(
+            kw in normalized
+            for kw in ["báo cáo", "tường trình", "mô tả", "chiến lược", "định hướng", "chính sách", "rủi ro"]
+        )
+        list_keywords = ["danh mục", "loại", "phân loại", "liệt kê", "hạng mục"]
+        has_list_signal = any(kw in normalized for kw in list_keywords)
+        has_sql_signal = any(
+            kw in normalized
+            for kw in ["bao nhiêu", "tổng", "top", "doanh thu", "lợi nhuận", "tăng trưởng", "số lượng"]
+        )
+        has_conjunction = any(token in normalized for token in [" và ", " and "])
+        has_number = any(ch.isdigit() for ch in normalized)
+        metric_keywords = [
+            "bao nhiêu",
+            "tổng",
+            "doanh thu",
+            "lợi nhuận",
+            "top",
+            "số lượng",
+            "count",
+            "revenue",
+            "profit",
+        ]
+        has_metric_signal = any(kw in normalized for kw in metric_keywords)
+        return {
+            "has_rag_signal": has_rag_signal,
+            "has_list_signal": has_list_signal,
+            "has_sql_signal": has_sql_signal,
+            "has_conjunction": has_conjunction,
+            "has_number": has_number,
+            "has_metric_signal": has_metric_signal,
+        }
+
+    def _should_force_llm(self, rule_intent: str, signals: dict) -> bool:
+        if rule_intent == "HYBRID":
+            return True
+
+        if signals["has_rag_signal"] and signals["has_sql_signal"]:
+            return True
+
+        if signals["has_conjunction"] and (signals["has_rag_signal"] or signals["has_sql_signal"]):
+            return True
+
+        return False
+
+    def _should_use_rule_based(self, rule_confidence: float, signals: dict, rule_intent: str) -> bool:
         """Determine if rule-based router is confident enough to skip LLM.
         
         Strategy: Call LLM more often to improve HYBRID detection.
         """
-        # Get rule-based classification
-        rule_result = self.rule_based_router.classify(question)
+        if self._should_force_llm(rule_intent, signals):
+            return False
 
-        # ALWAYS use LLM for HYBRID and potentially ambiguous queries
-        if rule_result.intent == "HYBRID":
-            return False
-        
-        # Also use LLM if question has mixed signals
-        normalized = question.lower()
-        has_rag_signal = any(kw in normalized for kw in ["báo cáo", "tường trình", "mô tả", "chiến lược"])
-        has_sql_signal = any(kw in normalized for kw in ["bao nhiêu", "tổng", "top", "doanh thu"])
-        
-        if has_rag_signal and has_sql_signal:
-            # Likely HYBRID - call LLM to verify
-            return False
+        # If no clear signal, skip LLM to keep call rate low
+        if not (signals["has_rag_signal"] or signals["has_sql_signal"] or signals["has_conjunction"]):
+            self.rule_based_skip_count += 1
+            return True
 
         # For clear single-intent, use rule-based only if very confident
-        # Lowered threshold from 0.8 to 0.65 for more LLM coverage
-        if rule_result.confidence >= 0.65:
+        if rule_confidence >= self.rule_based_confidence_threshold:
             self.rule_based_skip_count += 1
             return True
 
@@ -294,12 +333,29 @@ class LLMRouterV2:
             RouterResultV2 with intent, confidence, reasoning, and flags
         """
         # Strategy: Try rule-based first for efficiency
-        if self._should_use_rule_based(question):
+        rule_result = self.rule_based_router.classify(question)
+        signals = self._analyze_query(question)
+
+        # Hard rule: conjunction + metric/number OR RAG+list implies multi-intent
+        if signals["has_conjunction"] and (
+            signals["has_number"]
+            or signals["has_metric_signal"]
+            or (signals["has_rag_signal"] and signals["has_list_signal"])
+        ):
+            return RouterResultV2(
+                intent="HYBRID",
+                confidence=0.7,
+                reasoning="Conjunction detected; treating as HYBRID.",
+                llm_called=False,
+                rule_based_fallback=True,
+            )
+
+        if self._should_use_rule_based(rule_result.confidence, signals, rule_result.intent):
             # Rule-based is confident; use its result
-            rule_result = self.rule_based_router.classify(question)
+            adjusted_confidence = rule_result.confidence
             return RouterResultV2(
                 intent=rule_result.intent,
-                confidence=min(0.99, rule_result.confidence),  # Cap confidence
+                confidence=min(0.99, adjusted_confidence),  # Cap confidence
                 reasoning=rule_result.reasoning,
                 llm_called=False,
                 rule_based_fallback=True,

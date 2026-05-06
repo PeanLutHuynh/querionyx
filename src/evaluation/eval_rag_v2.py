@@ -183,6 +183,25 @@ def compute_context_recall(expected_answer: str, context_text: str, embedding_mo
     return recall
 
 
+def compute_topk_recall(expected_answer: str, chunks: List[Dict], embedding_model: SentenceTransformer) -> float:
+    """Top-k recall using max chunk similarity to avoid dilution from extra context."""
+    if not chunks or not expected_answer:
+        return 0.0
+
+    answer_embedding = embedding_model.encode(expected_answer, normalize_embeddings=True)
+    best = 0.0
+    for chunk in chunks:
+        text = chunk.get("text", "")
+        if not text:
+            continue
+        chunk_embedding = embedding_model.encode(text, normalize_embeddings=True)
+        similarity = util.pytorch_cos_sim(answer_embedding, chunk_embedding).item()
+        if similarity > best:
+            best = similarity
+
+    return best
+
+
 def compute_cross_entity_drift(query: str, retrieved_chunks: List[Dict], companies: List[str]) -> float:
     """
     Cross-Entity Drift: when a query mentions company X, how often do we retrieve chunks from other companies?
@@ -204,6 +223,34 @@ def compute_cross_entity_drift(query: str, retrieved_chunks: List[Dict], compani
 
     drift_rate = off_topic_count / len(retrieved_chunks) if retrieved_chunks else 0.0
     return drift_rate
+
+
+def fuse_rrf_with_k(dense_results: List[Dict], sparse_results: List[Dict], rrf_k: float, final_top_k: int) -> List[Dict]:
+    """Fuse rankings using RRF with an explicit top-k limit for evaluation."""
+    rrf_scores: Dict[tuple, float] = {}
+    chunk_map: Dict[tuple, Dict] = {}
+
+    for result in dense_results:
+        key = (result.get("source"), result.get("page"), result.get("text", "")[:50])
+        rrf_scores[key] = rrf_scores.get(key, 0.0) + 1 / (rrf_k + result["rank"])
+        chunk_map[key] = result
+
+    for result in sparse_results:
+        key = (result.get("source"), result.get("page"), result.get("text", "")[:50])
+        rrf_scores[key] = rrf_scores.get(key, 0.0) + 1 / (rrf_k + result["rank"])
+        if key not in chunk_map:
+            chunk_map[key] = result
+
+    sorted_keys = sorted(rrf_scores.keys(), key=lambda k: rrf_scores[k], reverse=True)
+    fused_results: List[Dict] = []
+
+    for rank, key in enumerate(sorted_keys[:final_top_k]):
+        result = chunk_map[key].copy()
+        result["rrf_score"] = rrf_scores[key]
+        result["fusion_rank"] = rank + 1
+        fused_results.append(result)
+
+    return fused_results
 
 
 def evaluate_rag_v2(rag_v2: RAGPipelineV2, queries: List[Dict], embedding_model: SentenceTransformer) -> Dict:
@@ -243,21 +290,15 @@ def evaluate_rag_v2(rag_v2: RAGPipelineV2, queries: List[Dict], embedding_model:
         results["context_recalls"].append(recall)
         results["cross_entity_drifts"].append(drift)
 
-        # Top-k coverage: need to retrieve more chunks for proper k=5 evaluation
-        # Since RAG V2 uses final_top_k=3, we evaluate at both k=3 and k=5
-        dense_k3 = rag_v2.retrieve_dense(question, top_k=3)
-        sparse_k3 = rag_v2.retrieve_sparse(question, top_k=3)
-        fused_k3 = rag_v2._reciprocal_rank_fusion(dense_k3, sparse_k3)
-        
-        dense_k5 = rag_v2.retrieve_dense(question, top_k=5)
-        sparse_k5 = rag_v2.retrieve_sparse(question, top_k=5)
-        fused_k5 = rag_v2._reciprocal_rank_fusion(dense_k5, sparse_k5)
+        # Top-k coverage: use the same production pipeline (filter + rerank)
+        top3_chunks = rag_v2.retrieve_hybrid(question, final_top_k=3)
+        top5_chunks = rag_v2.retrieve_hybrid(question, final_top_k=5)
 
-        top3_text = " ".join([chunk.get("text", "") for chunk in fused_k3[:3]])
-        top5_text = " ".join([chunk.get("text", "") for chunk in fused_k5[:5]])
+        top3_text = " ".join([chunk.get("text", "") for chunk in top3_chunks[:3]])
+        top5_text = " ".join([chunk.get("text", "") for chunk in top5_chunks[:5]])
 
-        top3_recall = compute_context_recall(expected_answer, top3_text, embedding_model) if top3_text else 0.0
-        top5_recall = compute_context_recall(expected_answer, top5_text, embedding_model) if top5_text else 0.0
+        top3_recall = compute_topk_recall(expected_answer, top3_chunks, embedding_model)
+        top5_recall = compute_topk_recall(expected_answer, top5_chunks, embedding_model)
 
         results["top_k_coverage_k3"].append(top3_recall)
         results["top_k_coverage_k5"].append(top5_recall)
@@ -289,8 +330,9 @@ def evaluate_hard_negatives(rag_v2: RAGPipelineV2, queries: List[Dict]) -> Dict:
         "predictions": [],
     }
 
-    for query_dict in queries:
+    for idx, query_dict in enumerate(queries, start=1):
         question = query_dict["question"]
+        print(f"[Hard Negative] {idx}/{len(queries)}: {question[:60]}...", flush=True)
         answer = rag_v2.answer(question, language="vi")
 
         # Improved fail-closed detection: check multiple markers
