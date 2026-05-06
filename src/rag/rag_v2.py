@@ -306,8 +306,8 @@ class RAGPipelineV2:
             raise RuntimeError("BM25 index not loaded. Call load_chunks() first.")
 
         n_results = top_k or self.sparse_top_k
-        expanded_query = self._expand_query(query)
-        query_tokens = expanded_query.lower().split()
+        # Keep sparse retrieval on the original query to reduce drift from expansion
+        query_tokens = query.lower().split()
         scores = self.bm25_index.get_scores(query_tokens)
 
         # Get top-k indices
@@ -403,7 +403,15 @@ class RAGPipelineV2:
 
     @staticmethod
     def _filter_by_company(results: List[Dict[str, Any]], companies: List[str]) -> List[Dict[str, Any]]:
-        filtered = [r for r in results if any(c in r.get("source", "").lower() for c in companies)]
+        filtered = [
+            r
+            for r in results
+            if any(
+                c in r.get("source", "").lower()
+                or c in r.get("text", "").lower()
+                for c in companies
+            )
+        ]
         return filtered
 
     def _rerank_answer_quality(
