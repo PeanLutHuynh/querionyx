@@ -12,3 +12,4 @@ rank-bm25
 ragas
 python-dotenv
 psutil
+python-multipart

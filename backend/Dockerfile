@@ -11,3 +11,4 @@ ENV QUERIONYX_MERGE_LLM_ENABLED=0
 ENV QUERIONYX_USE_LLM_ROUTER=0
 
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+

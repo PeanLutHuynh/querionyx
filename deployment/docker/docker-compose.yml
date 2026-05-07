@@ -1,10 +1,19 @@
 services:
-  querionyx:
+  backend:
     build:
       context: ../..
-      dockerfile: deployment/docker/Dockerfile
+      dockerfile: backend/Dockerfile
     env_file:
       - env.example
     ports:
-      - "8000:8000"
+      - "${PORT:-8000}:8000"
 
+  frontend:
+    build:
+      context: ../..
+      dockerfile: frontend/Dockerfile
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:${PORT:-8000}
+      PORT: 3000
+    ports:
+      - "3000:3000"

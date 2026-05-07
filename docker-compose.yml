@@ -1,4 +1,51 @@
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: querionyx-backend
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: ${PG_DB:-northwind}
+      PGUSER: ${PG_USER:-postgres}
+      PGPASSWORD: ${PG_PASSWORD:-postgres}
+      ENABLE_HEAVY_RAG: "0"
+      QUERIONYX_LIGHTWEIGHT_RAG: "1"
+      QUERIONYX_MERGE_LLM_ENABLED: "0"
+      QUERIONYX_USE_LLM_ROUTER: "0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - querionyx-net
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: querionyx-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:${PORT:-8000}
+      PORT: 3000
+    depends_on:
+      - backend
+    networks:
+      - querionyx-net
+    restart: unless-stopped
+
   postgres:
     image: postgres:15-alpine
     container_name: querionyx-postgres
@@ -24,7 +71,7 @@ services:
     image: chromadb/chroma:latest
     container_name: querionyx-chromadb
     ports:
-      - "8000:8000"
+      - "8002:8000"
     environment:
       IS_PERSISTENT: "True"
       CHROMA_DB_IMPL: "duckdb+parquet"

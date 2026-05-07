@@ -18,3 +18,6 @@ metrics/*/*
 !metrics/*/.gitkeep
 profiling/*/*
 !profiling/*/.gitkeep
+frontend/node_modules/
+frontend/.next/
+frontend/out/
