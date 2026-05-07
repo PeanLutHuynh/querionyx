@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import difflib
 import hashlib
 import json
 import os
@@ -15,7 +16,7 @@ from collections import Counter, OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from dotenv import load_dotenv
 
@@ -39,58 +40,119 @@ CHROMA_DB_PATH = PROJECT_ROOT / "data" / "chroma_db"
 class CacheEntry:
     value: Dict[str, Any]
     created_at: float
+    normalized_question: str
+    intent: str
+    router_type: str
+    tokens: Set[str]
+
+
+@dataclass
+class CacheLookupResult:
+    value: Dict[str, Any]
+    matched_by: str
+    score: float
 
 
 class TTLResponseCache:
     """Small LRU + TTL cache for repeat-query speedups."""
 
-    def __init__(self, max_size: int = 256, ttl_seconds: int = 1800):
+    def __init__(self, max_size: int = 256, ttl_seconds: int = 1800, fuzzy_threshold: float = 0.92, semantic_threshold: float = 0.82):
         self.max_size = max_size
         self.ttl_seconds = ttl_seconds
+        self.fuzzy_threshold = fuzzy_threshold
+        self.semantic_threshold = semantic_threshold
         self._items: OrderedDict[str, CacheEntry] = OrderedDict()
         self._aliases: Dict[str, str] = {}
         self._lock = Lock()
         self.hits = 0
         self.misses = 0
+        self.hit_by_intent: Counter[str] = Counter()
+        self.miss_by_intent: Counter[str] = Counter()
+        self.hit_by_matcher: Counter[str] = Counter()
 
     @staticmethod
     def normalize(question: str) -> str:
         return re.sub(r"\s+", " ", question.strip().lower())
 
     @classmethod
-    def alias_key(cls, question: str) -> str:
-        return hashlib.sha256(cls.normalize(question).encode("utf-8")).hexdigest()
+    def tokens(cls, question: str) -> Set[str]:
+        return {token for token in re.split(r"\W+", cls.normalize(question)) if len(token) >= 2}
 
     @classmethod
-    def cache_key(cls, question: str, intent: str) -> str:
-        normalized = cls.normalize(question)
-        payload = f"{question}|{intent}|{normalized}"
+    def alias_key(cls, question: str, intent: Optional[str] = None) -> str:
+        payload = cls.normalize(question)
+        if intent:
+            payload = f"{payload}|{intent}"
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
-    def get_by_question(self, question: str) -> Optional[Dict[str, Any]]:
-        alias = self.alias_key(question)
-        with self._lock:
-            key = self._aliases.get(alias)
-            if not key:
-                self.misses += 1
-                return None
-            entry = self._items.get(key)
-            if entry is None or self._expired(entry):
-                self._items.pop(key, None)
-                self._aliases.pop(alias, None)
-                self.misses += 1
-                return None
-            self._items.move_to_end(key)
-            self.hits += 1
-            return copy.deepcopy(entry.value)
+    @classmethod
+    def cache_key(cls, question: str, intent: str, router_type: str) -> str:
+        normalized = cls.normalize(question)
+        payload = f"{normalized}|{intent}|{router_type}"
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
-    def set(self, question: str, intent: str, value: Dict[str, Any]) -> str:
-        key = self.cache_key(question, intent)
-        alias = self.alias_key(question)
+    def get_by_question(self, question: str, intent: Optional[str] = None) -> Optional[CacheLookupResult]:
+        normalized = self.normalize(question)
+        alias = self.alias_key(question, intent=intent)
+        generic_alias = self.alias_key(question)
+        requested_tokens = self.tokens(question)
         with self._lock:
-            self._items[key] = CacheEntry(copy.deepcopy(value), time.time())
+            exact = self._lookup_alias(alias) or self._lookup_alias(generic_alias)
+            if exact is not None:
+                self._record_hit(exact.intent, "exact")
+                return CacheLookupResult(value=copy.deepcopy(exact.value), matched_by="exact", score=1.0)
+
+            best_entry: Optional[CacheEntry] = None
+            best_mode = ""
+            best_score = 0.0
+            for key, entry in list(self._items.items()):
+                if self._expired(entry):
+                    self._items.pop(key, None)
+                    continue
+                if intent and entry.intent != intent:
+                    continue
+                if entry.normalized_question == normalized:
+                    best_entry = entry
+                    best_mode = "normalized"
+                    best_score = 1.0
+                    break
+                fuzzy = difflib.SequenceMatcher(None, normalized, entry.normalized_question).ratio()
+                semantic = _jaccard(requested_tokens, entry.tokens)
+                if fuzzy >= self.fuzzy_threshold and fuzzy > best_score:
+                    best_entry = entry
+                    best_mode = "fuzzy"
+                    best_score = fuzzy
+                if semantic >= self.semantic_threshold and semantic > best_score:
+                    best_entry = entry
+                    best_mode = "semantic"
+                    best_score = semantic
+
+            if best_entry is None:
+                self.misses += 1
+                self.miss_by_intent[str(intent or "UNKNOWN")] += 1
+                return None
+            self.hits += 1
+            self.hit_by_intent[best_entry.intent] += 1
+            self.hit_by_matcher[best_mode] += 1
+            return CacheLookupResult(value=copy.deepcopy(best_entry.value), matched_by=best_mode, score=round(best_score, 4))
+
+    def set(self, question: str, intent: str, router_type: str, value: Dict[str, Any]) -> str:
+        key = self.cache_key(question, intent, router_type)
+        alias = self.alias_key(question, intent=intent)
+        generic_alias = self.alias_key(question)
+        normalized = self.normalize(question)
+        with self._lock:
+            self._items[key] = CacheEntry(
+                value=copy.deepcopy(value),
+                created_at=time.time(),
+                normalized_question=normalized,
+                intent=intent,
+                router_type=router_type,
+                tokens=self.tokens(question),
+            )
             self._items.move_to_end(key)
             self._aliases[alias] = key
+            self._aliases[generic_alias] = key
             while len(self._items) > self.max_size:
                 old_key, _ = self._items.popitem(last=False)
                 stale_aliases = [alias_key for alias_key, item_key in self._aliases.items() if item_key == old_key]
@@ -100,6 +162,13 @@ class TTLResponseCache:
 
     def stats(self) -> Dict[str, Any]:
         total = self.hits + self.misses
+        intents = sorted(set(self.hit_by_intent) | set(self.miss_by_intent))
+        hit_rate_by_intent = {}
+        for intent in intents:
+            hits = self.hit_by_intent.get(intent, 0)
+            misses = self.miss_by_intent.get(intent, 0)
+            denom = hits + misses
+            hit_rate_by_intent[intent] = round(hits / denom, 4) if denom else 0.0
         return {
             "size": len(self._items),
             "max_size": self.max_size,
@@ -107,10 +176,31 @@ class TTLResponseCache:
             "hits": self.hits,
             "misses": self.misses,
             "hit_rate": round(self.hits / total, 4) if total else 0.0,
+            "hit_by_intent": dict(self.hit_by_intent),
+            "miss_by_intent": dict(self.miss_by_intent),
+            "hit_rate_by_intent": hit_rate_by_intent,
+            "hit_by_matcher": dict(self.hit_by_matcher),
         }
 
     def _expired(self, entry: CacheEntry) -> bool:
         return (time.time() - entry.created_at) > self.ttl_seconds
+
+    def _lookup_alias(self, alias: str) -> Optional[CacheEntry]:
+        key = self._aliases.get(alias)
+        if not key:
+            return None
+        entry = self._items.get(key)
+        if entry is None or self._expired(entry):
+            self._items.pop(key, None)
+            self._aliases.pop(alias, None)
+            return None
+        self._items.move_to_end(key)
+        return entry
+
+    def _record_hit(self, intent: str, mode: str) -> None:
+        self.hits += 1
+        self.hit_by_intent[intent] += 1
+        self.hit_by_matcher[mode] += 1
 
 
 class ServiceMetrics:
@@ -124,6 +214,14 @@ class ServiceMetrics:
         self.router_accuracy: Optional[float] = None
         self.misrouting_rate: Optional[float] = None
         self.confidence_calibration_error: Optional[float] = None
+        self.router_confusion_matrix: Dict[str, Dict[str, int]] = {}
+        self.router_per_class: Dict[str, Dict[str, float]] = {}
+        self.router_error_breakdown: Dict[str, int] = {}
+        self.hybrid_modes: Counter[str] = Counter()
+        self.hybrid_parallel_efficiencies: List[float] = []
+        self.hybrid_parallel_gains: List[float] = []
+        self.hybrid_bottlenecks: Counter[str] = Counter()
+        self.failure_taxonomy: Counter[str] = Counter()
         self._lock = Lock()
 
     def record(self, response: Dict[str, Any]) -> None:
@@ -138,11 +236,27 @@ class ServiceMetrics:
             self.intent_counts[str(response.get("intent") or "UNKNOWN")] += 1
             for branch in response.get("branches") or []:
                 self.branch_counts[str(branch)] += 1
+            hybrid_mode = (response.get("raw") or {}).get("hybrid", {}).get("contribution")
+            if hybrid_mode:
+                self.hybrid_modes[str(hybrid_mode)] += 1
+            hybrid_metrics = (response.get("raw") or {}).get("hybrid_metrics") or {}
+            if hybrid_metrics.get("parallel_efficiency") is not None:
+                self.hybrid_parallel_efficiencies.append(float(hybrid_metrics["parallel_efficiency"]))
+            if hybrid_metrics.get("parallel_gain_ms") is not None:
+                self.hybrid_parallel_gains.append(float(hybrid_metrics["parallel_gain_ms"]))
+            if hybrid_metrics.get("bottleneck"):
+                self.hybrid_bottlenecks[str(hybrid_metrics["bottleneck"])] += 1
+            for failure in ((response.get("raw") or {}).get("failures") or []):
+                if failure.get("failure_type"):
+                    self.failure_taxonomy[str(failure["failure_type"])] += 1
 
     def update_router_stress(self, summary: Dict[str, Any]) -> None:
         self.router_accuracy = summary.get("router_accuracy")
         self.misrouting_rate = summary.get("misrouting_rate")
         self.confidence_calibration_error = summary.get("confidence_calibration_error")
+        self.router_confusion_matrix = summary.get("confusion_matrix") or {}
+        self.router_per_class = summary.get("per_class") or {}
+        self.router_error_breakdown = summary.get("misrouting_breakdown") or {}
 
     def snapshot(self, cache_stats: Dict[str, Any]) -> Dict[str, Any]:
         latency = latency_summary(self.latencies)
@@ -160,9 +274,17 @@ class ServiceMetrics:
             "fallback_rate": round(self.fallback_count / self.request_count, 4) if self.request_count else 0.0,
             "intent_counts": dict(self.intent_counts),
             "hybrid_breakdown": dict(self.branch_counts),
+            "hybrid_modes": dict(self.hybrid_modes),
+            "hybrid_parallel_efficiency": _avg(self.hybrid_parallel_efficiencies),
+            "hybrid_parallel_gain_ms": _avg(self.hybrid_parallel_gains),
+            "hybrid_bottlenecks": dict(self.hybrid_bottlenecks),
             "router_accuracy": self.router_accuracy,
             "misrouting_rate": self.misrouting_rate,
             "confidence_calibration_error": self.confidence_calibration_error,
+            "router_confusion_matrix": self.router_confusion_matrix,
+            "router_per_class": self.router_per_class,
+            "router_error_breakdown": self.router_error_breakdown,
+            "failure_taxonomy": dict(self.failure_taxonomy),
             "resource_snapshot": process_resource_snapshot(),
         }
 
@@ -177,23 +299,29 @@ class QueryService:
         self.cache = TTLResponseCache(
             max_size=int(os.getenv("QUERIONYX_RESPONSE_CACHE_SIZE", "256")),
             ttl_seconds=int(os.getenv("QUERIONYX_RESPONSE_CACHE_TTL", "1800")),
+            fuzzy_threshold=float(os.getenv("QUERIONYX_CACHE_FUZZY_THRESHOLD", "0.92")),
+            semantic_threshold=float(os.getenv("QUERIONYX_CACHE_SEMANTIC_THRESHOLD", "0.82")),
         )
         self.metrics = ServiceMetrics()
         self.pipeline_version = "querionyx-v3-week7"
+        self._warm_cache()
 
     async def query(self, question: str, debug: bool = False) -> Dict[str, Any]:
         trace_id = str(uuid.uuid4())
         started = time.perf_counter()
-        cached = self.cache.get_by_question(question)
+        route_started = time.perf_counter()
+        route_hint = await asyncio.to_thread(self.pipeline.router.classify, question)
+        route_hint_ms = round((time.perf_counter() - route_started) * 1000, 2)
+        cached = self.cache.get_by_question(question, intent=str(route_hint.get("intent") or "UNKNOWN"))
         if cached is not None:
-            response = self._prepare_cached_response(cached, trace_id, started, debug)
+            response = self._prepare_cached_response(cached, trace_id, started, debug, route_hint_ms=route_hint_ms)
             self.metrics.record(response)
             self._log_request(question, response)
             return response
 
-        output = await self._execute(question)
+        output = await self._execute(question, route_hint=route_hint, route_hint_ms=route_hint_ms)
         response = self._serialize_response(output, trace_id, cache_hit=False, debug=debug)
-        self.cache.set(question, str(response.get("intent") or "UNKNOWN"), response)
+        self.cache.set(question, str(response.get("intent") or "UNKNOWN"), str(response.get("router_type_used") or "unknown"), response)
         self.metrics.record(response)
         self._log_request(question, response)
         return response
@@ -201,19 +329,22 @@ class QueryService:
     async def stream_query(self, question: str, debug: bool = False):
         started = time.perf_counter()
         trace_id = str(uuid.uuid4())
-        cached = self.cache.get_by_question(question)
+        route_started = time.perf_counter()
+        route_hint = await asyncio.to_thread(self.pipeline.router.classify, question)
+        route_hint_ms = round((time.perf_counter() - route_started) * 1000, 2)
+        cached = self.cache.get_by_question(question, intent=str(route_hint.get("intent") or "UNKNOWN"))
         if cached is not None:
-            response = self._prepare_cached_response(cached, trace_id, started, debug)
+            response = self._prepare_cached_response(cached, trace_id, started, debug, route_hint_ms=route_hint_ms)
             self.metrics.record(response)
             self._log_request(question, response)
-            yield self._sse("meta", {"trace_id": trace_id, "cache_hit": True})
+            yield self._sse("meta", {"trace_id": trace_id, "cache_hit": True, "cache_match": cached.matched_by, "cache_score": cached.score})
             yield self._sse("result", response)
             return
 
         yield self._sse("meta", {"trace_id": trace_id, "cache_hit": False})
-        output = await self._execute(question)
+        output = await self._execute(question, route_hint=route_hint, route_hint_ms=route_hint_ms)
         response = self._serialize_response(output, trace_id, cache_hit=False, debug=debug)
-        self.cache.set(question, str(response.get("intent") or "UNKNOWN"), response)
+        self.cache.set(question, str(response.get("intent") or "UNKNOWN"), str(response.get("router_type_used") or "unknown"), response)
         self.metrics.record(response)
         self._log_request(question, response)
         yield self._sse("result", response)
@@ -250,21 +381,24 @@ class QueryService:
             "embedding_enabled": bool(chroma_inserted),
         }
 
-    def _prepare_cached_response(self, cached: Dict[str, Any], trace_id: str, started: float, debug: bool) -> Dict[str, Any]:
-        response = copy.deepcopy(cached)
+    def _prepare_cached_response(self, cached: CacheLookupResult, trace_id: str, started: float, debug: bool, route_hint_ms: float) -> Dict[str, Any]:
+        response = copy.deepcopy(cached.value)
         response["cache_hit"] = True
         response["trace_id"] = trace_id
         response["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
         response.setdefault("timings", {})
+        response["timings"]["router_ms"] = route_hint_ms
         response["timings"]["cache_ms"] = response["latency_ms"]
+        response["timings"]["cache_match_score"] = cached.score
+        response["timings"]["cache_match_type"] = cached.matched_by
         if not debug:
             response.pop("raw", None)
         return response
 
-    async def _execute(self, question: str) -> Dict[str, Any]:
+    async def _execute(self, question: str, route_hint: Optional[Dict[str, Any]] = None, route_hint_ms: Optional[float] = None) -> Dict[str, Any]:
         route_started = time.perf_counter()
-        route = await asyncio.to_thread(self.pipeline.router.classify, question)
-        route_ms = round((time.perf_counter() - route_started) * 1000, 2)
+        route = route_hint or await asyncio.to_thread(self.pipeline.router.classify, question)
+        route_ms = round((time.perf_counter() - route_started) * 1000, 2) if route_hint is None else (route_hint_ms or 0.0)
         intent = str(route.get("intent") or "RAG").upper()
         forced_mode = (self.runtime_config.force_mode or "").upper()
         if forced_mode in {"SQL", "RAG", "HYBRID"}:
@@ -364,6 +498,11 @@ class QueryService:
         latency_ms = round((time.perf_counter() - total_started) * 1000, 2)
         fallback_used = contribution in {"rag_only", "merge_timeout", "both_fail"}
         fallback_used = fallback_used or (sql_ok and not rag_ok)
+        sql_ms = _timing(sql_result, "total_ms")
+        rag_ms = _timing(rag_result, "total_ms")
+        parallel_efficiency = _parallel_efficiency(sql_ms, rag_ms)
+        parallel_gain_ms = _parallel_gain(sql_ms, rag_ms, latency_ms)
+        bottleneck = _hybrid_bottleneck(sql_ms, rag_ms)
         timeout_triggered = False
         return {
             "answer": answer,
@@ -384,8 +523,8 @@ class QueryService:
             "cache_hit": False,
             "timings": {
                 "router_latency_ms": route_ms,
-                "sql_latency_ms": _timing(sql_result, "total_ms"),
-                "rag_latency_ms": _timing(rag_result, "total_ms"),
+                "sql_latency_ms": sql_ms,
+                "rag_latency_ms": rag_ms,
                 "merge_latency_ms": merge_ms,
                 "formatting_latency_ms": 0.0,
             },
@@ -401,7 +540,16 @@ class QueryService:
                         "total_ms": latency_ms,
                         "merge_ms": merge_ms,
                     },
-                }
+                },
+                "hybrid_metrics": {
+                    "sql_ms": sql_ms,
+                    "rag_ms": rag_ms,
+                    "merge_ms": merge_ms,
+                    "parallel_gain_ms": parallel_gain_ms,
+                    "parallel_efficiency": parallel_efficiency,
+                    "bottleneck": bottleneck,
+                    "hybrid_mode": contribution,
+                },
             },
         }
 
@@ -451,6 +599,8 @@ class QueryService:
             "timeout_triggered": response.get("timeout_triggered"),
             "fallback_used": response.get("fallback_used"),
             "llm_calls": response.get("llm_call_count"),
+            "hybrid_mode": ((response.get("raw") or {}).get("hybrid") or {}).get("contribution"),
+            "failure_types": [failure.get("failure_type") for failure in ((response.get("raw") or {}).get("failures") or []) if failure.get("failure_type")],
         }
         append_jsonl(QUERY_LOG_DIR / "api_requests.jsonl", row)
         for failure in ((response.get("raw") or {}).get("failures") or []):
@@ -478,6 +628,26 @@ class QueryService:
             return
         try:
             self.metrics.update_router_stress(json.loads(path.read_text(encoding="utf-8")))
+        except Exception:
+            return
+
+    def _warm_cache(self) -> None:
+        warm_count = int(os.getenv("QUERIONYX_CACHE_WARM_COUNT", "0"))
+        if warm_count <= 0:
+            return
+        dataset_path = PROJECT_ROOT / "benchmarks" / "datasets" / "eval_90_queries.json"
+        if not dataset_path.exists():
+            return
+        try:
+            payload = json.loads(dataset_path.read_text(encoding="utf-8-sig"))
+            queries = payload.get("queries", payload)[:warm_count]
+            for item in queries:
+                question = str(item.get("question") or "").strip()
+                if not question:
+                    continue
+                output = self.pipeline.query(question)
+                response = self._serialize_response(output, "warm-cache", cache_hit=False, debug=False)
+                self.cache.set(question, str(response.get("intent") or "UNKNOWN"), str(response.get("router_type_used") or "warm_cache"), response)
         except Exception:
             return
 
@@ -559,3 +729,43 @@ def _timing(payload: Dict[str, Any], key: str) -> Optional[float]:
     if isinstance(timings, dict):
         return timings.get(key)
     return None
+
+
+def _jaccard(left: Set[str], right: Set[str]) -> float:
+    if not left or not right:
+        return 0.0
+    union = left | right
+    if not union:
+        return 0.0
+    return len(left & right) / len(union)
+
+
+def _avg(values: List[float]) -> Optional[float]:
+    if not values:
+        return None
+    return round(sum(values) / len(values), 4)
+
+
+def _parallel_efficiency(sql_ms: Optional[float], rag_ms: Optional[float]) -> Optional[float]:
+    if sql_ms is None or rag_ms is None or (sql_ms + rag_ms) <= 0:
+        return None
+    return round(max(sql_ms, rag_ms) / (sql_ms + rag_ms), 4)
+
+
+def _parallel_gain(sql_ms: Optional[float], rag_ms: Optional[float], actual_ms: float) -> Optional[float]:
+    if sql_ms is None or rag_ms is None:
+        return None
+    return round((sql_ms + rag_ms) - actual_ms, 2)
+
+
+def _hybrid_bottleneck(sql_ms: Optional[float], rag_ms: Optional[float]) -> Optional[str]:
+    if sql_ms is None or rag_ms is None:
+        return None
+    total = sql_ms + rag_ms
+    if total <= 0:
+        return None
+    if rag_ms / total >= 0.8:
+        return "rag_dominant"
+    if sql_ms / total >= 0.8:
+        return "sql_dominant"
+    return "balanced"

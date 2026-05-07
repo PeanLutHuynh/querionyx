@@ -54,6 +54,34 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
         )
     total = len(rows)
     wrong = [row for row in rows if not row["correct"]]
+    labels = ["SQL", "RAG", "HYBRID"]
+    confusion_matrix = {label: {other: 0 for other in labels} for label in labels}
+    for row in rows:
+        expected = row["expected_intent"]
+        actual = row["actual_intent"]
+        if expected in confusion_matrix and actual in confusion_matrix[expected]:
+            confusion_matrix[expected][actual] += 1
+
+    per_class = {}
+    for label in labels:
+        tp = confusion_matrix[label][label]
+        fp = sum(confusion_matrix[other][label] for other in labels if other != label)
+        fn = sum(confusion_matrix[label][other] for other in labels if other != label)
+        precision = tp / (tp + fp) if (tp + fp) else 0.0
+        recall = tp / (tp + fn) if (tp + fn) else 0.0
+        per_class[label] = {
+            "precision": round(precision, 4),
+            "recall": round(recall, 4),
+        }
+
+    misrouting_breakdown = {
+        "sql_to_rag": sum(1 for row in wrong if row["expected_intent"] == "SQL" and row["actual_intent"] == "RAG"),
+        "sql_to_hybrid": sum(1 for row in wrong if row["expected_intent"] == "SQL" and row["actual_intent"] == "HYBRID"),
+        "rag_to_sql": sum(1 for row in wrong if row["expected_intent"] == "RAG" and row["actual_intent"] == "SQL"),
+        "rag_to_hybrid": sum(1 for row in wrong if row["expected_intent"] == "RAG" and row["actual_intent"] == "HYBRID"),
+        "hybrid_to_sql_collapse": sum(1 for row in wrong if row["expected_intent"] == "HYBRID" and row["actual_intent"] == "SQL"),
+        "hybrid_to_rag_collapse": sum(1 for row in wrong if row["expected_intent"] == "HYBRID" and row["actual_intent"] == "RAG"),
+    }
     summary = {
         "dataset": str(dataset),
         "query_count": total,
@@ -61,6 +89,9 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
         "misrouting_rate": round(len(wrong) / total, 4) if total else 0.0,
         "confidence_calibration_error": round(sum(row["calibration_error"] for row in rows) / total, 4) if total else 0.0,
         "latency": latency_summary(row["latency_ms"] for row in rows),
+        "confusion_matrix": confusion_matrix,
+        "per_class": per_class,
+        "misrouting_breakdown": misrouting_breakdown,
         "misrouting_cases": wrong,
     }
     write_json(output_dir / "router_stress_summary.json", summary)
@@ -72,7 +103,7 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run router stress test.")
-    parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks" / "datasets" / "router_ambiguity_cases.json")
+    parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks" / "datasets" / "router_stress_100.json")
     parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "reports" / "experiment_runs" / "week7_router_stress")
     return parser.parse_args()
 

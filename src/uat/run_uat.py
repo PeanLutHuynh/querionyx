@@ -96,6 +96,31 @@ def _summary(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     cache_hits = [row for row in rows if row["cache_hit"] is True]
     timeouts = [row for row in rows if row["timeout_triggered"] is True]
     latency = latency_summary(row["latency_ms"] for row in rows if row.get("latency_ms") is not None)
+    base_rows = [row for row in rows if not row["repeated"]]
+    repeated_rows = [row for row in rows if row["repeated"]]
+    by_intent = {}
+    for intent in ["SQL", "RAG", "HYBRID"]:
+        selected = [row for row in base_rows if str(row.get("expected_intent") or "").upper() == intent]
+        by_intent[intent] = {
+            "query_count": len(selected),
+            "success_rate": round(sum(1 for row in selected if row["http_status"] == 200 and row["answer_nonempty"]) / len(selected), 4) if selected else 0.0,
+            "latency": latency_summary(row["latency_ms"] for row in selected if row.get("latency_ms") is not None),
+            "cache_hit_rate": round(sum(1 for row in selected if row["cache_hit"] is True) / len(selected), 4) if selected else 0.0,
+        }
+
+    failures = {
+        "timeout": sum(1 for row in rows if row["timeout_triggered"] is True),
+        "empty_answer": sum(1 for row in rows if not row["answer_nonempty"]),
+        "wrong_intent": sum(
+            1
+            for row in base_rows
+            if str(row.get("expected_intent") or "").upper() and str(row.get("intent") or "").upper() != str(row.get("expected_intent") or "").upper()
+        ),
+        "retrieval_or_execution_failure": sum(1 for row in rows if row["error"]),
+    }
+
+    first_run = latency_summary(row["latency_ms"] for row in base_rows if row.get("latency_ms") is not None)
+    cached_run = latency_summary(row["latency_ms"] for row in repeated_rows if row.get("latency_ms") is not None)
     return {
         "total_requests": total,
         "non_crash_rate": round(len(noncrash) / total, 4) if total else 0.0,
@@ -103,6 +128,10 @@ def _summary(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "timeout_rate": round(len(timeouts) / total, 4) if total else 0.0,
         "cache_hit_rate": round(len(cache_hits) / total, 4) if total else 0.0,
         "latency": latency,
+        "first_run_latency": first_run,
+        "cached_run_latency": cached_run,
+        "performance_by_intent": by_intent,
+        "failure_taxonomy": failures,
     }
 
 
@@ -121,7 +150,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks" / "datasets" / "eval_90_queries.json")
     parser.add_argument("--endpoint", default="http://127.0.0.1:8000/query")
     parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "reports" / "experiment_runs" / "week7_uat_90")
-    parser.add_argument("--repeat-cache-check", type=int, default=10)
+    parser.add_argument("--repeat-cache-check", type=int, default=30)
     return parser.parse_args()
 
 
@@ -129,4 +158,3 @@ if __name__ == "__main__":
     args = parse_args()
     result = run_uat(args.dataset, args.endpoint, args.output_dir, args.repeat_cache_check)
     print(json.dumps(result, ensure_ascii=False, indent=2))
-
