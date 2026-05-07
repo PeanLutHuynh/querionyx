@@ -12,6 +12,10 @@ from typing import Any, Dict, List, Optional
 
 from src.hybrid.hybrid_handler import HybridQueryHandler
 from src.router.rule_based_router import RuleBasedRouter
+from src.runtime.config import RuntimeConfig
+from src.runtime.fallbacks import INSUFFICIENT_EVIDENCE, standardized_failure_response
+from src.runtime.schemas import FailureLog, StandardResponse, now_iso
+from src.runtime.timeouts import StageTimeoutError, run_with_timeout
 from src.sql.text_to_sql import TextToSQLPipeline
 
 
@@ -136,14 +140,28 @@ class QueryonixPipelineV3:
         sql_pipeline: Optional[TextToSQLPipeline] = None,
         hybrid_handler: Optional[HybridQueryHandler] = None,
         max_total_latency_ms: int = 15000,
+        runtime_config: Optional[RuntimeConfig] = None,
     ):
-        self.router = router or AdaptiveRouter(use_llm_for_ambiguous=False)
-        self.sql_pipeline = sql_pipeline or TextToSQLPipeline(max_result_rows=5)
+        self.runtime_config = runtime_config or RuntimeConfig.from_env()
+        self.router = router or AdaptiveRouter(
+            use_llm_for_ambiguous=self.runtime_config.use_llm_router,
+            llm_timeout_seconds=max(1, self.runtime_config.timeouts.router_llm_ms // 1000),
+        )
+        self.sql_pipeline = sql_pipeline or LazyTextToSQLPipeline(max_result_rows=5)
+        if not self.runtime_config.cache_enabled:
+            if hasattr(self.sql_pipeline, "disable_cache"):
+                self.sql_pipeline.disable_cache()
+            else:
+                self.sql_pipeline._sql_cache = {}
+                self.sql_pipeline._save_sql_cache = lambda: None  # type: ignore[method-assign]
         self.hybrid_handler = hybrid_handler or HybridQueryHandler(
             rag_pipeline=rag_pipeline,
             sql_pipeline=self.sql_pipeline,
+            timeout_per_module_ms=self.runtime_config.timeouts.hybrid_total_ms,
+            merge_timeout_ms=self.runtime_config.timeouts.merge_llm_ms,
+            runtime_config=self.runtime_config,
         )
-        self.max_total_latency_ms = max_total_latency_ms
+        self.max_total_latency_ms = min(max_total_latency_ms, self.runtime_config.timeouts.end_to_end_ms)
 
     @staticmethod
     def _format_sql_answer(sql_output: Dict[str, Any]) -> str:
@@ -171,26 +189,176 @@ class QueryonixPipelineV3:
 
     def query(self, question: str) -> Dict[str, Any]:
         started = time.perf_counter()
-        route = self.router.classify(question)
+        timings: Dict[str, Optional[float]] = {
+            "router_latency_ms": None,
+            "sql_latency_ms": None,
+            "rag_latency_ms": None,
+            "merge_latency_ms": None,
+            "formatting_latency_ms": None,
+        }
+        failures: List[Dict[str, Any]] = []
+        timeout_triggered = False
+        fallback_used = False
+        sql_success: Optional[bool] = None
+        rag_success: Optional[bool] = None
+        merge_used = False
+        cache_hit: Optional[bool] = None
+
+        def record_failure(
+            failure_type: str,
+            stage: str,
+            exc: Exception | str,
+            recovery_strategy: str,
+            latency_impact_ms: float,
+            resolved: bool = True,
+        ) -> None:
+            failures.append(
+                FailureLog(
+                    failure_type=failure_type,
+                    stage=stage,
+                    query=question,
+                    exception=str(exc)[:500],
+                    recovery_strategy=recovery_strategy,
+                    latency_impact_ms=round(latency_impact_ms, 2),
+                    resolved=resolved,
+                    timestamp=now_iso(),
+                ).to_dict()
+            )
+
+        router_started = time.perf_counter()
+        try:
+            route = run_with_timeout(
+                lambda: self.router.classify(question),
+                self.runtime_config.timeouts.router_llm_ms if self.runtime_config.use_llm_router else self.runtime_config.timeouts.deterministic_router_ms,
+                "router",
+            )
+        except StageTimeoutError as exc:
+            timeout_triggered = True
+            fallback_used = True
+            timings["router_latency_ms"] = round((time.perf_counter() - router_started) * 1000, 2)
+            record_failure("timeout", "router", exc, "standardized_failure_response", timings["router_latency_ms"] or 0.0)
+            response = standardized_failure_response(question, str(exc))
+            response["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
+            response["timeout_triggered"] = True
+            response["raw"]["failures"] = failures
+            return response
+        except Exception as exc:
+            fallback_used = True
+            timings["router_latency_ms"] = round((time.perf_counter() - router_started) * 1000, 2)
+            record_failure("unexpected_exception", "router", exc, "standardized_failure_response", timings["router_latency_ms"] or 0.0)
+            response = standardized_failure_response(question, str(exc))
+            response["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
+            response["raw"]["failures"] = failures
+            return response
+        timings["router_latency_ms"] = round((time.perf_counter() - router_started) * 1000, 2)
+
         intent = route["intent"]
+        forced_mode = (self.runtime_config.force_mode or "").upper()
+        if forced_mode in {"SQL", "RAG", "HYBRID"}:
+            intent = forced_mode
+        if intent == "HYBRID" and not self.runtime_config.hybrid_enabled:
+            intent = "SQL" if HybridQueryHandler._is_numeric_or_tabular(question) else "RAG"
+            fallback_used = True
+        if float(route.get("confidence") or 0.0) < 0.65:
+            record_failure("router_ambiguous", "router", "low router confidence", "used_selected_or_forced_route", timings["router_latency_ms"] or 0.0)
+
         llm_call_count = 1 if route.get("llm_called") else 0
         branches: List[str] = []
 
         if intent == "SQL":
-            sql_output = self._run_sql(question)
+            branch_started = time.perf_counter()
+            try:
+                sql_output = run_with_timeout(
+                    lambda: self._run_sql(question),
+                    self.runtime_config.timeouts.sql_execution_ms,
+                    "sql_execution",
+                )
+            except StageTimeoutError as exc:
+                timeout_triggered = True
+                fallback_used = True
+                sql_output = {"rows": [], "error": str(exc), "timings": {}}
+                record_failure("timeout", "sql_execution", exc, "insufficient_evidence_response", self.runtime_config.timeouts.sql_execution_ms)
+            except Exception as exc:
+                fallback_used = True
+                sql_output = {"rows": [], "error": str(exc), "timings": {}}
+                record_failure("sql_execution_error", "sql_execution", exc, "insufficient_evidence_response", 0.0)
+            timings["sql_latency_ms"] = round((time.perf_counter() - branch_started) * 1000, 2)
             branches.append("sql")
-            answer = self._format_sql_answer(sql_output)
-            sources = ["SQL:" + ",".join(sql_output.get("relevant_tables", []))]
+            sql_success = sql_output.get("error") is None
+            cache_hit = (sql_output.get("timings") or {}).get("sql_cache_hit") == 1.0
+            formatting_started = time.perf_counter()
+            answer = self._format_sql_answer(sql_output) if sql_success else INSUFFICIENT_EVIDENCE
+            timings["formatting_latency_ms"] = round((time.perf_counter() - formatting_started) * 1000, 2)
+            sources = ["SQL:" + ",".join(sql_output.get("relevant_tables", []))] if sql_success else []
             raw = {"sql": sql_output}
         elif intent == "RAG":
-            rag_output = self._run_rag(question)
+            branch_started = time.perf_counter()
+            try:
+                rag_output = run_with_timeout(
+                    lambda: self._run_rag(question),
+                    self.runtime_config.timeouts.lightweight_rag_ms if self.runtime_config.lightweight_rag else self.runtime_config.timeouts.full_rag_ms,
+                    "rag_retrieval",
+                )
+            except StageTimeoutError as exc:
+                timeout_triggered = True
+                fallback_used = True
+                rag_output = {"answer": "", "sources": [], "error": str(exc)}
+                record_failure("timeout", "rag_retrieval", exc, "insufficient_evidence_response", exc.timeout_ms)
+            except Exception as exc:
+                fallback_used = True
+                rag_output = {"answer": "", "sources": [], "error": str(exc)}
+                record_failure("unexpected_exception", "rag_retrieval", exc, "insufficient_evidence_response", 0.0)
+            timings["rag_latency_ms"] = round((time.perf_counter() - branch_started) * 1000, 2)
             branches.append("rag")
-            answer = rag_output.get("answer") or "Tôi không có đủ thông tin để trả lời câu hỏi này."
+            answer = rag_output.get("answer") or INSUFFICIENT_EVIDENCE
             sources = rag_output.get("sources", [])
+            rag_success = bool(rag_output.get("answer")) and not rag_output.get("error")
+            if not rag_success and not timeout_triggered:
+                fallback_used = True
+                record_failure("empty_retrieval", "rag_retrieval", rag_output.get("error") or "empty answer", "insufficient_evidence_response", timings["rag_latency_ms"] or 0.0)
             raw = {"rag": rag_output}
             llm_call_count += rag_output.get("llm_calls", 0)
         else:
-            hybrid_output = self.hybrid_handler.query(question, router_intent="HYBRID")
+            branch_started = time.perf_counter()
+            try:
+                hybrid_output = run_with_timeout(
+                    lambda: self.hybrid_handler.query(question, router_intent="HYBRID"),
+                    self.runtime_config.timeouts.hybrid_total_ms,
+                    "hybrid_total",
+                )
+            except StageTimeoutError as exc:
+                timeout_triggered = True
+                fallback_used = True
+                hybrid_output = {
+                    "answer": INSUFFICIENT_EVIDENCE,
+                    "sources": [],
+                    "rag_result": {},
+                    "sql_result": {},
+                    "contribution": "both_fail",
+                    "llm_calls": 0,
+                    "error": str(exc),
+                }
+                record_failure("timeout", "hybrid_total", exc, "standardized_failure_response", exc.timeout_ms)
+            except Exception as exc:
+                fallback_used = True
+                hybrid_output = {
+                    "answer": INSUFFICIENT_EVIDENCE,
+                    "sources": [],
+                    "rag_result": {},
+                    "sql_result": {},
+                    "contribution": "both_fail",
+                    "llm_calls": 0,
+                    "error": str(exc),
+                }
+                record_failure("unexpected_exception", "hybrid_total", exc, "standardized_failure_response", 0.0)
+            hybrid_latency = round((time.perf_counter() - branch_started) * 1000, 2)
+            hybrid_timings = hybrid_output.get("timings") or {}
+            timings["sql_latency_ms"] = _nested_timing(hybrid_output.get("sql_result"), "total_ms")
+            timings["rag_latency_ms"] = _nested_timing(hybrid_output.get("rag_result"), "total_ms")
+            timings["merge_latency_ms"] = hybrid_timings.get("merge_ms")
+            if timings["sql_latency_ms"] is None and timings["rag_latency_ms"] is None:
+                timings["sql_latency_ms"] = hybrid_latency if hybrid_output.get("sql_result") else None
+                timings["rag_latency_ms"] = hybrid_latency if hybrid_output.get("rag_result") else None
             branches.extend(
                 branch
                 for branch in ["rag", "sql", "merge_llm"]
@@ -200,22 +368,90 @@ class QueryonixPipelineV3:
                     or (branch == "merge_llm" and hybrid_output.get("llm_calls", 0) > 0)
                 )
             )
-            answer = hybrid_output.get("answer") or "Tôi không có đủ thông tin để trả lời câu hỏi này."
+            answer = hybrid_output.get("answer") or INSUFFICIENT_EVIDENCE
             sources = hybrid_output.get("sources", [])
             raw = {"hybrid": hybrid_output}
             llm_call_count += hybrid_output.get("llm_calls", 0)
+            sql_result = hybrid_output.get("sql_result") or {}
+            rag_result = hybrid_output.get("rag_result") or {}
+            sql_success = None if not sql_result else sql_result.get("error") is None
+            rag_success = None if not rag_result else bool(rag_result.get("context_passages") or rag_result.get("answer")) and not rag_result.get("error")
+            cache_hit = (sql_result.get("timings") or {}).get("sql_cache_hit") == 1.0 if sql_result else None
+            merge_used = hybrid_output.get("llm_calls", 0) > 0
+            contribution = hybrid_output.get("contribution")
+            fallback_used = fallback_used or contribution in {"merge_timeout", "both_fail"}
+            fallback_used = fallback_used or (sql_success is True and rag_success is False)
+            fallback_used = fallback_used or (rag_success is True and sql_success is False)
+            if contribution == "merge_timeout":
+                record_failure("merge_error", "hybrid_merge", "merge timed out or failed", "deterministic_merge_template", timings["merge_latency_ms"] or 0.0)
+            if sql_result.get("error"):
+                record_failure("sql_execution_error", "sql_execution", sql_result.get("error"), "used_rag_or_standard_fallback", timings["sql_latency_ms"] or 0.0)
+            if rag_result.get("error"):
+                failure_type = "empty_retrieval" if not rag_result.get("context_passages") else "unexpected_exception"
+                record_failure(failure_type, "rag_retrieval", rag_result.get("error"), "used_sql_or_standard_fallback", timings["rag_latency_ms"] or 0.0)
 
         latency_ms = round((time.perf_counter() - started) * 1000, 2)
-        result = PipelineV3Result(
+        if latency_ms > self.max_total_latency_ms:
+            timeout_triggered = True
+            fallback_used = True
+            record_failure("timeout", "response_formatting", "end-to-end latency budget exceeded", "returned_best_available_answer", latency_ms)
+        raw["failures"] = failures
+        result = StandardResponse(
             answer=answer,
             sources=sources,
             intent=intent,
             latency_ms=latency_ms,
-            confidence=route["confidence"],
-            reason=route["reason"],
-            router_type_used=route["router_type_used"],
+            confidence=route.get("confidence"),
+            reason=route.get("reason", ""),
+            router_type_used=route.get("router_type_used", "unknown"),
             llm_call_count=llm_call_count,
             branches=branches,
+            fallback_used=fallback_used,
+            timeout_triggered=timeout_triggered,
+            sql_success=sql_success,
+            rag_success=rag_success,
+            merge_used=merge_used,
+            answer_nonempty=bool(str(answer).strip()),
+            cache_hit=cache_hit,
+            timings=timings,
             raw=raw,
         )
-        return result.__dict__
+        return result.to_dict()
+
+
+def _nested_timing(payload: Any, key: str) -> Optional[float]:
+    if not isinstance(payload, dict):
+        return None
+    timings = payload.get("timings")
+    if isinstance(timings, dict) and timings.get(key) is not None:
+        return timings.get(key)
+    return None
+
+
+class LazyTextToSQLPipeline:
+    """Lazy proxy to avoid database/schema initialization during app startup."""
+
+    def __init__(self, **kwargs: Any):
+        self.kwargs = kwargs
+        self._pipeline: Optional[TextToSQLPipeline] = None
+        self._cache_enabled = True
+
+    def _get(self) -> TextToSQLPipeline:
+        if self._pipeline is None:
+            self._pipeline = TextToSQLPipeline(**self.kwargs)
+            if not self._cache_enabled:
+                self._pipeline._sql_cache = {}
+                self._pipeline._save_sql_cache = lambda: None  # type: ignore[method-assign]
+        return self._pipeline
+
+    def disable_cache(self) -> None:
+        self._cache_enabled = False
+        if self._pipeline is not None:
+            self._pipeline._sql_cache = {}
+            self._pipeline._save_sql_cache = lambda: None  # type: ignore[method-assign]
+
+    def query(self, question: str, include_nl_answer: bool = True) -> Dict[str, Any]:
+        return self._get().query(question, include_nl_answer=include_nl_answer)
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._get(), name)

@@ -1,0 +1,13 @@
+{
+  "config_name": "force_merge_llm",
+  "cache_enabled": true,
+  "parallel_enabled": true,
+  "hybrid_enabled": true,
+  "lightweight_rag": true,
+  "merge_llm_enabled": true,
+  "force_merge_llm": true,
+  "force_mode": null,
+  "use_llm_router": false,
+  "low_resource_mode": true
+}
+

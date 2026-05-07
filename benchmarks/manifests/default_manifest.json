@@ -1,0 +1,9 @@
+{
+  "manifest_name": "default_manifest",
+  "seed": 42,
+  "shuffle_queries": false,
+  "cache_policy": "preserve",
+  "cold_start": true,
+  "notes": "Default deterministic local benchmark manifest for Querionyx V3."
+}
+

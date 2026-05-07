@@ -1,0 +1,374 @@
+{
+  "metadata": {
+    "total_queries": 60,
+    "distribution": {
+      "UNSTRUCTURED": 20,
+      "STRUCTURED": 20,
+      "HYBRID": 20
+    },
+    "created_date": "2026-05-01",
+    "purpose": "Router V1 baseline evaluation - rule-based classifier"
+  },
+  "queries": [
+    {
+      "id": "unstr_001",
+      "question": "FPT có chiến lược phát triển nào cho năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo thường niên FPT - chiến lược kinh doanh, kế hoạch phát triển"
+    },
+    {
+      "id": "unstr_002",
+      "question": "Chính sách bán hàng của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - chính sách, hướng dẫn bán hàng"
+    },
+    {
+      "id": "unstr_003",
+      "question": "Masan mô tả quy trình sản xuất như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - quy trình, hoạt động sản xuất"
+    },
+    {
+      "id": "unstr_004",
+      "question": "Mục tiêu tăng trưởng của FPT là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - mục tiêu, kế hoạch tăng trưởng"
+    },
+    {
+      "id": "unstr_005",
+      "question": "Vinamilk giải thích rủi ro kinh doanh như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - rủi ro, thách thức kinh doanh"
+    },
+    {
+      "id": "unstr_006",
+      "question": "Cấu trúc tổ chức của Masan là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - cấu trúc, mô tả tổ chức"
+    },
+    {
+      "id": "unstr_007",
+      "question": "FPT có những hướng dẫn gì cho nhân viên?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - hướng dẫn, chính sách nhân sự"
+    },
+    {
+      "id": "unstr_008",
+      "question": "Chương trình phát triển bền vững của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - chiến lược, mục tiêu bền vững"
+    },
+    {
+      "id": "unstr_009",
+      "question": "Masan mô tả các thách thức trong ngành như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - phân tích thách thức, xu hướng ngành"
+    },
+    {
+      "id": "unstr_010",
+      "question": "Quy trình quản lý chất lượng của FPT là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - quy trình, tiêu chuẩn chất lượng"
+    },
+    {
+      "id": "unstr_011",
+      "question": "Vinamilk có kế hoạch mở rộng thị trường nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - kế hoạch, chiến lược mở rộng"
+    },
+    {
+      "id": "unstr_012",
+      "question": "Masan giải thích vai trò của công nghệ trong kinh doanh ra sao?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - công nghệ, kỹ thuật, đổi mới"
+    },
+    {
+      "id": "unstr_013",
+      "question": "FPT mô tả chiến lược marketing như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - chiến lược marketing, quảng cáo"
+    },
+    {
+      "id": "unstr_014",
+      "question": "Chính sách đối với cổ đông của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - chính sách cổ tức, quản trị"
+    },
+    {
+      "id": "unstr_015",
+      "question": "Masan có những mục tiêu ESG nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - mục tiêu ESG, phát triển bền vững"
+    },
+    {
+      "id": "unstr_016",
+      "question": "FPT là gì? Hãy giải thích về công ty.",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - giới thiệu, mô tả công ty"
+    },
+    {
+      "id": "unstr_017",
+      "question": "Vinamilk hoạt động trong những lĩnh vực nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - lĩnh vực hoạt động, ngành nghề"
+    },
+    {
+      "id": "unstr_018",
+      "question": "Masan có những sản phẩm chính nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Masan - sản phẩm, dịch vụ chính"
+    },
+    {
+      "id": "unstr_019",
+      "question": "FPT mô tả lợi thế cạnh tranh của mình ra sao?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo FPT - lợi thế, điểm mạnh"
+    },
+    {
+      "id": "unstr_020",
+      "question": "Vinamilk có kế hoạch gì cho tương lai?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer_hint": "Tìm trong báo cáo Vinamilk - kế hoạch, triển vọng tương lai"
+    },
+    {
+      "id": "str_001",
+      "question": "Có bao nhiêu sản phẩm trong hệ thống Northwind?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT COUNT(*) FROM products; - Expected: 77"
+    },
+    {
+      "id": "str_002",
+      "question": "Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT customer_id, COUNT(*) as order_count FROM orders GROUP BY customer_id ORDER BY order_count DESC LIMIT 5;"
+    },
+    {
+      "id": "str_003",
+      "question": "Doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT AVG(CAST(SUM(quantity * unit_price) AS FLOAT)) FROM order_details GROUP BY order_id; - hoặc tính từ orders table nếu có total_price"
+    },
+    {
+      "id": "str_004",
+      "question": "Liệt kê tên nhân viên và số đơn hàng họ xử lý?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT e.first_name, e.last_name, COUNT(o.order_id) FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id GROUP BY e.employee_id;"
+    },
+    {
+      "id": "str_005",
+      "question": "Sản phẩm nào có đơn giá cao nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT product_name, unit_price FROM products ORDER BY unit_price DESC LIMIT 1;"
+    },
+    {
+      "id": "str_006",
+      "question": "Xếp hạng các danh mục sản phẩm theo số lượng sản phẩm?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT c.category_name, COUNT(p.product_id) FROM categories c LEFT JOIN products p ON c.category_id = p.category_id GROUP BY c.category_id ORDER BY COUNT(p.product_id) DESC;"
+    },
+    {
+      "id": "str_007",
+      "question": "Có bao nhiêu nhân viên trong công ty?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT COUNT(*) FROM employees; - Expected: 9"
+    },
+    {
+      "id": "str_008",
+      "question": "Tổng số đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT COUNT(*) FROM orders; - Expected: ~830"
+    },
+    {
+      "id": "str_009",
+      "question": "Chi phí vận chuyển trung bình là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT AVG(freight) FROM orders;"
+    },
+    {
+      "id": "str_010",
+      "question": "Nhà cung cấp nào cung cấp nhiều sản phẩm nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT s.company_name, COUNT(p.product_id) FROM suppliers s LEFT JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.supplier_id ORDER BY COUNT(*) DESC LIMIT 1;"
+    },
+    {
+      "id": "str_011",
+      "question": "Đơn hàng nào có giá trị cao nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT order_id, SUM(quantity * unit_price) as total FROM order_details GROUP BY order_id ORDER BY total DESC LIMIT 1;"
+    },
+    {
+      "id": "str_012",
+      "question": "Có bao nhiêu khách hàng trong cơ sở dữ liệu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT COUNT(*) FROM customers; - Expected: 91"
+    },
+    {
+      "id": "str_013",
+      "question": "Lọc sản phẩm có đơn giá trong khoảng 20-30?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT product_name, unit_price FROM products WHERE unit_price BETWEEN 20 AND 30;"
+    },
+    {
+      "id": "str_014",
+      "question": "Sắp xếp khách hàng theo tên thành phố?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT company_name, city FROM customers ORDER BY city, company_name;"
+    },
+    {
+      "id": "str_015",
+      "question": "Số sản phẩm bị hết hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT COUNT(*) FROM products WHERE units_in_stock = 0;"
+    },
+    {
+      "id": "str_016",
+      "question": "Tính tổng số lượng sản phẩm có sẵn?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT SUM(units_in_stock) FROM products;"
+    },
+    {
+      "id": "str_017",
+      "question": "Chi tiêu nhiều nhất của khách hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT customer_id, SUM(CAST(quantity * unit_price AS DECIMAL(10,2))) as total_spent FROM order_details od JOIN orders o ON od.order_id = o.order_id GROUP BY customer_id ORDER BY total_spent DESC LIMIT 1;"
+    },
+    {
+      "id": "str_018",
+      "question": "Liệt kê các đơn hàng theo tháng?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT EXTRACT(YEAR FROM order_date) as year, EXTRACT(MONTH FROM order_date) as month, COUNT(*) FROM orders GROUP BY year, month ORDER BY year, month;"
+    },
+    {
+      "id": "str_019",
+      "question": "Xếp hạng nhân viên theo số đơn hàng xử lý từ cao đến thấp?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT e.employee_id, e.last_name, COUNT(o.order_id) as order_count FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id GROUP BY e.employee_id ORDER BY order_count DESC;"
+    },
+    {
+      "id": "str_020",
+      "question": "Sản phẩm nào có mức giá thấp nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer_hint": "SELECT product_name, unit_price FROM products ORDER BY unit_price ASC LIMIT 1;"
+    },
+    {
+      "id": "hyb_001",
+      "question": "FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: tìm chiến lược FPT; SQL: SELECT COUNT(*) FROM orders;"
+    },
+    {
+      "id": "hyb_002",
+      "question": "Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: tìm mục tiêu Vinamilk; SQL: SELECT COUNT(*) FROM products;"
+    },
+    {
+      "id": "hyb_003",
+      "question": "Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: chính sách bán hàng Masan; SQL: top 3 customers by order count"
+    },
+    {
+      "id": "hyb_004",
+      "question": "Quy trình sản xuất FPT được mô tả như thế nào và có bao nhiêu nhân viên đang làm việc?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: quy trình sản xuất FPT; SQL: SELECT COUNT(*) FROM employees;"
+    },
+    {
+      "id": "hyb_005",
+      "question": "Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: lợi thế cạnh tranh Vinamilk; SQL: categories by product count"
+    },
+    {
+      "id": "hyb_006",
+      "question": "Rủi ro kinh doanh của Masan là gì và chi phí vận chuyển trung bình là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: rủi ro Masan; SQL: SELECT AVG(freight) FROM orders;"
+    },
+    {
+      "id": "hyb_007",
+      "question": "Kế hoạch tăng trưởng của FPT là gì và nhân viên nào xử lý nhiều đơn hàng nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: kế hoạch tăng trưởng FPT; SQL: employee with most orders"
+    },
+    {
+      "id": "hyb_008",
+      "question": "Vinamilk có mục tiêu bền vững như thế nào và có bao nhiêu khách hàng hiện tại?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: mục tiêu bền vững Vinamilk; SQL: SELECT COUNT(*) FROM customers;"
+    },
+    {
+      "id": "hyb_009",
+      "question": "Masan giải thích thách thức ngành ra sao và sản phẩm nào có giá cao nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: thách thức ngành Masan; SQL: product with highest price"
+    },
+    {
+      "id": "hyb_010",
+      "question": "Hướng dẫn chất lượng của FPT là gì và có bao nhiêu sản phẩm bị hết hàng?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: hướng dẫn chất lượng FPT; SQL: count of out of stock products"
+    },
+    {
+      "id": "hyb_011",
+      "question": "Chiến lược marketing của Vinamilk ra sao và nhà cung cấp nào cung cấp nhiều nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: chiến lược marketing Vinamilk; SQL: top supplier by product count"
+    },
+    {
+      "id": "hyb_012",
+      "question": "Chính sách cổ đông của Masan như thế nào và đơn hàng có giá trị cao nhất là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: chính sách cổ đông Masan; SQL: highest value order"
+    },
+    {
+      "id": "hyb_013",
+      "question": "FPT mô tả vai trò công nghệ ra sao và tổng số lượng sản phẩm có sẵn là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: vai trò công nghệ FPT; SQL: SUM(units_in_stock)"
+    },
+    {
+      "id": "hyb_014",
+      "question": "Mục tiêu ESG của Vinamilk là gì và có bao nhiêu khách hàng ở thành phố X?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: mục tiêu ESG Vinamilk; SQL: customers in specific city"
+    },
+    {
+      "id": "hyb_015",
+      "question": "Quy trình quản lý chất lượng Masan được mô tả như thế nào và xếp hạng danh mục sản phẩm ra sao?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: quy trình chất lượng Masan; SQL: categories by product count ranking"
+    },
+    {
+      "id": "hyb_016",
+      "question": "Lợi thế cạnh tranh của FPT là gì và doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: lợi thế cạnh tranh FPT; SQL: average order value"
+    },
+    {
+      "id": "hyb_017",
+      "question": "Chính sách phát triển nhân sự của Vinamilk ra sao và nhân viên nào kinh doanh giỏi nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: chính sách phát triển nhân sự Vinamilk; SQL: top employee by order count"
+    },
+    {
+      "id": "hyb_018",
+      "question": "Masan có những sản phẩm chính nào và danh mục nào có ít sản phẩm nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: sản phẩm chính Masan; SQL: category with fewest products"
+    },
+    {
+      "id": "hyb_019",
+      "question": "Kế hoạch mở rộng thị trường của FPT là gì và tính toàn bộ chi phí vận chuyển?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: kế hoạch mở rộng FPT; SQL: SUM(freight) FROM orders"
+    },
+    {
+      "id": "hyb_020",
+      "question": "Triển vọng tương lai của Vinamilk được mô tả ra sao và khách hàng nào chi tiêu nhiều nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer_hint": "RAG: triển vọng tương lai Vinamilk; SQL: customer with highest spending"
+    }
+  ]
+}

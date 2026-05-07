@@ -1,0 +1,13 @@
+{
+  "config_name": "full_rag_mode",
+  "cache_enabled": true,
+  "parallel_enabled": true,
+  "hybrid_enabled": true,
+  "lightweight_rag": false,
+  "merge_llm_enabled": false,
+  "force_merge_llm": false,
+  "force_mode": null,
+  "use_llm_router": false,
+  "low_resource_mode": false
+}
+

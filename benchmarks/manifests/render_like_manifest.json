@@ -1,0 +1,10 @@
+{
+  "manifest_name": "render_like_manifest",
+  "seed": 42,
+  "shuffle_queries": false,
+  "cache_policy": "preserve",
+  "cold_start": true,
+  "low_resource_mode": true,
+  "notes": "Render-style manifest: lightweight RAG, no mandatory Ollama, conservative timeout budget."
+}
+

@@ -1,0 +1,10 @@
+services:
+  querionyx:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    env_file:
+      - env.example
+    ports:
+      - "8000:8000"
+

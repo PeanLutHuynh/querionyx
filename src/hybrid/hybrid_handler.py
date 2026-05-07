@@ -21,6 +21,8 @@ from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
 
+from src.runtime.config import RuntimeConfig
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -49,19 +51,21 @@ class HybridQueryHandler:
         rag_chars_per_passage: int = 500,
         sql_rows: int = 5,
         sql_columns: int = 8,
+        runtime_config: Optional[RuntimeConfig] = None,
     ):
         load_dotenv(PROJECT_ROOT / ".env")
+        self.runtime_config = runtime_config or RuntimeConfig.from_env()
         self.rag_pipeline = rag_pipeline
         self.sql_pipeline = sql_pipeline
         self.merge_model = os.getenv("OLLAMA_MERGE_MODEL", merge_model)
-        self.timeout_per_module_ms = timeout_per_module_ms
-        self.merge_timeout_ms = merge_timeout_ms
+        self.timeout_per_module_ms = min(timeout_per_module_ms, self.runtime_config.timeouts.hybrid_total_ms)
+        self.merge_timeout_ms = min(merge_timeout_ms, self.runtime_config.timeouts.merge_llm_ms)
         self.rag_passages = rag_passages
         self.rag_chars_per_passage = rag_chars_per_passage
         self.sql_rows = sql_rows
         self.sql_columns = sql_columns
         self._merge_llm = None
-        self.enable_heavy_rag = os.getenv("ENABLE_HEAVY_RAG", "0") == "1"
+        self.enable_heavy_rag = (os.getenv("ENABLE_HEAVY_RAG", "0") == "1") or not self.runtime_config.lightweight_rag
         self._lightweight_chunks: Optional[List[Dict[str, Any]]] = None
 
     @staticmethod
@@ -213,13 +217,16 @@ class HybridQueryHandler:
         def call() -> Dict[str, Any]:
             return self._get_sql_pipeline().query(question, include_nl_answer=False)
 
+        started = time.perf_counter()
         try:
-            return await asyncio.wait_for(
+            result = await asyncio.wait_for(
                 asyncio.to_thread(call),
                 timeout=self.timeout_per_module_ms / 1000,
             )
+            result.setdefault("timings", {})["total_ms"] = round((time.perf_counter() - started) * 1000, 2)
+            return result
         except Exception as exc:
-            return {"sql_query": "", "rows": [], "error": str(exc), "timings": {}}
+            return {"sql_query": "", "rows": [], "error": str(exc), "timings": {"total_ms": round((time.perf_counter() - started) * 1000, 2)}}
 
     async def _run_rag(self, question: str) -> Dict[str, Any]:
         def call() -> Dict[str, Any]:
@@ -257,13 +264,16 @@ class HybridQueryHandler:
                     "error": str(exc),
                 }
 
+        started = time.perf_counter()
         try:
-            return await asyncio.wait_for(
+            result = await asyncio.wait_for(
                 asyncio.to_thread(call),
                 timeout=self.timeout_per_module_ms / 1000,
             )
+            result.setdefault("timings", {})["total_ms"] = round((time.perf_counter() - started) * 1000, 2)
+            return result
         except Exception as exc:
-            return {"context_passages": [], "citations": [], "answer": "", "score": None, "error": str(exc)}
+            return {"context_passages": [], "citations": [], "answer": "", "score": None, "error": str(exc), "timings": {"total_ms": round((time.perf_counter() - started) * 1000, 2)}}
 
     def _trim_sql_rows(self, rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         trimmed = []
@@ -304,6 +314,10 @@ class HybridQueryHandler:
         return f"{note_text}{answer}{suffix}"
 
     def _should_merge_with_llm(self, question: str, rag_result: Dict[str, Any], sql_result: Dict[str, Any]) -> bool:
+        if not self.runtime_config.merge_llm_enabled and not self.runtime_config.force_merge_llm:
+            return False
+        if self.runtime_config.force_merge_llm:
+            return bool(rag_result.get("context_passages") and sql_result.get("rows"))
         if not rag_result.get("context_passages") or not sql_result.get("rows"):
             return False
         sql_timings = sql_result.get("timings") or {}
@@ -358,7 +372,11 @@ class HybridQueryHandler:
                 timings={"total_ms": round((time.perf_counter() - started) * 1000, 2)},
             ).__dict__
 
-        rag_result, sql_result = await asyncio.gather(self._run_rag(question), self._run_sql(question))
+        if self.runtime_config.parallel_enabled:
+            rag_result, sql_result = await asyncio.gather(self._run_rag(question), self._run_sql(question))
+        else:
+            rag_result = await self._run_rag(question)
+            sql_result = await self._run_sql(question)
         sql_ok = not sql_result.get("error") and bool(sql_result.get("rows"))
         rag_ok = not rag_result.get("error") and bool(rag_result.get("context_passages"))
         rag_low = rag_result.get("score") is not None and float(rag_result["score"]) < 0.4
@@ -380,10 +398,13 @@ class HybridQueryHandler:
             sources = ["SQL"] + [f"DOC:{c}" for c in rag_result.get("citations", [])]
             if self._should_merge_with_llm(question, rag_result, sql_result):
                 try:
+                    merge_started = time.perf_counter()
                     answer = await self._merge_with_llm(question, rag_result, sql_result)
+                    merge_ms = round((time.perf_counter() - merge_started) * 1000, 2)
                     llm_calls = 1
                     contribution = "merged_llm"
                 except Exception:
+                    merge_ms = round((time.perf_counter() - merge_started) * 1000, 2) if "merge_started" in locals() else 0.0
                     answer = (
                         self._deterministic_sql_answer(question, sql_result)
                         + "\n\n"
@@ -404,7 +425,10 @@ class HybridQueryHandler:
             contribution=contribution,
             rag_result=rag_result,
             sql_result=sql_result,
-            timings={"total_ms": round((time.perf_counter() - started) * 1000, 2)},
+            timings={
+                "total_ms": round((time.perf_counter() - started) * 1000, 2),
+                "merge_ms": locals().get("merge_ms"),
+            },
             llm_calls=llm_calls,
         ).__dict__
 

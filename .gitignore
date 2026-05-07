@@ -8,3 +8,13 @@ data/raw/annual_reports/*.pdf
 .settings.json
 data/models/
 data/chroma_db/
+reports/experiment_runs/*
+!reports/experiment_runs/.gitkeep
+reports/tables/*
+!reports/tables/.gitkeep
+reports/charts/*
+!reports/charts/.gitkeep
+metrics/*/*
+!metrics/*/.gitkeep
+profiling/*/*
+!profiling/*/.gitkeep

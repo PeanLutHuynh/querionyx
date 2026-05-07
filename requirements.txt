@@ -11,3 +11,4 @@ pymupdf
 rank-bm25
 ragas
 python-dotenv
+psutil

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: querionyx-v3
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENABLE_HEAVY_RAG
+        value: "0"
+      - key: QUERIONYX_LIGHTWEIGHT_RAG
+        value: "1"
+      - key: QUERIONYX_MERGE_LLM_ENABLED
+        value: "0"
+      - key: QUERIONYX_USE_LLM_ROUTER
+        value: "0"
+
