@@ -1,0 +1,140 @@
+[
+  {
+    "id": "unstr_001",
+    "expected_intent": "RAG",
+    "question": "FPT có chiến lược phát triển nào cho năm 2025?",
+    "passed": true,
+    "error": null,
+    "intent": "RAG",
+    "total_latency_ms": 1616.19,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "rag"
+    ],
+    "answer_preview": "43\n03\nBối cảnh kinh tế vĩ mô\nChiến lược phát triển 2025 – 2027 \ncủa FPT\nTiềm năng và cơ hội phát triển của \nngành CNTT\n01\nTHÔNG ĐIỆP BAN LÃNH ĐẠO\n02\nDẤU ẤN 2024"
+  },
+  {
+    "id": "unstr_002",
+    "expected_intent": "RAG",
+    "question": "Chính sách bán hàng của Vinamilk là gì?",
+    "passed": true,
+    "error": null,
+    "intent": "RAG",
+    "total_latency_ms": 1315.86,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "rag"
+    ],
+    "answer_preview": "1.1.2 HĐQT xem xét và phê duyệt định \nhướng chiến lược của Công ty, chính \nsách quản trị rủi ro, kế hoạch kinh \ndoanh hàng năm, các khoản đầu tư lớn \ncó giá trị"
+  },
+  {
+    "id": "unstr_003",
+    "expected_intent": "RAG",
+    "question": "Masan mô tả quy trình sản xuất như thế nào?",
+    "passed": true,
+    "error": null,
+    "intent": "RAG",
+    "total_latency_ms": 1323.35,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "rag"
+    ],
+    "answer_preview": "đầu. Chúng tôi đầu tư vào đào tạo an toàn nghề nghiệp và liên tục cải tiến quy trình sản xuất để duy trì các \ntiêu chuẩn an toàn cao nhất. Cam kết của chúng tôi"
+  },
+  {
+    "id": "str_001",
+    "expected_intent": "SQL",
+    "question": "Có bao nhiêu sản phẩm trong hệ thống Northwind?",
+    "passed": true,
+    "error": null,
+    "intent": "SQL",
+    "total_latency_ms": 212.63,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "sql"
+    ],
+    "answer_preview": "Kết quả từ cơ sở dữ liệu:\n\n| total_products |\n| --- |\n| 77 |"
+  },
+  {
+    "id": "str_002",
+    "expected_intent": "SQL",
+    "question": "Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?",
+    "passed": false,
+    "error": null,
+    "intent": "SQL",
+    "total_latency_ms": 132454.57,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "sql"
+    ],
+    "answer_preview": "Không truy vấn được cơ sở dữ liệu: syntax error at or near \";\"\nLINE 6:     JOIN order_details od ON o.order_id = od.order_id;\n                                  "
+  },
+  {
+    "id": "str_003",
+    "expected_intent": "SQL",
+    "question": "Doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+    "passed": false,
+    "error": null,
+    "intent": "SQL",
+    "total_latency_ms": 64635.7,
+    "router_type_used": "rule_router",
+    "llm_call_count": 0,
+    "branches": [
+      "sql"
+    ],
+    "answer_preview": "Không truy vấn được cơ sở dữ liệu: Only read-only SELECT SQL is allowed."
+  },
+  {
+    "id": "hyb_001",
+    "expected_intent": "HYBRID",
+    "question": "FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?",
+    "passed": true,
+    "error": null,
+    "intent": "HYBRID",
+    "total_latency_ms": 937.39,
+    "router_type_used": "adaptive_rule",
+    "llm_call_count": 0,
+    "branches": [
+      "rag",
+      "sql"
+    ],
+    "answer_preview": "Kết quả từ cơ sở dữ liệu cho câu hỏi này:\n\n| order_count |\n| --- |\n| 0 |"
+  },
+  {
+    "id": "hyb_002",
+    "expected_intent": "HYBRID",
+    "question": "Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?",
+    "passed": false,
+    "error": null,
+    "intent": "HYBRID",
+    "total_latency_ms": 58764.64,
+    "router_type_used": "adaptive_rule",
+    "llm_call_count": 0,
+    "branches": [
+      "rag",
+      "sql"
+    ],
+    "answer_preview": "Không truy vấn được cơ sở dữ liệu cho câu hỏi này.\n\nđịnh của chúng tôi khi thực hiện hai dự \nán chiến lược trọng điểm là Tái định vị \nthương hiệu và Chuyển đổi "
+  },
+  {
+    "id": "hyb_003",
+    "expected_intent": "HYBRID",
+    "question": "Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?",
+    "passed": false,
+    "error": null,
+    "intent": "HYBRID",
+    "total_latency_ms": 70061.37,
+    "router_type_used": "adaptive_rule",
+    "llm_call_count": 0,
+    "branches": [
+      "rag",
+      "sql"
+    ],
+    "answer_preview": "Không truy vấn được cơ sở dữ liệu cho câu hỏi này.\n\nSau đó, người tiêu dùng có thể nhận các ưu \nđãi khi mua nhu yếu phẩm bằng giải pháp \nthanh toán không dùng t"
+  }
+]
