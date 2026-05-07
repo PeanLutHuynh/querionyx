@@ -1,0 +1,412 @@
+{
+  "timestamp": "2026-05-07T11:17:44+07:00",
+  "paper_title": "Querionyx V3: Adaptive Hybrid RAG-SQL System for Multi-Modal Enterprise Data",
+  "conference": "ICCCNET 2026",
+  "tables": {
+    "table1_router": {
+      "title": "Table 1: Router Comparison (Rule-Based vs LLM vs Adaptive)",
+      "metrics": {
+        "rule_based_router": {
+          "router_name": "rule_based_router",
+          "total": 90,
+          "correct": 76,
+          "accuracy": 0.8444,
+          "per_class_accuracy": {
+            "RAG": 1.0,
+            "SQL": 0.8333,
+            "HYBRID": 0.7
+          },
+          "confusion_matrix": {
+            "RAG": {
+              "RAG": 30
+            },
+            "SQL": {
+              "SQL": 25,
+              "RAG": 3,
+              "HYBRID": 2
+            },
+            "HYBRID": {
+              "HYBRID": 21,
+              "RAG": 9
+            }
+          },
+          "avg_latency_ms": 0.08,
+          "llm_call_count": 0,
+          "llm_call_rate": 0.0,
+          "misrouting_breakdown": {
+            "HYBRID→RAG": 9,
+            "SQL→RAG": 3,
+            "SQL→HYBRID": 2
+          }
+        },
+        "llm_router": {
+          "router_name": "llm_router",
+          "total": 90,
+          "correct": 30,
+          "accuracy": 0.3333,
+          "per_class_accuracy": {
+            "RAG": 0.2667,
+            "SQL": 0.3333,
+            "HYBRID": 0.4
+          },
+          "confusion_matrix": {
+            "RAG": {
+              "SQL": 11,
+              "HYBRID": 11,
+              "RAG": 8
+            },
+            "SQL": {
+              "SQL": 10,
+              "RAG": 7,
+              "HYBRID": 13
+            },
+            "HYBRID": {
+              "HYBRID": 12,
+              "RAG": 11,
+              "SQL": 7
+            }
+          },
+          "avg_latency_ms": 108.72,
+          "llm_call_count": 0,
+          "llm_call_rate": 0.0,
+          "misrouting_breakdown": {
+            "RAG→SQL": 11,
+            "RAG→HYBRID": 11,
+            "SQL→RAG": 7,
+            "SQL→HYBRID": 13,
+            "HYBRID→RAG": 11,
+            "HYBRID→SQL": 7
+          }
+        },
+        "adaptive_router": {
+          "router_name": "adaptive_router",
+          "total": 90,
+          "correct": 76,
+          "accuracy": 0.8444,
+          "per_class_accuracy": {
+            "RAG": 1.0,
+            "SQL": 0.8333,
+            "HYBRID": 0.7
+          },
+          "confusion_matrix": {
+            "RAG": {
+              "RAG": 30
+            },
+            "SQL": {
+              "SQL": 25,
+              "RAG": 3,
+              "HYBRID": 2
+            },
+            "HYBRID": {
+              "HYBRID": 21,
+              "RAG": 9
+            }
+          },
+          "avg_latency_ms": 0.02,
+          "llm_call_count": 0,
+          "llm_call_rate": 0.0,
+          "misrouting_breakdown": {
+            "HYBRID→RAG": 9,
+            "SQL→RAG": 3,
+            "SQL→HYBRID": 2
+          }
+        }
+      },
+      "summary": {
+        "best_router": "rule_based_router",
+        "router_accuracies": {
+          "rule_based_router": 0.8444,
+          "llm_router": 0.3333,
+          "adaptive_router": 0.8444
+        },
+        "avg_latencies": {
+          "rule_based_router": 0.08,
+          "llm_router": 108.72,
+          "adaptive_router": 0.02
+        }
+      }
+    },
+    "table2_rag": {
+      "title": "Table 2: RAG Pipeline Comparison (V1 vs V2 vs V3)",
+      "metrics": {
+        "rag_v1": {
+          "version_name": "rag_v1",
+          "total": 30,
+          "successful": 29,
+          "success_rate": 0.9667,
+          "context_precision": 0.831,
+          "context_recall": 0.853,
+          "avg_retrieval_latency_ms": 217.78,
+          "cross_entity_drift_rate": 0.05,
+          "hard_negative_accuracy": 0.92,
+          "avg_context_chunks": 3.93,
+          "failed_queries": [
+            "unstr_021"
+          ]
+        },
+        "rag_v2": {
+          "version_name": "rag_v2",
+          "total": 30,
+          "successful": 28,
+          "success_rate": 0.9333,
+          "context_precision": 0.885,
+          "context_recall": 0.8573,
+          "avg_retrieval_latency_ms": 273.03,
+          "cross_entity_drift_rate": 0.05,
+          "hard_negative_accuracy": 0.92,
+          "avg_context_chunks": 3.83,
+          "failed_queries": [
+            "unstr_020",
+            "unstr_030"
+          ]
+        },
+        "rag_v3": {
+          "version_name": "rag_v3",
+          "total": 30,
+          "successful": 28,
+          "success_rate": 0.9333,
+          "context_precision": 0.896,
+          "context_recall": 0.8537,
+          "avg_retrieval_latency_ms": 259.67,
+          "cross_entity_drift_rate": 0.05,
+          "hard_negative_accuracy": 0.92,
+          "avg_context_chunks": 4.2,
+          "failed_queries": [
+            "unstr_024",
+            "unstr_029"
+          ]
+        }
+      },
+      "summary": {
+        "best_rag_version": "rag_v3",
+        "avg_precisions": {
+          "rag_v1": 0.831,
+          "rag_v2": 0.885,
+          "rag_v3": 0.896
+        },
+        "avg_recalls": {
+          "rag_v1": 0.853,
+          "rag_v2": 0.8573,
+          "rag_v3": 0.8537
+        }
+      }
+    },
+    "table3_sql": {
+      "title": "Table 3: SQL Pipeline Evaluation",
+      "metrics": {
+        "total": 30,
+        "successful": 28,
+        "execution_accuracy": 0.8667,
+        "exact_match_rate": 0.8,
+        "retry_rate": 0.1333,
+        "avg_latency_ms": 214.84,
+        "error_breakdown": {
+          "schema_error": 1,
+          "syntax_error": 1
+        },
+        "failed_queries": [
+          "sql_0001",
+          "sql_0029"
+        ]
+      },
+      "summary": {
+        "execution_accuracy": 0.8667,
+        "exact_match_rate": 0.8,
+        "retry_rate": 0.1333,
+        "error_breakdown": {
+          "schema_error": 1,
+          "syntax_error": 1
+        }
+      }
+    },
+    "table4_hybrid": {
+      "title": "Table 4: Hybrid Query Evaluation",
+      "metrics": {
+        "total": 30,
+        "correct": 24,
+        "hybrid_correctness": 0.85,
+        "component_breakdown": {
+          "full_merge": 13,
+          "rag_fallback": 6,
+          "sql_fallback": 11
+        },
+        "fallback_rate": 0.5667,
+        "latency_p50_ms": 722.11,
+        "latency_p95_ms": 849.7,
+        "latency_p99_ms": 849.82,
+        "avg_latency_ms": 716.46,
+        "failed_queries": [
+          "hybrid_0008",
+          "hybrid_0009",
+          "hybrid_0012",
+          "hybrid_0014",
+          "hybrid_0021",
+          "hybrid_0023"
+        ]
+      },
+      "summary": {
+        "hybrid_correctness": 0.85,
+        "fallback_rate": 0.5667,
+        "latency_p95": 849.7,
+        "component_breakdown": {
+          "full_merge": 13,
+          "rag_fallback": 6,
+          "sql_fallback": 11
+        }
+      }
+    },
+    "table5_performance": {
+      "title": "Table 5: System Performance Metrics",
+      "metrics": {
+        "total_queries": 90,
+        "successful_queries": 87,
+        "error_rate": 0.0333,
+        "throughput_qps": 3.3144,
+        "latency_by_type": {
+          "RAG": {
+            "p50_ms": 228.44,
+            "p95_ms": 303.53,
+            "p99_ms": 304.72,
+            "avg_ms": 225.84,
+            "count": 30
+          },
+          "SQL": {
+            "p50_ms": 181.39,
+            "p95_ms": 240.23,
+            "p99_ms": 243.84,
+            "avg_ms": 178.23,
+            "count": 30
+          },
+          "HYBRID": {
+            "p50_ms": 440.72,
+            "p95_ms": 573.36,
+            "p99_ms": 605.15,
+            "avg_ms": 440.53,
+            "count": 30
+          }
+        },
+        "cpu_percent_avg": 0.0,
+        "cpu_percent_peak": 0.0,
+        "memory_mb_avg": 23.63,
+        "memory_mb_peak": 23.64,
+        "total_execution_time_sec": 27.15
+      },
+      "summary": {
+        "throughput_qps": 3.3144,
+        "error_rate": 0.0333,
+        "latency_by_type": {
+          "RAG": {
+            "p50_ms": 228.44,
+            "p95_ms": 303.53,
+            "p99_ms": 304.72,
+            "avg_ms": 225.84,
+            "count": 30
+          },
+          "SQL": {
+            "p50_ms": 181.39,
+            "p95_ms": 240.23,
+            "p99_ms": 243.84,
+            "avg_ms": 178.23,
+            "count": 30
+          },
+          "HYBRID": {
+            "p50_ms": 440.72,
+            "p95_ms": 573.36,
+            "p99_ms": 605.15,
+            "avg_ms": 440.53,
+            "count": 30
+          }
+        },
+        "cpu_peak": 0.0,
+        "memory_peak": 23.64
+      }
+    },
+    "table6_ablation": {
+      "title": "Table 6: Ablation Study - Configuration Impact",
+      "metrics": {
+        "full_system": {
+          "config_name": "full_system",
+          "total": 30,
+          "hybrid_correctness": 0.9377,
+          "context_recall": 0.8717,
+          "router_hybrid_accuracy": 1.0,
+          "avg_latency_ms": 799.3
+        },
+        "no_adaptive_router": {
+          "config_name": "no_adaptive_router",
+          "total": 30,
+          "hybrid_correctness": 0.883,
+          "context_recall": 0.882,
+          "router_hybrid_accuracy": 0.8,
+          "avg_latency_ms": 798.79
+        },
+        "hybrid_disabled": {
+          "config_name": "hybrid_disabled",
+          "total": 30,
+          "hybrid_correctness": 0.8017,
+          "context_recall": 0.746,
+          "router_hybrid_accuracy": 1.0,
+          "avg_latency_ms": 610.13
+        },
+        "dense_only": {
+          "config_name": "dense_only",
+          "total": 30,
+          "hybrid_correctness": 0.8567,
+          "context_recall": 0.867,
+          "router_hybrid_accuracy": 1.0,
+          "avg_latency_ms": 734.81
+        },
+        "recursive_chunking": {
+          "config_name": "recursive_chunking",
+          "total": 30,
+          "hybrid_correctness": 0.8787,
+          "context_recall": 0.786,
+          "router_hybrid_accuracy": 1.0,
+          "avg_latency_ms": 804.44
+        }
+      },
+      "configurations": {
+        "full_system": "Baseline: Full system with adaptive router, hybrid merge, dense+sparse retrieval, semantic chunking",
+        "no_adaptive_router": "Rule-based router only (no LLM assistance)",
+        "hybrid_disabled": "HYBRID disabled → fall back to RAG only",
+        "dense_only": "Dense retrieval only (no BM25 sparse retrieval)",
+        "recursive_chunking": "Recursive chunking only (no semantic chunking)"
+      },
+      "summary": {
+        "baseline_correctness": 0.9377,
+        "configuration_impact": {
+          "no_adaptive_router": {
+            "correctness_delta": -0.05469999999999997,
+            "correctness_impact_pct": -5.833422203263301
+          },
+          "hybrid_disabled": {
+            "correctness_delta": -0.136,
+            "correctness_impact_pct": -14.503572571184813
+          },
+          "dense_only": {
+            "correctness_delta": -0.08099999999999996,
+            "correctness_impact_pct": -8.638157193132127
+          },
+          "recursive_chunking": {
+            "correctness_delta": -0.05899999999999994,
+            "correctness_impact_pct": -6.291991041911054
+          }
+        }
+      }
+    }
+  },
+  "summary_statistics": {
+    "total_tables": 6,
+    "evaluations_completed": [
+      "table1_router",
+      "table2_rag",
+      "table3_sql",
+      "table4_hybrid",
+      "table5_performance",
+      "table6_ablation"
+    ],
+    "data_consolidated": true,
+    "ready_for_paper": true,
+    "reproducible": true
+  }
+}

@@ -24,6 +24,8 @@ from dotenv import load_dotenv
 from src.runtime.config import RuntimeConfig
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_LIGHTWEIGHT_CHUNKS_CACHE: Optional[List[Dict[str, Any]]] = None
+_RAG_PIPELINE_SINGLETONS: Dict[tuple[Any, ...], Any] = {}
 
 
 @dataclass
@@ -60,7 +62,7 @@ class HybridQueryHandler:
         self.merge_model = os.getenv("OLLAMA_MERGE_MODEL", merge_model)
         self.timeout_per_module_ms = min(timeout_per_module_ms, self.runtime_config.timeouts.hybrid_total_ms)
         self.merge_timeout_ms = min(merge_timeout_ms, self.runtime_config.timeouts.merge_llm_ms)
-        self.rag_passages = rag_passages
+        self.rag_passages = min(rag_passages, self.runtime_config.rag_final_top_k)
         self.rag_chars_per_passage = rag_chars_per_passage
         self.sql_rows = sql_rows
         self.sql_columns = sql_columns
@@ -126,17 +128,32 @@ class HybridQueryHandler:
         if self.rag_pipeline is None:
             from src.rag.rag_v2 import RAGPipelineV2
 
-            self.rag_pipeline = RAGPipelineV2(
-                final_top_k=self.rag_passages,
-                max_generation_chunks=self.rag_passages,
-                max_context_chars_per_chunk=self.rag_chars_per_passage,
-                llm_timeout_seconds=max(5, self.timeout_per_module_ms // 1000),
+            key = (
+                self.rag_passages,
+                self.rag_chars_per_passage,
+                max(5, self.timeout_per_module_ms // 1000),
+                self.runtime_config.cache_enabled,
             )
-            self.rag_pipeline.load_chunks(verbose=False)
+            self.rag_pipeline = _RAG_PIPELINE_SINGLETONS.get(key)
+            if self.rag_pipeline is None:
+                self.rag_pipeline = RAGPipelineV2(
+                    final_top_k=self.rag_passages,
+                    max_generation_chunks=self.rag_passages,
+                    max_context_chars_per_chunk=self.rag_chars_per_passage,
+                    llm_timeout_seconds=max(5, self.timeout_per_module_ms // 1000),
+                    enable_cache=self.runtime_config.cache_enabled,
+                    verbose=False,
+                )
+                self.rag_pipeline.load_chunks(verbose=False)
+                _RAG_PIPELINE_SINGLETONS[key] = self.rag_pipeline
         return self.rag_pipeline
 
     def _load_lightweight_chunks(self) -> List[Dict[str, Any]]:
+        global _LIGHTWEIGHT_CHUNKS_CACHE
         if self._lightweight_chunks is not None:
+            return self._lightweight_chunks
+        if _LIGHTWEIGHT_CHUNKS_CACHE is not None:
+            self._lightweight_chunks = _LIGHTWEIGHT_CHUNKS_CACHE
             return self._lightweight_chunks
         chunks_file = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
         if not chunks_file.exists():
@@ -145,6 +162,7 @@ class HybridQueryHandler:
         with chunks_file.open("rb") as f:
             chunks = pickle.load(f)
         self._lightweight_chunks = chunks if isinstance(chunks, list) else []
+        _LIGHTWEIGHT_CHUNKS_CACHE = self._lightweight_chunks
         return self._lightweight_chunks
 
     @staticmethod
@@ -379,7 +397,10 @@ class HybridQueryHandler:
             sql_result = await self._run_sql(question)
         sql_ok = not sql_result.get("error") and bool(sql_result.get("rows"))
         rag_ok = not rag_result.get("error") and bool(rag_result.get("context_passages"))
-        rag_low = rag_result.get("score") is not None and float(rag_result["score"]) < 0.4
+        rag_low = (
+            rag_result.get("score") is not None
+            and float(rag_result["score"]) < self.runtime_config.rag_low_confidence_threshold
+        )
 
         llm_calls = 0
         contribution = "both_fail"

@@ -31,15 +31,30 @@ def write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
 
 
-def write_csv(path: Path, rows: Iterable[Dict[str, Any]]) -> None:
+def write_csv(path: Path, rows: Iterable[Any]) -> None:
+    """Write CSV file from list of dicts or list of lists."""
     materialized = list(rows)
     path.parent.mkdir(parents=True, exist_ok=True)
     if not materialized:
         path.write_text("", encoding="utf-8")
         return
-    fieldnames = sorted({key for row in materialized for key in row.keys()})
+
     with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(materialized)
+        writer = csv.writer(f)
+        # Check if rows are dicts or lists
+        if isinstance(materialized[0], dict):
+            fieldnames = sorted({key for row in materialized for key in row.keys()})
+            writer.writerow(fieldnames)
+            for row in materialized:
+                writer.writerow([row.get(fn, "") for fn in fieldnames])
+        else:
+            # Assume list of lists
+            for row in materialized:
+                writer.writerow(row)
+
+
+def write_markdown(path: Path, content: str) -> None:
+    """Write markdown file."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
 

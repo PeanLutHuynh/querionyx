@@ -259,8 +259,15 @@ class QueryonixPipelineV3:
         if intent == "HYBRID" and not self.runtime_config.hybrid_enabled:
             intent = "SQL" if HybridQueryHandler._is_numeric_or_tabular(question) else "RAG"
             fallback_used = True
-        if float(route.get("confidence") or 0.0) < 0.65:
-            record_failure("router_ambiguous", "router", "low router confidence", "used_selected_or_forced_route", timings["router_latency_ms"] or 0.0)
+        confidence_threshold = self._confidence_threshold(intent)
+        if float(route.get("confidence") or 0.0) < confidence_threshold:
+            record_failure(
+                "router_ambiguous",
+                "router",
+                f"low router confidence for {intent}: threshold={confidence_threshold}",
+                "used_selected_or_forced_route",
+                timings["router_latency_ms"] or 0.0,
+            )
 
         llm_call_count = 1 if route.get("llm_called") else 0
         branches: List[str] = []
@@ -380,15 +387,13 @@ class QueryonixPipelineV3:
             merge_used = hybrid_output.get("llm_calls", 0) > 0
             contribution = hybrid_output.get("contribution")
             fallback_used = fallback_used or contribution in {"merge_timeout", "both_fail"}
-            fallback_used = fallback_used or (sql_success is True and rag_success is False)
-            fallback_used = fallback_used or (rag_success is True and sql_success is False)
             if contribution == "merge_timeout":
                 record_failure("merge_error", "hybrid_merge", "merge timed out or failed", "deterministic_merge_template", timings["merge_latency_ms"] or 0.0)
             if sql_result.get("error"):
-                record_failure("sql_execution_error", "sql_execution", sql_result.get("error"), "used_rag_or_standard_fallback", timings["sql_latency_ms"] or 0.0)
+                record_failure("sql_execution_error", "sql_execution", sql_result.get("error"), "branch_degraded", timings["sql_latency_ms"] or 0.0)
             if rag_result.get("error"):
                 failure_type = "empty_retrieval" if not rag_result.get("context_passages") else "unexpected_exception"
-                record_failure(failure_type, "rag_retrieval", rag_result.get("error"), "used_sql_or_standard_fallback", timings["rag_latency_ms"] or 0.0)
+                record_failure(failure_type, "rag_retrieval", rag_result.get("error"), "branch_degraded", timings["rag_latency_ms"] or 0.0)
 
         latency_ms = round((time.perf_counter() - started) * 1000, 2)
         if latency_ms > self.max_total_latency_ms:
@@ -417,6 +422,15 @@ class QueryonixPipelineV3:
             raw=raw,
         )
         return result.to_dict()
+
+    def _confidence_threshold(self, intent: str) -> float:
+        if intent == "HYBRID":
+            return self.runtime_config.hybrid_low_confidence_threshold
+        if intent == "SQL":
+            return self.runtime_config.sql_low_confidence_threshold
+        if intent == "RAG":
+            return self.runtime_config.routing_low_confidence_threshold
+        return self.runtime_config.routing_low_confidence_threshold
 
 
 def _nested_timing(payload: Any, key: str) -> Optional[float]:

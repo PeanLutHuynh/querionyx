@@ -15,6 +15,9 @@ import os
 import pickle
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -102,6 +105,8 @@ class RAGPipelineV2:
         llm_timeout_seconds: int = 90,
         max_context_chars_per_chunk: int = 650,
         max_generation_chunks: int = 3,
+        enable_cache: Optional[bool] = None,
+        verbose: Optional[bool] = None,
     ):
         self.dense_top_k = dense_top_k
         self.sparse_top_k = sparse_top_k
@@ -115,34 +120,50 @@ class RAGPipelineV2:
         self.llm_timeout_seconds = llm_timeout_seconds
         self.max_context_chars_per_chunk = max_context_chars_per_chunk
         self.max_generation_chunks = max_generation_chunks
+        self.enable_cache = (
+            os.getenv("QUERIONYX_CACHE_ENABLED", "1").strip().lower() in {"1", "true", "yes", "on"}
+            if enable_cache is None
+            else enable_cache
+        )
+        self.verbose = (
+            os.getenv("QUERIONYX_VERBOSE_RAG", "0").strip().lower() in {"1", "true", "yes", "on"}
+            if verbose is None
+            else verbose
+        )
 
         load_dotenv(PROJECT_ROOT / ".env")
         raw_ollama_base_url = ollama_base_url or os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
         self.ollama_base_url = raw_ollama_base_url.replace("http://localhost", "http://127.0.0.1")
         self.ollama_base_url = self.ollama_base_url.replace("https://localhost", "http://127.0.0.1")
 
-        print("Initializing RAG Pipeline V2 (Hybrid Search)...")
-        print(f"  - Embedding model: {embedding_model_name}", flush=True)
-        print(f"  - LLM: {llm_model} (qwen2.5:3b - fast & accurate)", flush=True)
-        print(f"  - Dense retrieval: top_k={dense_top_k}", flush=True)
-        print(f"  - Sparse retrieval: top_k={sparse_top_k}", flush=True)
-        print(f"  - RRF fusion: k={rrf_k}, final_top_k={final_top_k}", flush=True)
-        print(f"  - Vector store: {CHROMA_DB_PATH}", flush=True)
+        if self.verbose:
+            print("Initializing RAG Pipeline V2 (Hybrid Search)...")
+            print(f"  - Embedding model: {embedding_model_name}", flush=True)
+            print(f"  - LLM: {llm_model} (qwen2.5:3b - fast & accurate)", flush=True)
+            print(f"  - Dense retrieval: top_k={dense_top_k}", flush=True)
+            print(f"  - Sparse retrieval: top_k={sparse_top_k}", flush=True)
+            print(f"  - RRF fusion: k={rrf_k}, final_top_k={final_top_k}", flush=True)
+            print(f"  - Vector store: {CHROMA_DB_PATH}", flush=True)
 
-        print("  Loading embeddings model...", flush=True)
+        if self.verbose:
+            print("  Loading embeddings model...", flush=True)
         EMBEDDING_CACHE_DIR.mkdir(parents=True, exist_ok=True)
         self.embeddings_model = SentenceTransformer(
             embedding_model_name,
             cache_folder=str(EMBEDDING_CACHE_DIR),
         )
-        print(f"     Model loaded: {embedding_model_name}", flush=True)
+        if self.verbose:
+            print(f"     Model loaded: {embedding_model_name}", flush=True)
 
-        print("  Initializing ChromaDB...", flush=True)
+        if self.verbose:
+            print("  Initializing ChromaDB...", flush=True)
         CHROMA_DB_PATH.mkdir(parents=True, exist_ok=True)
         self.chroma_client = chromadb.PersistentClient(path=str(CHROMA_DB_PATH))
-        print(f"     ChromaDB initialized at {CHROMA_DB_PATH}", flush=True)
+        if self.verbose:
+            print(f"     ChromaDB initialized at {CHROMA_DB_PATH}", flush=True)
 
-        print("  Initializing Ollama LLM...", flush=True)
+        if self.verbose:
+            print("  Initializing Ollama LLM...", flush=True)
         self.llm = OllamaLLM(
             model=llm_model,
             base_url=self.ollama_base_url,
@@ -151,12 +172,21 @@ class RAGPipelineV2:
             num_ctx=2048,
             sync_client_kwargs={"timeout": llm_timeout_seconds},
         )
-        print(f"     Ollama endpoint: {self.ollama_base_url}", flush=True)
+        if self.verbose:
+            print(f"     Ollama endpoint: {self.ollama_base_url}", flush=True)
 
         self.collection = None
         self.chunks_data = None
         self.bm25_index = None
         self.tokenized_chunks = None
+
+    @lru_cache(maxsize=1000)
+    def _cached_query_embedding(self, expanded_query: str) -> tuple[float, ...]:
+        embedding = self.embeddings_model.encode(
+            expanded_query,
+            normalize_embeddings=True,
+        )
+        return tuple(float(value) for value in embedding.tolist())
 
     def load_chunks(self, verbose: bool = True) -> int:
         """Load preprocessed chunks from pickle, index in ChromaDB, and build BM25 index."""
@@ -273,10 +303,13 @@ class RAGPipelineV2:
 
         n_results = top_k or self.dense_top_k
         expanded_query = self._expand_query(query)
-        query_embedding = self.embeddings_model.encode(
-            expanded_query,
-            normalize_embeddings=True,
-        ).tolist()
+        if self.enable_cache:
+            query_embedding = list(self._cached_query_embedding(expanded_query))
+        else:
+            query_embedding = self.embeddings_model.encode(
+                expanded_query,
+                normalize_embeddings=True,
+            ).tolist()
 
         results = self.collection.query(
             query_embeddings=[query_embedding],
@@ -368,8 +401,26 @@ class RAGPipelineV2:
 
     def retrieve_hybrid(self, query: str, final_top_k: Optional[int] = None) -> List[Dict[str, Any]]:
         """Retrieve using hybrid search: dense + sparse with RRF fusion."""
-        dense_results = self.retrieve_dense(query)
-        sparse_results = self.retrieve_sparse(query)
+        target_k = final_top_k or self.final_top_k
+        if self.enable_cache:
+            return list(deepcopy(self._retrieve_hybrid_cached(query.strip(), target_k)))
+
+        return self._retrieve_hybrid_uncached(query, target_k)
+
+    @lru_cache(maxsize=1000)
+    def _retrieve_hybrid_cached(self, query: str, target_k: int) -> tuple[Dict[str, Any], ...]:
+        return tuple(deepcopy(self._retrieve_hybrid_uncached(query, target_k)))
+
+    def _retrieve_hybrid_uncached(self, query: str, target_k: int) -> List[Dict[str, Any]]:
+        try:
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                dense_future = executor.submit(self.retrieve_dense, query)
+                sparse_future = executor.submit(self.retrieve_sparse, query)
+                dense_results = dense_future.result()
+                sparse_results = sparse_future.result()
+        except Exception:
+            dense_results = self.retrieve_dense(query)
+            sparse_results = self.retrieve_sparse(query)
 
         mentioned_companies = self._detect_companies(query)
         if mentioned_companies:
@@ -382,11 +433,10 @@ class RAGPipelineV2:
         fused_results = self._reciprocal_rank_fusion(
             dense_results,
             sparse_results,
-            final_top_k=final_top_k,
+            final_top_k=target_k,
         )
 
         # Rerank only a small preselected pool to avoid over-aggressive reshuffling
-        target_k = final_top_k or self.final_top_k
         preselect_k = min(len(fused_results), max(target_k, 5))
         preselected = fused_results[:preselect_k]
         reranked = self._rerank_answer_quality(query, preselected, mentioned_companies)

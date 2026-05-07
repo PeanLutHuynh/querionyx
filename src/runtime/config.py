@@ -39,6 +39,11 @@ class RuntimeConfig:
     max_concurrency: int = 2
     low_resource_mode: bool = True
     log_queries: bool = False
+    rag_final_top_k: int = 3
+    rag_low_confidence_threshold: float = 0.6
+    hybrid_low_confidence_threshold: float = 0.65
+    sql_low_confidence_threshold: float = 0.75
+    routing_low_confidence_threshold: float = 0.7
     query_log_dir: str = "metrics/query_logs"
     failure_log_dir: str = "metrics/failure_logs"
     timeouts: TimeoutConfig = field(default_factory=TimeoutConfig)
@@ -58,6 +63,19 @@ class RuntimeConfig:
         cfg.max_concurrency = int(os.getenv("QUERIONYX_MAX_CONCURRENCY", str(cfg.max_concurrency)))
         cfg.low_resource_mode = _env_bool("QUERIONYX_LOW_RESOURCE_MODE", cfg.low_resource_mode)
         cfg.log_queries = _env_bool("QUERIONYX_LOG_QUERIES", cfg.log_queries)
+        cfg.rag_final_top_k = int(os.getenv("QUERIONYX_RAG_FINAL_TOP_K", str(cfg.rag_final_top_k)))
+        cfg.rag_low_confidence_threshold = float(
+            os.getenv("QUERIONYX_RAG_LOW_CONFIDENCE_THRESHOLD", str(cfg.rag_low_confidence_threshold))
+        )
+        cfg.hybrid_low_confidence_threshold = float(
+            os.getenv("QUERIONYX_HYBRID_LOW_CONFIDENCE_THRESHOLD", str(cfg.hybrid_low_confidence_threshold))
+        )
+        cfg.sql_low_confidence_threshold = float(
+            os.getenv("QUERIONYX_SQL_LOW_CONFIDENCE_THRESHOLD", str(cfg.sql_low_confidence_threshold))
+        )
+        cfg.routing_low_confidence_threshold = float(
+            os.getenv("QUERIONYX_ROUTING_LOW_CONFIDENCE_THRESHOLD", str(cfg.routing_low_confidence_threshold))
+        )
         return cfg
 
     @classmethod
