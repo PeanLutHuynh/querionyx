@@ -13,28 +13,28 @@
 <line x1="80.0" y1="90.0" x2="760.0" y2="90.0" stroke="#cbd5e1" stroke-width="0.8"/>
 <text x="32.0" y="250.0" font-family="Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#0f172a" transform="rotate(-90 32.0 250.0)">Quality Score</text>
 <text x="420.0" y="468.0" font-family="Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#0f172a">RAG Version</text>
-<rect x="139.3" y="144.1" width="34.0" height="265.9" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
-<text x="156.3" y="136.1" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.831</text>
-<rect x="213.3" y="137.0" width="34.0" height="273.0" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
-<text x="230.3" y="129.0" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.853</text>
+<rect x="139.3" y="145.4" width="34.0" height="264.6" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
+<text x="156.3" y="137.4" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.827</text>
+<rect x="213.3" y="135.3" width="34.0" height="274.7" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
+<text x="230.3" y="127.3" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.858</text>
 <text x="193.3" y="438.0" font-family="Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#0f172a">V1</text>
-<rect x="366.0" y="126.8" width="34.0" height="283.2" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
-<text x="383.0" y="118.8" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.885</text>
-<rect x="440.0" y="135.7" width="34.0" height="274.3" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
-<text x="457.0" y="127.7" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.857</text>
+<rect x="366.0" y="122.9" width="34.0" height="287.1" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
+<text x="383.0" y="114.9" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.897</text>
+<rect x="440.0" y="138.0" width="34.0" height="272.0" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
+<text x="457.0" y="130.0" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.850</text>
 <text x="420.0" y="438.0" font-family="Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#0f172a">V2</text>
-<rect x="592.7" y="123.3" width="34.0" height="286.7" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
-<text x="609.7" y="115.3" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.896</text>
-<rect x="666.7" y="136.8" width="34.0" height="273.2" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
-<text x="683.7" y="128.8" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.854</text>
+<rect x="592.7" y="120.1" width="34.0" height="289.9" rx="3" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
+<text x="609.7" y="112.1" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.906</text>
+<rect x="666.7" y="139.6" width="34.0" height="270.4" rx="3" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
+<text x="683.7" y="131.6" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">0.845</text>
 <text x="646.7" y="438.0" font-family="Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#0f172a">V3</text>
-<circle cx="193.3" cy="220.9" r="5.0" fill="#d97706" stroke="#ffffff" stroke-width="1"/>
-<text x="193.3" y="195.3" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">218 ms</text>
+<circle cx="193.3" cy="194.0" r="5.0" fill="#d97706" stroke="#ffffff" stroke-width="1"/>
+<text x="193.3" y="168.4" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">237 ms</text>
 <circle cx="420.0" cy="173.0" r="5.0" fill="#d97706" stroke="#ffffff" stroke-width="1"/>
-<text x="420.0" y="147.4" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">273 ms</text>
-<circle cx="646.7" cy="184.6" r="5.0" fill="#d97706" stroke="#ffffff" stroke-width="1"/>
-<text x="646.7" y="159.0" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">260 ms</text>
-<polyline points="193.3,220.9 420.0,173.0 646.7,184.6" fill="none" stroke="#d97706" stroke-width="2.5"/>
+<text x="420.0" y="147.4" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">260 ms</text>
+<circle cx="646.7" cy="181.0" r="5.0" fill="#d97706" stroke="#ffffff" stroke-width="1"/>
+<text x="646.7" y="155.4" font-family="Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="#0f172a">252 ms</text>
+<polyline points="193.3,194.0 420.0,173.0 646.7,181.0" fill="none" stroke="#d97706" stroke-width="2.5"/>
 <rect x="297.0" y="500.0" width="16.0" height="16.0" rx="2" fill="#2563eb" stroke="#2563eb" stroke-width="1.5"/>
 <text x="319.0" y="513.0" font-family="Arial, sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#0f172a">Precision</text>
 <rect x="389.0" y="500.0" width="16.0" height="16.0" rx="2" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>

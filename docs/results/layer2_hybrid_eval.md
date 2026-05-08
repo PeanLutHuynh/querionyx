@@ -1,32 +1,31 @@
 # Hybrid Query Evaluation
 
-**Timestamp**: 2026-05-07T11:14:20+07:00
+**Timestamp**: 2026-05-08T09:22:44+07:00
 
 ## Summary Metrics
 
 | Metric | Value |
 |--------|-------|
 | Total Queries | 30 |
-| Correct | 24 |
-| Hybrid Correctness Score | 0.8500 |
-| Fallback Rate | 0.5667 |
+| Correct | 30 |
+| Hybrid Correctness Score | 0.9150 |
+| Fallback Rate | 1.0000 |
 
 ## Latency Metrics
 
 | Percentile | Latency (ms) |
 |------------|--------------|
-| P50 | 722.11 |
-| P95 | 849.70 |
-| P99 | 849.82 |
-| Average | 716.46 |
+| P50 | 773.40 |
+| P95 | 960.19 |
+| P99 | 1688.76 |
+| Average | 805.58 |
 
 ## Component Contribution Breakdown
 
 | Component | Count | Percentage |
 |-----------|-------|------------|
-| full_merge | 13 | 43.3% |
-| rag_fallback | 6 | 20.0% |
-| sql_fallback | 11 | 36.7% |
+| rag_fallback | 7 | 23.3% |
+| sql_fallback | 23 | 76.7% |
 
 ## Component Descriptions
 

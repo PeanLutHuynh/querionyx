@@ -34,7 +34,15 @@ EMBEDDING_CACHE_DIR = PROJECT_ROOT / "data" / "models" / "sentence_transformers"
 COLLECTION_NAME = "querionyx_v1"
 
 DEFAULT_EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+EMBEDDING_DIMENSION = 384
 DEFAULT_LLM_MODEL = "qwen2.5:3b"
+CHUNK_SIZE = 800
+CHUNK_OVERLAP = 120
+BM25_K1 = 1.5
+BM25_B = 0.75
+TOP_K_DENSE = 5
+TOP_K_SPARSE = 5
+FINAL_TOP_K = 3
 NOT_FOUND_MESSAGE = "Tôi không tìm thấy thông tin này trong tài liệu."
 NOT_FOUND_MESSAGES = {
     "vi": NOT_FOUND_MESSAGE,
@@ -94,9 +102,9 @@ class RAGPipelineV2:
         self,
         embedding_model_name: str = DEFAULT_EMBEDDING_MODEL,
         llm_model: str = DEFAULT_LLM_MODEL,
-        dense_top_k: int = 5,
-        sparse_top_k: int = 5,
-        final_top_k: int = 3,
+        dense_top_k: int = TOP_K_DENSE,
+        sparse_top_k: int = TOP_K_SPARSE,
+        final_top_k: int = FINAL_TOP_K,
         rrf_k: float = 60.0,
         ollama_base_url: Optional[str] = None,
         relevance_distance_threshold: float = 0.35,
@@ -288,7 +296,7 @@ class RAGPipelineV2:
         texts = [chunk.get("text", "") for chunk in chunks]
         # Simple tokenization: lowercase and split on whitespace
         self.tokenized_chunks = [text.lower().split() for text in texts]
-        self.bm25_index = BM25Okapi(self.tokenized_chunks)
+        self.bm25_index = BM25Okapi(self.tokenized_chunks, k1=BM25_K1, b=BM25_B)
 
         if verbose:
             print(f"   BM25 index built with {len(chunks)} documents", flush=True)
@@ -656,3 +664,21 @@ Answer based on the context above."""
             "retrieved_chunks": context_chunks,
             "num_chunks": len(context_chunks),
         }
+
+
+def implementation_config() -> Dict[str, Any]:
+    """Expose retrieval details for reproducibility exports and paper reporting."""
+    return {
+        "chunk_size": CHUNK_SIZE,
+        "chunk_overlap": CHUNK_OVERLAP,
+        "embedding_model": DEFAULT_EMBEDDING_MODEL,
+        "embedding_dimension": EMBEDDING_DIMENSION,
+        "embedding_multilingual": True,
+        "bm25_k1": BM25_K1,
+        "bm25_b": BM25_B,
+        "top_k_dense": TOP_K_DENSE,
+        "top_k_sparse": TOP_K_SPARSE,
+        "final_top_k": FINAL_TOP_K,
+        "rrf_k": 60.0,
+        "vector_store": "ChromaDB cosine",
+    }

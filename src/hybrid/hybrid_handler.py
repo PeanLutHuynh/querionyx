@@ -39,6 +39,10 @@ class HybridResult:
     error: Optional[str] = None
     timings: Dict[str, float] = field(default_factory=dict)
     llm_calls: int = 0
+    rag_status: str = "not_run"
+    sql_status: str = "not_run"
+    fallback_mode: str = "NONE"
+    trace: Dict[str, Any] = field(default_factory=dict)
 
 
 class HybridQueryHandler:
@@ -305,6 +309,63 @@ class HybridQueryHandler:
         return trimmed
 
     @staticmethod
+    def _branch_status(result: Dict[str, Any], branch: str) -> str:
+        if not result:
+            return "not_run"
+        if result.get("error"):
+            error = str(result.get("error", "")).lower()
+            if branch == "sql":
+                if "syntax" in error:
+                    return "syntax_error"
+                if "column" in error or "relation" in error or "schema" in error:
+                    return "schema_error"
+                if "select" in error or "read-only" in error:
+                    return "unsafe_sql_blocked"
+                return "execution_error"
+            if "no relevant" in error or "no local document" in error:
+                return "retrieval_insufficient"
+            return "retrieval_error"
+        if branch == "sql":
+            return "success" if result.get("rows") else "empty_result"
+        return "success" if result.get("context_passages") or result.get("answer") else "retrieval_insufficient"
+
+    def _build_trace(
+        self,
+        question: str,
+        rag_result: Dict[str, Any],
+        sql_result: Dict[str, Any],
+        contribution: str,
+        fallback_mode: str,
+        total_ms: float,
+        merge_ms: Optional[float] = None,
+    ) -> Dict[str, Any]:
+        passages = rag_result.get("context_passages") or []
+        citations = rag_result.get("citations") or []
+        return {
+            "query": question,
+            "rag_status": self._branch_status(rag_result, "rag"),
+            "sql_status": self._branch_status(sql_result, "sql"),
+            "fallback_mode": fallback_mode,
+            "contribution": contribution,
+            "rag_latency_ms": (rag_result.get("timings") or {}).get("total_ms"),
+            "sql_latency_ms": (sql_result.get("timings") or {}).get("total_ms"),
+            "fusion_latency_ms": merge_ms,
+            "total_latency_ms": total_ms,
+            "retrieved_chunks": [
+                {
+                    "text": passage[:300],
+                    "citation": citations[idx] if idx < len(citations) else None,
+                }
+                for idx, passage in enumerate(passages[: self.rag_passages])
+            ],
+            "generated_sql": sql_result.get("sql_query") or "",
+            "sql_result": self._trim_sql_rows(sql_result.get("rows", [])),
+            "rag_score": rag_result.get("score"),
+            "sql_error": sql_result.get("error"),
+            "rag_error": rag_result.get("error"),
+        }
+
+    @staticmethod
     def _format_sql_table(rows: List[Dict[str, Any]]) -> str:
         if not rows:
             return ""
@@ -374,7 +435,20 @@ class HybridQueryHandler:
                 sources=["SQL"],
                 contribution="sql_only",
                 sql_result=sql_result,
-                timings={"total_ms": round((time.perf_counter() - started) * 1000, 2)},
+                timings={
+                    "total_ms": round((time.perf_counter() - started) * 1000, 2),
+                    "sql_ms": (sql_result.get("timings") or {}).get("total_ms"),
+                },
+                sql_status=self._branch_status(sql_result, "sql"),
+                fallback_mode="SQL_ONLY",
+                trace=self._build_trace(
+                    question,
+                    {},
+                    sql_result,
+                    "sql_only",
+                    "SQL_ONLY",
+                    round((time.perf_counter() - started) * 1000, 2),
+                ),
             ).__dict__
 
         if router_intent == "RAG" or self._is_doc_question(question):
@@ -387,7 +461,20 @@ class HybridQueryHandler:
                 contribution="rag_only",
                 rag_result=rag_result,
                 error=rag_result.get("error"),
-                timings={"total_ms": round((time.perf_counter() - started) * 1000, 2)},
+                timings={
+                    "total_ms": round((time.perf_counter() - started) * 1000, 2),
+                    "rag_ms": (rag_result.get("timings") or {}).get("total_ms"),
+                },
+                rag_status=self._branch_status(rag_result, "rag"),
+                fallback_mode="RAG_ONLY",
+                trace=self._build_trace(
+                    question,
+                    rag_result,
+                    {},
+                    "rag_only",
+                    "RAG_ONLY",
+                    round((time.perf_counter() - started) * 1000, 2),
+                ),
             ).__dict__
 
         if self.runtime_config.parallel_enabled:
@@ -408,6 +495,7 @@ class HybridQueryHandler:
             answer = self._deterministic_sql_answer(question, sql_result)
             sources = ["SQL"]
             contribution = "sql_only"
+            fallback_mode = "SQL_ONLY" if not rag_ok or rag_low else "NONE"
         elif rag_ok and not sql_ok:
             answer = self._deterministic_rag_answer(
                 rag_result,
@@ -415,8 +503,10 @@ class HybridQueryHandler:
             )
             sources = [f"DOC:{c}" for c in rag_result.get("citations", [])]
             contribution = "rag_only"
+            fallback_mode = "RAG_ONLY"
         elif sql_ok and rag_ok:
             sources = ["SQL"] + [f"DOC:{c}" for c in rag_result.get("citations", [])]
+            fallback_mode = "NONE"
             if self._should_merge_with_llm(question, rag_result, sql_result):
                 try:
                     merge_started = time.perf_counter()
@@ -432,13 +522,18 @@ class HybridQueryHandler:
                         + self._deterministic_rag_answer(rag_result)
                     )
                     contribution = "merge_timeout"
+                    fallback_mode = "TEMPLATE_MERGE"
             else:
                 answer = self._deterministic_sql_answer(question, sql_result)
                 contribution = "sql_only"
+                fallback_mode = "SQL_DOMINANT"
         else:
             answer = "Tôi không có đủ thông tin để trả lời câu hỏi này."
             sources = []
+            fallback_mode = "BOTH_FAILED"
 
+        total_ms = round((time.perf_counter() - started) * 1000, 2)
+        merge_ms_value = locals().get("merge_ms")
         return HybridResult(
             question=question,
             answer=answer,
@@ -447,10 +542,24 @@ class HybridQueryHandler:
             rag_result=rag_result,
             sql_result=sql_result,
             timings={
-                "total_ms": round((time.perf_counter() - started) * 1000, 2),
-                "merge_ms": locals().get("merge_ms"),
+                "total_ms": total_ms,
+                "rag_ms": (rag_result.get("timings") or {}).get("total_ms"),
+                "sql_ms": (sql_result.get("timings") or {}).get("total_ms"),
+                "merge_ms": merge_ms_value,
             },
             llm_calls=llm_calls,
+            rag_status=self._branch_status(rag_result, "rag"),
+            sql_status=self._branch_status(sql_result, "sql"),
+            fallback_mode=fallback_mode,
+            trace=self._build_trace(
+                question,
+                rag_result,
+                sql_result,
+                contribution,
+                fallback_mode,
+                total_ms,
+                merge_ms_value,
+            ),
         ).__dict__
 
     def query(self, question: str, router_intent: Optional[str] = None) -> Dict[str, Any]:

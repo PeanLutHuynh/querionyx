@@ -33,6 +33,21 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..
 
 DEFAULT_MODEL = os.getenv("OLLAMA_SQL_MODEL", "qwen2.5:3b")
 
+DISALLOWED_SQL_KEYWORDS = [
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "DROP",
+    "ALTER",
+    "TRUNCATE",
+    "CREATE",
+    "GRANT",
+    "REVOKE",
+    "COPY",
+    "CALL",
+    "DO",
+]
+
 CORE_TABLES = [
     "categories",
     "products",
@@ -439,12 +454,20 @@ class TextToSQLPipeline:
         return f"{cleaned};" if cleaned else ""
 
     @staticmethod
-    def _is_read_only_select(sql: str) -> bool:
+    def validate_sql_safety(sql: str) -> Tuple[bool, Optional[str]]:
         stripped = sql.strip()
         if not re.match(r"^(select|with)\b", stripped, flags=re.IGNORECASE):
-            return False
-        forbidden = r"\b(insert|update|delete|drop|alter|truncate|create|grant|revoke|copy|call|do)\b"
-        return re.search(forbidden, stripped, flags=re.IGNORECASE) is None
+            return False, "SQL must start with SELECT or WITH."
+        forbidden = r"\b(" + "|".join(DISALLOWED_SQL_KEYWORDS) + r")\b"
+        match = re.search(forbidden, stripped, flags=re.IGNORECASE)
+        if match:
+            return False, f"Disallowed SQL keyword detected: {match.group(1).upper()}."
+        return True, None
+
+    @staticmethod
+    def _is_read_only_select(sql: str) -> bool:
+        allowed, _ = TextToSQLPipeline.validate_sql_safety(sql)
+        return allowed
 
     @staticmethod
     def _contains_all(text: str, terms: Sequence[str]) -> bool:
@@ -650,8 +673,9 @@ class TextToSQLPipeline:
         return self._clean_sql(self.sql_llm.invoke(prompt))
 
     def execute_sql(self, sql: str) -> Tuple[List[Dict[str, Any]], Optional[str]]:
-        if not self._is_read_only_select(sql):
-            return [], "Only read-only SELECT SQL is allowed."
+        allowed, safety_error = self.validate_sql_safety(sql)
+        if not allowed:
+            return [], safety_error or "Only read-only SELECT SQL is allowed."
         try:
             with self._connect() as conn:
                 conn.set_session(readonly=True)

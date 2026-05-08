@@ -67,7 +67,7 @@ def get_router_result(question: str, router_name: str, idx: int) -> tuple:
 
             router = RuleBasedRouter()
             result = router.classify(question)
-            return result.intent.upper(), 0.0
+            return result.intent.upper(), 0.0, result.to_dict()
         elif router_name == "llm_router":
             try:
                 from src.router.llm_router import LLMRouter
@@ -75,19 +75,25 @@ def get_router_result(question: str, router_name: str, idx: int) -> tuple:
                 router = LLMRouter()
                 result = router.route(question)
                 llm_called = getattr(result, "llm_called", False)
-                return result.intent.upper(), 1.0 if llm_called else 0.0
+                return result.intent.upper(), 1.0 if llm_called else 0.0, {
+                    "intent": result.intent.upper(),
+                    "confidence": getattr(result, "confidence", None),
+                    "reasoning": getattr(result, "reasoning", ""),
+                    "signals": {},
+                    "ambiguous": None,
+                }
             except Exception:
                 # Fallback if LLM not available
-                return random.choice(["RAG", "SQL", "HYBRID"]), 0.0
+                return random.choice(["RAG", "SQL", "HYBRID"]), 0.0, {"signals": {}, "ambiguous": None}
         else:  # adaptive_router
             from src.router.rule_based_router import RuleBasedRouter
 
             router = RuleBasedRouter()
             result = router.classify(question)
-            return result.intent.upper(), 0.0
+            return result.intent.upper(), 0.0, result.to_dict()
     except Exception as e:
         print(f"Warning: Could not initialize router {router_name}: {e}")
-        return random.choice(["RAG", "SQL", "HYBRID"]), 0.0
+        return random.choice(["RAG", "SQL", "HYBRID"]), 0.0, {"signals": {}, "ambiguous": None}
 
 
 def evaluate_routers(
@@ -128,7 +134,7 @@ def evaluate_routers(
         router_results = {}
         for router_name in ["rule_based_router", "llm_router", "adaptive_router"]:
             t0 = time.perf_counter()
-            intent, llm_flag = get_router_result(question, router_name, idx)
+            intent, llm_flag, trace = get_router_result(question, router_name, idx)
             latency_ms = (time.perf_counter() - t0) * 1000
 
             router_results[router_name] = {
@@ -148,6 +154,11 @@ def evaluate_routers(
                     "correct": intent == ground_truth,
                     "latency_ms": latency_ms,
                     "llm_called": llm_flag > 0,
+                    "confidence": trace.get("confidence"),
+                    "signals": trace.get("signals"),
+                    "ambiguous": trace.get("ambiguous"),
+                    "matched_sql_keywords": trace.get("matched_sql_keywords"),
+                    "matched_rag_keywords": trace.get("matched_rag_keywords"),
                 }
             )
 
@@ -189,11 +200,17 @@ def evaluate_routers(
 
         # Misrouting breakdown
         misrouting = defaultdict(int)
+        ambiguous_total = 0
+        ambiguous_misroutes = 0
         for result in router_results:
+            if result.get("ambiguous"):
+                ambiguous_total += 1
             if not result["correct"]:
                 gt = result["ground_truth"]
                 pred = result["predicted"]
                 misrouting[f"{gt}→{pred}"] += 1
+                if result.get("ambiguous"):
+                    ambiguous_misroutes += 1
 
         # Average latency
         avg_latency = sum(latencies[router_name]) / len(latencies[router_name])
@@ -249,6 +266,8 @@ def write_router_results(
                     "llm_call_count": m.llm_call_count,
                     "llm_call_rate": round(m.llm_call_rate, 4),
                     "misrouting_breakdown": m.misrouting_breakdown,
+                    "ambiguous_cases": sum(1 for r in results[name] if r.get("ambiguous")),
+                    "ambiguous_misroutes": sum(1 for r in results[name] if r.get("ambiguous") and not r.get("correct")),
                 }
                 for name, m in metrics.items()
             },

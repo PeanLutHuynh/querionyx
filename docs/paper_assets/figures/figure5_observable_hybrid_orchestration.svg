@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560">
+  <defs>
+    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155" />
+    </marker>
+    <style>
+      .title { font: 700 18px Arial, sans-serif; fill: #0f172a; }
+      .label { font: 600 13px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 400 11px Arial, sans-serif; fill: #334155; }
+      .mono { font: 400 11px Consolas, monospace; fill: #334155; }
+      .box { fill: #f8fafc; stroke: #334155; stroke-width: 1.4; rx: 6; }
+      .router { fill: #eff6ff; stroke: #2563eb; stroke-width: 1.8; rx: 6; }
+      .trace { fill: #ecfdf5; stroke: #0f766e; stroke-width: 1.8; rx: 6; }
+      .warn { fill: #fff7ed; stroke: #d97706; stroke-width: 1.8; rx: 6; }
+      .line { stroke: #334155; stroke-width: 1.6; marker-end: url(#arrow5); }
+      .dash { stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5 4; marker-end: url(#arrow5); }
+    </style>
+  </defs>
+  <rect width="980" height="560" fill="#ffffff"/>
+  <text x="490" y="36" class="title" text-anchor="middle">Observable Hybrid Orchestration in Querionyx</text>
+
+  <rect x="60" y="80" width="180" height="70" class="box"/>
+  <text x="150" y="108" class="label" text-anchor="middle">User Query</text>
+  <text x="150" y="130" class="small" text-anchor="middle">enterprise question</text>
+
+  <rect x="300" y="70" width="220" height="100" class="router"/>
+  <text x="410" y="100" class="label" text-anchor="middle">Adaptive Router</text>
+  <text x="410" y="123" class="mono" text-anchor="middle">intent, confidence</text>
+  <text x="410" y="143" class="mono" text-anchor="middle">sql_score, rag_score, ambiguous</text>
+
+  <rect x="610" y="70" width="260" height="100" class="trace"/>
+  <text x="740" y="100" class="label" text-anchor="middle">Routing Trace Export</text>
+  <text x="740" y="123" class="mono" text-anchor="middle">router_signals</text>
+  <text x="740" y="143" class="mono" text-anchor="middle">HYBRID to RAG ambiguity logs</text>
+
+  <line x1="240" y1="115" x2="300" y2="115" class="line"/>
+  <line x1="520" y1="115" x2="610" y2="115" class="dash"/>
+
+  <rect x="150" y="240" width="230" height="105" class="box"/>
+  <text x="265" y="270" class="label" text-anchor="middle">RAG Branch</text>
+  <text x="265" y="293" class="small" text-anchor="middle">ChromaDB + BM25 + RRF</text>
+  <text x="265" y="314" class="mono" text-anchor="middle">retrieved_chunks, citations</text>
+
+  <rect x="600" y="240" width="230" height="105" class="box"/>
+  <text x="715" y="270" class="label" text-anchor="middle">SQL Branch</text>
+  <text x="715" y="293" class="small" text-anchor="middle">schema linking + read-only validation</text>
+  <text x="715" y="314" class="mono" text-anchor="middle">generated_sql, sql_result</text>
+
+  <rect x="405" y="405" width="170" height="80" class="warn"/>
+  <text x="490" y="435" class="label" text-anchor="middle">Fusion / Fallback</text>
+  <text x="490" y="459" class="mono" text-anchor="middle">fallback_mode</text>
+
+  <rect x="660" y="400" width="250" height="105" class="trace"/>
+  <text x="785" y="430" class="label" text-anchor="middle">Per-Query Trace</text>
+  <text x="785" y="454" class="mono" text-anchor="middle">rag_status, sql_status</text>
+  <text x="785" y="474" class="mono" text-anchor="middle">branch timings, error_type</text>
+
+  <line x1="410" y1="170" x2="265" y2="240" class="line"/>
+  <line x1="410" y1="170" x2="715" y2="240" class="line"/>
+  <line x1="380" y1="293" x2="490" y2="405" class="line"/>
+  <line x1="600" y1="293" x2="490" y2="405" class="line"/>
+  <line x1="575" y1="445" x2="660" y2="445" class="dash"/>
+
+  <text x="490" y="530" class="small" text-anchor="middle">
+    The trace layer records why a route was selected, which branch degraded, and what evidence was used.
+  </text>
+</svg>

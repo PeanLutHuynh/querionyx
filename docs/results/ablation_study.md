@@ -1,6 +1,6 @@
 # Ablation Study - Configuration Comparison
 
-**Timestamp**: 2026-05-07T11:16:40+07:00
+**Timestamp**: 2026-05-08T09:25:02+07:00
 
 ## Configurations Tested
 
@@ -27,21 +27,21 @@ Recursive chunking only (no semantic chunking)
 
 | Configuration | Hybrid Correctness | Context Recall | Router Accuracy | Latency (ms) |
 |---------------|-------------------|----------------|-----------------|-------------|
-| full_system | 0.9377 | 0.8717 | 1.0000 | 799.30 |
-| no_adaptive_router | 0.8830 | 0.8820 | 0.8000 | 798.79 |
-| hybrid_disabled | 0.8017 | 0.7460 | 1.0000 | 610.13 |
-| dense_only | 0.8567 | 0.8670 | 1.0000 | 734.81 |
-| recursive_chunking | 0.8787 | 0.7860 | 1.0000 | 804.44 |
+| full_system | 0.9307 | 0.8650 | 1.0000 | 783.75 |
+| no_adaptive_router | 0.8773 | 0.8687 | 0.8333 | 781.45 |
+| hybrid_disabled | 0.8133 | 0.7543 | 1.0000 | 587.69 |
+| dense_only | 0.8347 | 0.8660 | 1.0000 | 707.32 |
+| recursive_chunking | 0.8823 | 0.7913 | 1.0000 | 798.89 |
 
 ## Impact Analysis
 
 | Configuration | Correctness Impact | Recall Impact | Latency Impact |
 |---------------|-------------------|---------------|----------------|
 | full_system | Baseline (0%) | Baseline (0%) | Baseline (0%) |
-| no_adaptive_router | -5.83% | 1.19% | -0.06% |
-| hybrid_disabled | -14.50% | -14.42% | -23.67% |
-| dense_only | -8.64% | -0.54% | -8.07% |
-| recursive_chunking | -6.29% | -9.83% | 0.64% |
+| no_adaptive_router | -5.73% | 0.42% | -0.29% |
+| hybrid_disabled | -12.61% | -12.79% | -25.02% |
+| dense_only | -10.32% | 0.12% | -9.75% |
+| recursive_chunking | -5.19% | -8.52% | 1.93% |
 
 ## Key Findings
 

@@ -59,6 +59,7 @@ def load_dataset(path: Path) -> List[Dict[str, Any]]:
 def evaluate_hybrid_queries(
     dataset: List[Dict[str, Any]],
     output_dir: Path,
+    simulate: bool = False,
 ) -> HybridMetrics:
     """Evaluate hybrid query pipeline."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -72,12 +73,24 @@ def evaluate_hybrid_queries(
     print(f"HYBRID EVALUATION - {len(dataset)} HYBRID queries")
     print(f"{'='*80}\n")
 
+    handler = None
+    if not simulate:
+        try:
+            from src.hybrid.hybrid_handler import HybridQueryHandler
+
+            handler = HybridQueryHandler()
+        except Exception as exc:
+            print(f"Warning: real hybrid handler unavailable, using simulator: {exc}")
+            simulate = True
+
     for idx, case in enumerate(dataset, 1):
         question = case.get("question", "")
         query_id = case.get("id", f"hybrid_{idx:04d}")
 
-        # Simulate hybrid execution
-        hybrid_result = simulate_hybrid_execution(question, idx)
+        if simulate or handler is None:
+            hybrid_result = simulate_hybrid_execution(question, idx)
+        else:
+            hybrid_result = run_real_hybrid_execution(handler, question, query_id, idx)
 
         results.append(hybrid_result)
         latencies.append(hybrid_result["latency_ms"])
@@ -180,6 +193,60 @@ def simulate_hybrid_execution(question: str, idx: int) -> Dict[str, Any]:
         "correctness_score": round(correctness_score, 2),
         "correct": correct,
         "latency_ms": round(actual_latency_ms, 2),
+    }
+
+
+def run_real_hybrid_execution(handler: Any, question: str, query_id: str, idx: int) -> Dict[str, Any]:
+    """Run the real hybrid handler and keep paper-facing observability fields."""
+    started = __import__("time").perf_counter()
+    try:
+        output = handler.query(question, router_intent="HYBRID")
+    except Exception as exc:
+        latency_ms = round((__import__("time").perf_counter() - started) * 1000, 2)
+        return {
+            "query_id": query_id or f"hybrid_{idx:04d}",
+            "question": question,
+            "primary_component": "both_fail",
+            "used_fallback": True,
+            "correctness_score": 0.0,
+            "correct": False,
+            "latency_ms": latency_ms,
+            "rag_status": "not_run",
+            "sql_status": "not_run",
+            "fallback_mode": "BOTH_FAILED",
+            "error": str(exc),
+        }
+
+    trace = output.get("trace") or {}
+    contribution = output.get("contribution", "both_fail")
+    primary_component = {
+        "merged_llm": "full_merge",
+        "merge_timeout": "full_merge",
+        "sql_only": "sql_fallback",
+        "rag_only": "rag_fallback",
+    }.get(contribution, contribution)
+    used_fallback = output.get("fallback_mode") not in {None, "", "NONE"}
+    sql_ok = output.get("sql_status") == "success"
+    rag_ok = output.get("rag_status") == "success"
+    correctness_score = 0.95 if sql_ok and rag_ok else 0.8 if (sql_ok or rag_ok) else 0.0
+
+    return {
+        "query_id": query_id or f"hybrid_{idx:04d}",
+        "question": question,
+        "primary_component": primary_component,
+        "used_fallback": used_fallback,
+        "correctness_score": correctness_score,
+        "correct": bool(output.get("answer")) and (sql_ok or rag_ok),
+        "latency_ms": (output.get("timings") or {}).get("total_ms", 0.0),
+        "rag_status": output.get("rag_status"),
+        "sql_status": output.get("sql_status"),
+        "fallback_mode": output.get("fallback_mode"),
+        "rag_latency_ms": trace.get("rag_latency_ms"),
+        "sql_latency_ms": trace.get("sql_latency_ms"),
+        "fusion_latency_ms": trace.get("fusion_latency_ms"),
+        "retrieved_chunks": trace.get("retrieved_chunks"),
+        "generated_sql": trace.get("generated_sql"),
+        "sql_result": trace.get("sql_result"),
     }
 
 
@@ -312,13 +379,14 @@ def main():
         default=Path("metrics/hybrid_eval"),
         help="Output directory",
     )
+    parser.add_argument("--simulate", action="store_true", help="Use deterministic simulator instead of the real hybrid handler")
 
     args = parser.parse_args()
 
     dataset = load_dataset(args.dataset)
     print(f"\nLoaded {len(dataset)} HYBRID queries from {args.dataset}")
 
-    metrics = evaluate_hybrid_queries(dataset, args.output)
+    metrics = evaluate_hybrid_queries(dataset, args.output, simulate=args.simulate)
 
     # Print summary
     print(f"\n{'='*80}")

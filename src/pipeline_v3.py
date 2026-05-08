@@ -96,12 +96,18 @@ class AdaptiveRouter:
         rule_result = self.rule_router.classify(question)
 
         if signals["rag"] and signals["sql"]:
+            rule_trace = rule_result.to_dict()
             return {
                 "intent": "HYBRID",
-                "confidence": 0.8,
+                "confidence": max(0.8, rule_result.confidence),
                 "reason": "Both document and structured-data signals detected.",
                 "router_type_used": "adaptive_rule",
                 "llm_called": False,
+                "signals": rule_trace.get("signals", {}),
+                "ambiguous": rule_trace.get("ambiguous", False),
+                "matched_sql_keywords": rule_trace.get("matched_sql_keywords", []),
+                "matched_rag_keywords": rule_trace.get("matched_rag_keywords", []),
+                "router_trace": rule_trace,
             }
 
         if self.use_llm_for_ambiguous and signals["conjunction"]:
@@ -113,6 +119,11 @@ class AdaptiveRouter:
                     "reason": llm_result.reasoning,
                     "router_type_used": "llm_router",
                     "llm_called": llm_result.llm_called,
+                    "signals": rule_result.signals,
+                    "ambiguous": rule_result.ambiguous,
+                    "matched_sql_keywords": rule_result.matched_sql_keywords,
+                    "matched_rag_keywords": rule_result.matched_rag_keywords,
+                    "router_trace": rule_result.to_dict(),
                 }
             except Exception as exc:
                 return {
@@ -121,6 +132,11 @@ class AdaptiveRouter:
                     "reason": f"LLM router unavailable; fallback to rule router: {exc}",
                     "router_type_used": "rule_fallback",
                     "llm_called": False,
+                    "signals": rule_result.signals,
+                    "ambiguous": rule_result.ambiguous,
+                    "matched_sql_keywords": rule_result.matched_sql_keywords,
+                    "matched_rag_keywords": rule_result.matched_rag_keywords,
+                    "router_trace": rule_result.to_dict(),
                 }
 
         return {
@@ -129,6 +145,11 @@ class AdaptiveRouter:
             "reason": rule_result.reasoning,
             "router_type_used": "rule_router",
             "llm_called": False,
+            "signals": rule_result.signals,
+            "ambiguous": rule_result.ambiguous,
+            "matched_sql_keywords": rule_result.matched_sql_keywords,
+            "matched_rag_keywords": rule_result.matched_rag_keywords,
+            "router_trace": rule_result.to_dict(),
         }
 
 
@@ -297,7 +318,7 @@ class QueryonixPipelineV3:
             answer = self._format_sql_answer(sql_output) if sql_success else INSUFFICIENT_EVIDENCE
             timings["formatting_latency_ms"] = round((time.perf_counter() - formatting_started) * 1000, 2)
             sources = ["SQL:" + ",".join(sql_output.get("relevant_tables", []))] if sql_success else []
-            raw = {"sql": sql_output}
+            raw = {"sql": sql_output, "router_trace": route}
         elif intent == "RAG":
             branch_started = time.perf_counter()
             try:
@@ -323,7 +344,7 @@ class QueryonixPipelineV3:
             if not rag_success and not timeout_triggered:
                 fallback_used = True
                 record_failure("empty_retrieval", "rag_retrieval", rag_output.get("error") or "empty answer", "insufficient_evidence_response", timings["rag_latency_ms"] or 0.0)
-            raw = {"rag": rag_output}
+            raw = {"rag": rag_output, "router_trace": route}
             llm_call_count += rag_output.get("llm_calls", 0)
         else:
             branch_started = time.perf_counter()
@@ -377,7 +398,7 @@ class QueryonixPipelineV3:
             )
             answer = hybrid_output.get("answer") or INSUFFICIENT_EVIDENCE
             sources = hybrid_output.get("sources", [])
-            raw = {"hybrid": hybrid_output}
+            raw = {"hybrid": hybrid_output, "router_trace": route}
             llm_call_count += hybrid_output.get("llm_calls", 0)
             sql_result = hybrid_output.get("sql_result") or {}
             rag_result = hybrid_output.get("rag_result") or {}
@@ -389,6 +410,9 @@ class QueryonixPipelineV3:
             fallback_used = fallback_used or contribution in {"merge_timeout", "both_fail"}
             if contribution == "merge_timeout":
                 record_failure("merge_error", "hybrid_merge", "merge timed out or failed", "deterministic_merge_template", timings["merge_latency_ms"] or 0.0)
+            if contribution in {"sql_only", "rag_only"}:
+                fallback_used = True
+                record_failure("hybrid_fallback", "hybrid_merge", f"contribution={contribution}", "returned_best_available_branch", hybrid_latency)
             if sql_result.get("error"):
                 record_failure("sql_execution_error", "sql_execution", sql_result.get("error"), "branch_degraded", timings["sql_latency_ms"] or 0.0)
             if rag_result.get("error"):

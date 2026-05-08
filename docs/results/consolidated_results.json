@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-07T11:17:44+07:00",
+  "timestamp": "2026-05-08T09:25:02+07:00",
   "paper_title": "Querionyx V3: Adaptive Hybrid RAG-SQL System for Multi-Modal Enterprise Data",
   "conference": "ICCCNET 2026",
   "tables": {
@@ -30,53 +30,57 @@
               "RAG": 9
             }
           },
-          "avg_latency_ms": 0.08,
+          "avg_latency_ms": 0.1,
           "llm_call_count": 0,
           "llm_call_rate": 0.0,
           "misrouting_breakdown": {
             "HYBRID→RAG": 9,
             "SQL→RAG": 3,
             "SQL→HYBRID": 2
-          }
+          },
+          "ambiguous_cases": 8,
+          "ambiguous_misroutes": 1
         },
         "llm_router": {
           "router_name": "llm_router",
           "total": 90,
-          "correct": 30,
-          "accuracy": 0.3333,
+          "correct": 38,
+          "accuracy": 0.4222,
           "per_class_accuracy": {
-            "RAG": 0.2667,
-            "SQL": 0.3333,
-            "HYBRID": 0.4
+            "RAG": 0.3333,
+            "SQL": 0.4667,
+            "HYBRID": 0.4667
           },
           "confusion_matrix": {
             "RAG": {
-              "SQL": 11,
-              "HYBRID": 11,
-              "RAG": 8
+              "RAG": 10,
+              "HYBRID": 13,
+              "SQL": 7
             },
             "SQL": {
-              "SQL": 10,
-              "RAG": 7,
-              "HYBRID": 13
+              "HYBRID": 9,
+              "SQL": 14,
+              "RAG": 7
             },
             "HYBRID": {
-              "HYBRID": 12,
+              "HYBRID": 14,
               "RAG": 11,
-              "SQL": 7
+              "SQL": 5
             }
           },
-          "avg_latency_ms": 108.72,
+          "avg_latency_ms": 554.82,
           "llm_call_count": 0,
           "llm_call_rate": 0.0,
           "misrouting_breakdown": {
-            "RAG→SQL": 11,
-            "RAG→HYBRID": 11,
+            "RAG→HYBRID": 13,
+            "RAG→SQL": 7,
+            "SQL→HYBRID": 9,
             "SQL→RAG": 7,
-            "SQL→HYBRID": 13,
             "HYBRID→RAG": 11,
-            "HYBRID→SQL": 7
-          }
+            "HYBRID→SQL": 5
+          },
+          "ambiguous_cases": 0,
+          "ambiguous_misroutes": 0
         },
         "adaptive_router": {
           "router_name": "adaptive_router",
@@ -102,27 +106,29 @@
               "RAG": 9
             }
           },
-          "avg_latency_ms": 0.02,
+          "avg_latency_ms": 0.03,
           "llm_call_count": 0,
           "llm_call_rate": 0.0,
           "misrouting_breakdown": {
             "HYBRID→RAG": 9,
             "SQL→RAG": 3,
             "SQL→HYBRID": 2
-          }
+          },
+          "ambiguous_cases": 8,
+          "ambiguous_misroutes": 1
         }
       },
       "summary": {
         "best_router": "rule_based_router",
         "router_accuracies": {
           "rule_based_router": 0.8444,
-          "llm_router": 0.3333,
+          "llm_router": 0.4222,
           "adaptive_router": 0.8444
         },
         "avg_latencies": {
-          "rule_based_router": 0.08,
-          "llm_router": 108.72,
-          "adaptive_router": 0.02
+          "rule_based_router": 0.1,
+          "llm_router": 554.82,
+          "adaptive_router": 0.03
         }
       }
     },
@@ -132,16 +138,17 @@
         "rag_v1": {
           "version_name": "rag_v1",
           "total": 30,
-          "successful": 29,
-          "success_rate": 0.9667,
-          "context_precision": 0.831,
-          "context_recall": 0.853,
-          "avg_retrieval_latency_ms": 217.78,
+          "successful": 28,
+          "success_rate": 0.9333,
+          "context_precision": 0.827,
+          "context_recall": 0.8583,
+          "avg_retrieval_latency_ms": 237.22,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 3.93,
+          "avg_context_chunks": 4.17,
           "failed_queries": [
-            "unstr_021"
+            "unstr_011",
+            "unstr_029"
           ]
         },
         "rag_v2": {
@@ -149,45 +156,44 @@
           "total": 30,
           "successful": 28,
           "success_rate": 0.9333,
-          "context_precision": 0.885,
-          "context_recall": 0.8573,
-          "avg_retrieval_latency_ms": 273.03,
+          "context_precision": 0.8973,
+          "context_recall": 0.85,
+          "avg_retrieval_latency_ms": 260.36,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 3.83,
+          "avg_context_chunks": 3.97,
           "failed_queries": [
-            "unstr_020",
-            "unstr_030"
+            "unstr_003",
+            "unstr_016"
           ]
         },
         "rag_v3": {
           "version_name": "rag_v3",
           "total": 30,
-          "successful": 28,
-          "success_rate": 0.9333,
-          "context_precision": 0.896,
-          "context_recall": 0.8537,
-          "avg_retrieval_latency_ms": 259.67,
+          "successful": 29,
+          "success_rate": 0.9667,
+          "context_precision": 0.906,
+          "context_recall": 0.845,
+          "avg_retrieval_latency_ms": 251.57,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 4.2,
+          "avg_context_chunks": 3.83,
           "failed_queries": [
-            "unstr_024",
-            "unstr_029"
+            "unstr_024"
           ]
         }
       },
       "summary": {
         "best_rag_version": "rag_v3",
         "avg_precisions": {
-          "rag_v1": 0.831,
-          "rag_v2": 0.885,
-          "rag_v3": 0.896
+          "rag_v1": 0.827,
+          "rag_v2": 0.8973,
+          "rag_v3": 0.906
         },
         "avg_recalls": {
-          "rag_v1": 0.853,
-          "rag_v2": 0.8573,
-          "rag_v3": 0.8537
+          "rag_v1": 0.8583,
+          "rag_v2": 0.85,
+          "rag_v3": 0.845
         }
       }
     },
@@ -195,27 +201,26 @@
       "title": "Table 3: SQL Pipeline Evaluation",
       "metrics": {
         "total": 30,
-        "successful": 28,
-        "execution_accuracy": 0.8667,
+        "successful": 27,
+        "execution_accuracy": 0.7667,
         "exact_match_rate": 0.8,
-        "retry_rate": 0.1333,
-        "avg_latency_ms": 214.84,
+        "retry_rate": 0.2333,
+        "avg_latency_ms": 226.56,
         "error_breakdown": {
-          "schema_error": 1,
-          "syntax_error": 1
+          "schema_error": 3
         },
         "failed_queries": [
-          "sql_0001",
-          "sql_0029"
+          "sql_0008",
+          "sql_0012",
+          "sql_0017"
         ]
       },
       "summary": {
-        "execution_accuracy": 0.8667,
+        "execution_accuracy": 0.7667,
         "exact_match_rate": 0.8,
-        "retry_rate": 0.1333,
+        "retry_rate": 0.2333,
         "error_breakdown": {
-          "schema_error": 1,
-          "syntax_error": 1
+          "schema_error": 3
         }
       }
     },
@@ -223,35 +228,26 @@
       "title": "Table 4: Hybrid Query Evaluation",
       "metrics": {
         "total": 30,
-        "correct": 24,
-        "hybrid_correctness": 0.85,
+        "correct": 30,
+        "hybrid_correctness": 0.915,
         "component_breakdown": {
-          "full_merge": 13,
-          "rag_fallback": 6,
-          "sql_fallback": 11
+          "sql_fallback": 23,
+          "rag_fallback": 7
         },
-        "fallback_rate": 0.5667,
-        "latency_p50_ms": 722.11,
-        "latency_p95_ms": 849.7,
-        "latency_p99_ms": 849.82,
-        "avg_latency_ms": 716.46,
-        "failed_queries": [
-          "hybrid_0008",
-          "hybrid_0009",
-          "hybrid_0012",
-          "hybrid_0014",
-          "hybrid_0021",
-          "hybrid_0023"
-        ]
+        "fallback_rate": 1.0,
+        "latency_p50_ms": 773.4,
+        "latency_p95_ms": 960.19,
+        "latency_p99_ms": 1688.76,
+        "avg_latency_ms": 805.58,
+        "failed_queries": []
       },
       "summary": {
-        "hybrid_correctness": 0.85,
-        "fallback_rate": 0.5667,
-        "latency_p95": 849.7,
+        "hybrid_correctness": 0.915,
+        "fallback_rate": 1.0,
+        "latency_p95": 960.19,
         "component_breakdown": {
-          "full_merge": 13,
-          "rag_fallback": 6,
-          "sql_fallback": 11
+          "sql_fallback": 23,
+          "rag_fallback": 7
         }
       }
     },
@@ -261,64 +257,64 @@
         "total_queries": 90,
         "successful_queries": 87,
         "error_rate": 0.0333,
-        "throughput_qps": 3.3144,
+        "throughput_qps": 3.2454,
         "latency_by_type": {
           "RAG": {
-            "p50_ms": 228.44,
-            "p95_ms": 303.53,
-            "p99_ms": 304.72,
-            "avg_ms": 225.84,
+            "p50_ms": 232.65,
+            "p95_ms": 290.14,
+            "p99_ms": 290.99,
+            "avg_ms": 222.9,
             "count": 30
           },
           "SQL": {
-            "p50_ms": 181.39,
-            "p95_ms": 240.23,
-            "p99_ms": 243.84,
-            "avg_ms": 178.23,
+            "p50_ms": 193.14,
+            "p95_ms": 234.65,
+            "p99_ms": 243.09,
+            "avg_ms": 184.26,
             "count": 30
           },
           "HYBRID": {
-            "p50_ms": 440.72,
-            "p95_ms": 573.36,
-            "p99_ms": 605.15,
-            "avg_ms": 440.53,
+            "p50_ms": 478.13,
+            "p95_ms": 597.04,
+            "p99_ms": 612.25,
+            "avg_ms": 456.55,
             "count": 30
           }
         },
         "cpu_percent_avg": 0.0,
         "cpu_percent_peak": 0.0,
-        "memory_mb_avg": 23.63,
-        "memory_mb_peak": 23.64,
-        "total_execution_time_sec": 27.15
+        "memory_mb_avg": 23.74,
+        "memory_mb_peak": 23.74,
+        "total_execution_time_sec": 27.73
       },
       "summary": {
-        "throughput_qps": 3.3144,
+        "throughput_qps": 3.2454,
         "error_rate": 0.0333,
         "latency_by_type": {
           "RAG": {
-            "p50_ms": 228.44,
-            "p95_ms": 303.53,
-            "p99_ms": 304.72,
-            "avg_ms": 225.84,
+            "p50_ms": 232.65,
+            "p95_ms": 290.14,
+            "p99_ms": 290.99,
+            "avg_ms": 222.9,
             "count": 30
           },
           "SQL": {
-            "p50_ms": 181.39,
-            "p95_ms": 240.23,
-            "p99_ms": 243.84,
-            "avg_ms": 178.23,
+            "p50_ms": 193.14,
+            "p95_ms": 234.65,
+            "p99_ms": 243.09,
+            "avg_ms": 184.26,
             "count": 30
           },
           "HYBRID": {
-            "p50_ms": 440.72,
-            "p95_ms": 573.36,
-            "p99_ms": 605.15,
-            "avg_ms": 440.53,
+            "p50_ms": 478.13,
+            "p95_ms": 597.04,
+            "p99_ms": 612.25,
+            "avg_ms": 456.55,
             "count": 30
           }
         },
         "cpu_peak": 0.0,
-        "memory_peak": 23.64
+        "memory_peak": 23.74
       }
     },
     "table6_ablation": {
@@ -327,42 +323,42 @@
         "full_system": {
           "config_name": "full_system",
           "total": 30,
-          "hybrid_correctness": 0.9377,
-          "context_recall": 0.8717,
+          "hybrid_correctness": 0.9307,
+          "context_recall": 0.865,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 799.3
+          "avg_latency_ms": 783.75
         },
         "no_adaptive_router": {
           "config_name": "no_adaptive_router",
           "total": 30,
-          "hybrid_correctness": 0.883,
-          "context_recall": 0.882,
-          "router_hybrid_accuracy": 0.8,
-          "avg_latency_ms": 798.79
+          "hybrid_correctness": 0.8773,
+          "context_recall": 0.8687,
+          "router_hybrid_accuracy": 0.8333,
+          "avg_latency_ms": 781.45
         },
         "hybrid_disabled": {
           "config_name": "hybrid_disabled",
           "total": 30,
-          "hybrid_correctness": 0.8017,
-          "context_recall": 0.746,
+          "hybrid_correctness": 0.8133,
+          "context_recall": 0.7543,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 610.13
+          "avg_latency_ms": 587.69
         },
         "dense_only": {
           "config_name": "dense_only",
           "total": 30,
-          "hybrid_correctness": 0.8567,
-          "context_recall": 0.867,
+          "hybrid_correctness": 0.8347,
+          "context_recall": 0.866,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 734.81
+          "avg_latency_ms": 707.32
         },
         "recursive_chunking": {
           "config_name": "recursive_chunking",
           "total": 30,
-          "hybrid_correctness": 0.8787,
-          "context_recall": 0.786,
+          "hybrid_correctness": 0.8823,
+          "context_recall": 0.7913,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 804.44
+          "avg_latency_ms": 798.89
         }
       },
       "configurations": {
@@ -373,23 +369,23 @@
         "recursive_chunking": "Recursive chunking only (no semantic chunking)"
       },
       "summary": {
-        "baseline_correctness": 0.9377,
+        "baseline_correctness": 0.9307,
         "configuration_impact": {
           "no_adaptive_router": {
-            "correctness_delta": -0.05469999999999997,
-            "correctness_impact_pct": -5.833422203263301
+            "correctness_delta": -0.0534,
+            "correctness_impact_pct": -5.737616847534115
           },
           "hybrid_disabled": {
-            "correctness_delta": -0.136,
-            "correctness_impact_pct": -14.503572571184813
+            "correctness_delta": -0.11739999999999995,
+            "correctness_impact_pct": -12.614161383904582
           },
           "dense_only": {
-            "correctness_delta": -0.08099999999999996,
-            "correctness_impact_pct": -8.638157193132127
+            "correctness_delta": -0.09599999999999997,
+            "correctness_impact_pct": -10.314816804555708
           },
           "recursive_chunking": {
-            "correctness_delta": -0.05899999999999994,
-            "correctness_impact_pct": -6.291991041911054
+            "correctness_delta": -0.0484,
+            "correctness_impact_pct": -5.2003868056301705
           }
         }
       }

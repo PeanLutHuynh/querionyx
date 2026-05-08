@@ -18,6 +18,7 @@ from src.evaluation.aggregate_results import aggregate, flatten_summary, write_s
 from src.evaluation.scoring import expected_intent, query_id, score_case
 from src.pipeline_v3 import QueryonixPipelineV3
 from src.runtime.config import RuntimeConfig
+from src.runtime.error_taxonomy import classify_error
 from src.runtime.logging import append_jsonl, write_csv, write_json
 from src.runtime.metrics import process_resource_snapshot
 from src.runtime.schemas import QueryExecutionLog, now_iso
@@ -49,6 +50,7 @@ def run_benchmark(
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "query_logs.jsonl").write_text("", encoding="utf-8")
     (output_dir / "failure_logs.jsonl").write_text("", encoding="utf-8")
+    (output_dir / "per_query_traces.jsonl").write_text("", encoding="utf-8")
 
     dataset = load_dataset(dataset_path)
     if manifest.get("shuffle_queries"):
@@ -153,14 +155,20 @@ def run_benchmark(
                 "expected_intent": expected_intent(case),
                 "passed": score["passed"],
                 "intent_ok": score["intent_ok"],
+                "router_ambiguous": ((output.get("raw") or {}).get("router_trace") or {}).get("ambiguous"),
+                "router_signals": ((output.get("raw") or {}).get("router_trace") or {}).get("signals"),
                 "answer_preview": str(output.get("answer") or "")[:180],
             }
         )
         append_jsonl(output_dir / "query_logs.jsonl", query_log)
         query_rows.append(query_log)
 
+        trace = build_per_query_trace(qid, case, output, score)
+        append_jsonl(output_dir / "per_query_traces.jsonl", trace)
+
         for failure in ((output.get("raw") or {}).get("failures") or []):
             failure.setdefault("query_id", qid)
+            failure.setdefault("error_type", classify_error(failure.get("stage", ""), failure.get("exception", "")))
             append_jsonl(output_dir / "failure_logs.jsonl", failure)
             failure_rows.append(failure)
 
@@ -173,6 +181,71 @@ def run_benchmark(
     write_csv(output_dir / "results.csv", flatten_summary(summary))
     write_summary_markdown(output_dir / "summary.md", summary)
     return summary
+
+
+def build_per_query_trace(
+    qid: str,
+    case: Dict[str, Any],
+    output: Dict[str, Any],
+    score: Dict[str, Any],
+) -> Dict[str, Any]:
+    raw = output.get("raw") or {}
+    router_trace = raw.get("router_trace") or {}
+    hybrid = raw.get("hybrid") or {}
+    hybrid_trace = hybrid.get("trace") or {}
+    sql_payload = raw.get("sql") or hybrid.get("sql_result") or {}
+    rag_payload = raw.get("rag") or hybrid.get("rag_result") or {}
+    failures = raw.get("failures") or []
+    error_types = [
+        failure.get("error_type") or classify_error(failure.get("stage", ""), failure.get("exception", ""))
+        for failure in failures
+    ]
+    if expected_intent(case) and output.get("intent") and expected_intent(case) != str(output.get("intent")).upper():
+        error_types.append("misrouting")
+
+    return {
+        "query_id": qid,
+        "query": case.get("question", ""),
+        "true_intent": expected_intent(case),
+        "router_prediction": output.get("intent"),
+        "router_confidence": output.get("confidence"),
+        "router_signals": router_trace.get("signals"),
+        "router_ambiguous": router_trace.get("ambiguous"),
+        "matched_sql_keywords": router_trace.get("matched_sql_keywords"),
+        "matched_rag_keywords": router_trace.get("matched_rag_keywords"),
+        "branches": output.get("branches") or [],
+        "rag_status": hybrid.get("rag_status") or hybrid_trace.get("rag_status"),
+        "sql_status": hybrid.get("sql_status") or hybrid_trace.get("sql_status"),
+        "fallback_mode": hybrid.get("fallback_mode") or hybrid_trace.get("fallback_mode"),
+        "rag_latency_ms": (rag_payload.get("timings") or {}).get("total_ms") or output.get("timings", {}).get("rag_latency_ms"),
+        "sql_latency_ms": (sql_payload.get("timings") or {}).get("total_ms") or output.get("timings", {}).get("sql_latency_ms"),
+        "fusion_latency_ms": hybrid_trace.get("fusion_latency_ms") or output.get("timings", {}).get("merge_latency_ms"),
+        "retrieved_chunks": hybrid_trace.get("retrieved_chunks") or _compact_chunks(rag_payload),
+        "generated_sql": hybrid_trace.get("generated_sql") or sql_payload.get("sql_query"),
+        "sql_result": hybrid_trace.get("sql_result") or sql_payload.get("rows"),
+        "final_answer": output.get("answer"),
+        "answer_preview": str(output.get("answer") or "")[:240],
+        "passed": score.get("passed"),
+        "error_type": sorted(set(error_types)),
+    }
+
+
+def _compact_chunks(rag_payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+    chunks = rag_payload.get("retrieved_chunks") or rag_payload.get("context_passages") or []
+    citations = rag_payload.get("citations") or []
+    compact = []
+    for idx, chunk in enumerate(chunks[:3]):
+        if isinstance(chunk, dict):
+            compact.append(
+                {
+                    "text": str(chunk.get("text", ""))[:300],
+                    "citation": chunk.get("source") or (citations[idx] if idx < len(citations) else None),
+                    "page": chunk.get("page"),
+                }
+            )
+        else:
+            compact.append({"text": str(chunk)[:300], "citation": citations[idx] if idx < len(citations) else None})
+    return compact
 
 
 def _rolling_percentile(values: List[float], pct: float) -> Optional[float]:
