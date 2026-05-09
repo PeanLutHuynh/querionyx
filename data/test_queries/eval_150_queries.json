@@ -1,0 +1,1214 @@
+{
+  "metadata": {
+    "total_queries": 150,
+    "distribution": {
+      "RAG": 50,
+      "SQL": 50,
+      "HYBRID": 50
+    },
+    "created_date": "2026-05-09",
+    "purpose": "Expanded router evaluation set - 150 queries (balanced)"
+  },
+  "queries": [
+    {
+      "id": "unstr_001",
+      "question": "FPT có chiến lược phát triển nào cho năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo thường niên FPT - chiến lược kinh doanh, kế hoạch phát triển",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_002",
+      "question": "Chính sách bán hàng của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - chính sách, hướng dẫn bán hàng",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_003",
+      "question": "Masan mô tả quy trình sản xuất như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - quy trình, hoạt động sản xuất",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_004",
+      "question": "Mục tiêu tăng trưởng của FPT là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - mục tiêu, kế hoạch tăng trưởng",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_005",
+      "question": "Vinamilk giải thích rủi ro kinh doanh như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - rủi ro, thách thức kinh doanh",
+      "source_hint": "annual_reports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_006",
+      "question": "Cấu trúc tổ chức của Masan là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - cấu trúc, mô tả tổ chức",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_007",
+      "question": "FPT có những hướng dẫn gì cho nhân viên?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - hướng dẫn, chính sách nhân sự",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_008",
+      "question": "Chương trình phát triển bền vững của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - chiến lược, mục tiêu bền vững",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_009",
+      "question": "Masan mô tả các thách thức trong ngành như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - phân tích thách thức, xu hướng ngành",
+      "source_hint": "annual_reports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_010",
+      "question": "Quy trình quản lý chất lượng của FPT là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - quy trình, tiêu chuẩn chất lượng",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_011",
+      "question": "Vinamilk có kế hoạch mở rộng thị trường nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - kế hoạch, chiến lược mở rộng",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_012",
+      "question": "Masan giải thích vai trò của công nghệ trong kinh doanh ra sao?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - công nghệ, kỹ thuật, đổi mới",
+      "source_hint": "annual_reports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_013",
+      "question": "FPT mô tả chiến lược marketing như thế nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - chiến lược marketing, quảng cáo",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_014",
+      "question": "Chính sách đối với cổ đông của Vinamilk là gì?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - chính sách cổ tức, quản trị",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_015",
+      "question": "Masan có những mục tiêu ESG nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - mục tiêu ESG, phát triển bền vững",
+      "source_hint": "annual_reports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_016",
+      "question": "FPT là gì? Hãy giải thích về công ty.",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - giới thiệu, mô tả công ty",
+      "source_hint": "annual_reports",
+      "difficulty": "easy"
+    },
+    {
+      "id": "unstr_017",
+      "question": "Vinamilk hoạt động trong những lĩnh vực nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - lĩnh vực hoạt động, ngành nghề",
+      "source_hint": "annual_reports",
+      "difficulty": "easy"
+    },
+    {
+      "id": "unstr_018",
+      "question": "Masan có những sản phẩm chính nào?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - sản phẩm, dịch vụ chính",
+      "source_hint": "annual_reports",
+      "difficulty": "easy"
+    },
+    {
+      "id": "unstr_019",
+      "question": "FPT mô tả lợi thế cạnh tranh của mình ra sao?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - lợi thế, điểm mạnh",
+      "source_hint": "annual_reports",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_020",
+      "question": "Vinamilk có kế hoạch gì cho tương lai?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - kế hoạch, triển vọng tương lai",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_001",
+      "question": "Có bao nhiêu sản phẩm trong hệ thống Northwind?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM products; - Expected: 77",
+      "source_hint": "northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "str_002",
+      "question": "Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, COUNT(*) as order_count FROM orders GROUP BY customer_id ORDER BY order_count DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_003",
+      "question": "Doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT AVG(CAST(SUM(quantity * unit_price) AS FLOAT)) FROM order_details GROUP BY order_id; - hoặc tính từ orders table nếu có total_price",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_004",
+      "question": "Liệt kê tên nhân viên và số đơn hàng họ xử lý?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT e.first_name, e.last_name, COUNT(o.order_id) FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id GROUP BY e.employee_id;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_005",
+      "question": "Sản phẩm nào có đơn giá cao nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT product_name, unit_price FROM products ORDER BY unit_price DESC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_006",
+      "question": "Xếp hạng các danh mục sản phẩm theo số lượng sản phẩm?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT c.category_name, COUNT(p.product_id) FROM categories c LEFT JOIN products p ON c.category_id = p.category_id GROUP BY c.category_id ORDER BY COUNT(p.product_id) DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_007",
+      "question": "Có bao nhiêu nhân viên trong công ty?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM employees; - Expected: 9",
+      "source_hint": "northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "str_008",
+      "question": "Tổng số đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM orders; - Expected: ~830",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_009",
+      "question": "Chi phí vận chuyển trung bình là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT AVG(freight) FROM orders;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_010",
+      "question": "Nhà cung cấp nào cung cấp nhiều sản phẩm nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT s.company_name, COUNT(p.product_id) FROM suppliers s LEFT JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.supplier_id ORDER BY COUNT(*) DESC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_011",
+      "question": "Đơn hàng nào có giá trị cao nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT order_id, SUM(quantity * unit_price) as total FROM order_details GROUP BY order_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_012",
+      "question": "Có bao nhiêu khách hàng trong cơ sở dữ liệu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM customers; - Expected: 91",
+      "source_hint": "northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "str_013",
+      "question": "Lọc sản phẩm có đơn giá trong khoảng 20-30?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT product_name, unit_price FROM products WHERE unit_price BETWEEN 20 AND 30;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_014",
+      "question": "Sắp xếp khách hàng theo tên thành phố?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT company_name, city FROM customers ORDER BY city, company_name;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_015",
+      "question": "Số sản phẩm bị hết hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM products WHERE units_in_stock = 0;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_016",
+      "question": "Tính tổng số lượng sản phẩm có sẵn?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_017",
+      "question": "Chi tiêu nhiều nhất của khách hàng là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, SUM(CAST(quantity * unit_price AS DECIMAL(10,2))) as total_spent FROM order_details od JOIN orders o ON od.order_id = o.order_id GROUP BY customer_id ORDER BY total_spent DESC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_018",
+      "question": "Liệt kê các đơn hàng theo tháng?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT EXTRACT(YEAR FROM order_date) as year, EXTRACT(MONTH FROM order_date) as month, COUNT(*) FROM orders GROUP BY year, month ORDER BY year, month;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_019",
+      "question": "Xếp hạng nhân viên theo số đơn hàng xử lý từ cao đến thấp?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT e.employee_id, e.last_name, COUNT(o.order_id) as order_count FROM employees e LEFT JOIN orders o ON e.employee_id = o.employee_id GROUP BY e.employee_id ORDER BY order_count DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_020",
+      "question": "Sản phẩm nào có mức giá thấp nhất?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT product_name, unit_price FROM products ORDER BY unit_price ASC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_001",
+      "question": "FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_002",
+      "question": "Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm mục tiêu Vinamilk; SQL: SELECT COUNT(*) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "hyb_003",
+      "question": "Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chính sách bán hàng Masan; SQL: top 3 customers by order count",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_004",
+      "question": "Quy trình sản xuất FPT được mô tả như thế nào và có bao nhiêu nhân viên đang làm việc?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: quy trình sản xuất FPT; SQL: SELECT COUNT(*) FROM employees;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "hyb_005",
+      "question": "Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: lợi thế cạnh tranh Vinamilk; SQL: categories by product count",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_006",
+      "question": "Rủi ro kinh doanh của Masan là gì và chi phí vận chuyển trung bình là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: rủi ro Masan; SQL: SELECT AVG(freight) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_007",
+      "question": "Kế hoạch tăng trưởng của FPT là gì và nhân viên nào xử lý nhiều đơn hàng nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: kế hoạch tăng trưởng FPT; SQL: employee with most orders",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_008",
+      "question": "Vinamilk có mục tiêu bền vững như thế nào và có bao nhiêu khách hàng hiện tại?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: mục tiêu bền vững Vinamilk; SQL: SELECT COUNT(*) FROM customers;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "easy"
+    },
+    {
+      "id": "hyb_009",
+      "question": "Masan giải thích thách thức ngành ra sao và sản phẩm nào có giá cao nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: thách thức ngành Masan; SQL: product with highest price",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_010",
+      "question": "Hướng dẫn chất lượng của FPT là gì và có bao nhiêu sản phẩm bị hết hàng?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: hướng dẫn chất lượng FPT; SQL: count of out of stock products",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_011",
+      "question": "Chiến lược marketing của Vinamilk ra sao và nhà cung cấp nào cung cấp nhiều nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chiến lược marketing Vinamilk; SQL: top supplier by product count",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_012",
+      "question": "Chính sách cổ đông của Masan như thế nào và đơn hàng có giá trị cao nhất là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chính sách cổ đông Masan; SQL: highest value order",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_013",
+      "question": "FPT mô tả vai trò công nghệ ra sao và tổng số lượng sản phẩm có sẵn là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: vai trò công nghệ FPT; SQL: SUM(units_in_stock)",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_014",
+      "question": "Mục tiêu ESG của Vinamilk là gì và có bao nhiêu khách hàng ở thành phố X?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: mục tiêu ESG Vinamilk; SQL: customers in specific city",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_015",
+      "question": "Quy trình quản lý chất lượng Masan được mô tả như thế nào và xếp hạng danh mục sản phẩm ra sao?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: quy trình chất lượng Masan; SQL: categories by product count ranking",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_016",
+      "question": "Lợi thế cạnh tranh của FPT là gì và doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: lợi thế cạnh tranh FPT; SQL: average order value",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_017",
+      "question": "Chính sách phát triển nhân sự của Vinamilk ra sao và nhân viên nào kinh doanh giỏi nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chính sách phát triển nhân sự Vinamilk; SQL: top employee by order count",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_018",
+      "question": "Masan có những sản phẩm chính nào và danh mục nào có ít sản phẩm nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: sản phẩm chính Masan; SQL: category with fewest products",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_019",
+      "question": "Kế hoạch mở rộng thị trường của FPT là gì và tính toàn bộ chi phí vận chuyển?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: kế hoạch mở rộng FPT; SQL: SUM(freight) FROM orders",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_020",
+      "question": "Triển vọng tương lai của Vinamilk được mô tả ra sao và khách hàng nào chi tiêu nhiều nhất?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: triển vọng tương lai Vinamilk; SQL: customer with highest spending",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "unstr_021",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - lĩnh vực hoạt động chính, mảng kinh doanh.",
+      "source_hint": "annual_reports",
+      "difficulty": "easy",
+      "question": "FPT giới thiệu các lĩnh vực hoạt động chính nào trong báo cáo?"
+    },
+    {
+      "id": "unstr_022",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - ngành nghề, lĩnh vực hoạt động.",
+      "source_hint": "annual_reports",
+      "difficulty": "easy",
+      "question": "Vinamilk là doanh nghiệp trong ngành nào theo báo cáo thường niên?"
+    },
+    {
+      "id": "unstr_023",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - kế hoạch mở rộng bán lẻ, hệ thống phân phối.",
+      "source_hint": "annual_reports",
+      "difficulty": "medium",
+      "question": "Masan trình bày chiến lược mở rộng bán lẻ ra sao?"
+    },
+    {
+      "id": "unstr_024",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - chương trình đào tạo, phát triển nhân sự.",
+      "source_hint": "annual_reports",
+      "difficulty": "medium",
+      "question": "FPT mô tả hoạt động đào tạo và phát triển nhân sự thế nào?"
+    },
+    {
+      "id": "unstr_025",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - R&D, đổi mới sản phẩm.",
+      "source_hint": "annual_reports",
+      "difficulty": "medium",
+      "question": "Vinamilk nói gì về hoạt động R&D và đổi mới sản phẩm?"
+    },
+    {
+      "id": "unstr_026",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - rủi ro chuỗi cung ứng, logistics.",
+      "source_hint": "annual_reports",
+      "difficulty": "hard",
+      "question": "Masan báo cáo các rủi ro chuỗi cung ứng nào nổi bật?"
+    },
+    {
+      "id": "unstr_027",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - chiến lược chuyển đổi số, dịch vụ cho khách hàng.",
+      "source_hint": "annual_reports",
+      "difficulty": "medium",
+      "question": "FPT mô tả chiến lược chuyển đổi số cho khách hàng như thế nào?"
+    },
+    {
+      "id": "unstr_028",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk - quản trị rủi ro, kiểm soát nội bộ.",
+      "source_hint": "annual_reports",
+      "difficulty": "medium",
+      "question": "Vinamilk trình bày hệ thống quản trị rủi ro ra sao?"
+    },
+    {
+      "id": "unstr_029",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan - kế hoạch mở rộng thị trường quốc tế.",
+      "source_hint": "annual_reports",
+      "difficulty": "hard",
+      "question": "Masan nêu kế hoạch mở rộng thị trường quốc tế như thế nào?"
+    },
+    {
+      "id": "unstr_030",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT - mục tiêu ESG, phát triển bền vững.",
+      "source_hint": "annual_reports",
+      "difficulty": "hard",
+      "question": "FPT nhấn mạnh mục tiêu ESG hoặc phát triển bền vững nào?"
+    },
+    {
+      "id": "str_021",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT o.order_id, o.order_date, c.company_name, e.first_name, e.last_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN employees e ON o.employee_id = e.employee_id ORDER BY o.order_date DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium",
+      "question": "Liệt kê 5 đơn hàng gần nhất với tên khách hàng và nhân viên phụ trách."
+    },
+    {
+      "id": "str_022",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name FROM products p WHERE p.product_id NOT IN (SELECT DISTINCT product_id FROM order_details);",
+      "source_hint": "northwind_db",
+      "difficulty": "hard",
+      "question": "Những sản phẩm nào chưa từng được đặt hàng?"
+    },
+    {
+      "id": "str_023",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT c.country, ROUND(SUM(od.quantity * od.unit_price)::numeric, 2) AS total_revenue FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.country ORDER BY total_revenue DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium",
+      "question": "Tổng doanh thu theo quốc gia khách hàng là bao nhiêu?"
+    },
+    {
+      "id": "str_024",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name, SUM(od.quantity) AS total_qty FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_qty DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium",
+      "question": "Top 5 sản phẩm bán chạy theo số lượng là gì?"
+    },
+    {
+      "id": "str_025",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT e.employee_id, e.first_name, e.last_name, COUNT(*) AS order_count FROM orders o JOIN employees e ON o.employee_id = e.employee_id WHERE EXTRACT(YEAR FROM o.order_date) = 1997 GROUP BY e.employee_id, e.first_name, e.last_name ORDER BY order_count DESC LIMIT 1;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium",
+      "question": "Nhân viên nào xử lý nhiều đơn hàng nhất trong năm 1997?"
+    },
+    {
+      "id": "str_026",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT c.customer_id, c.company_name FROM customers c WHERE c.customer_id NOT IN (SELECT DISTINCT customer_id FROM orders);",
+      "source_hint": "northwind_db",
+      "difficulty": "hard",
+      "question": "Danh sách khách hàng chưa có đơn hàng nào."
+    },
+    {
+      "id": "str_027",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT s.company_name, COUNT(*) AS order_count FROM orders o JOIN shippers s ON o.ship_via = s.shipper_id GROUP BY s.company_name ORDER BY order_count DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "easy",
+      "question": "Số lượng đơn hàng theo công ty vận chuyển là bao nhiêu?"
+    },
+    {
+      "id": "str_028",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT s.company_name, ROUND(AVG(p.unit_price)::numeric, 2) AS avg_price FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY avg_price DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "easy",
+      "question": "Giá trung bình của sản phẩm theo nhà cung cấp là bao nhiêu?"
+    },
+    {
+      "id": "str_029",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT od.order_id, SUM(od.quantity * od.unit_price) AS total_value FROM order_details od GROUP BY od.order_id HAVING SUM(od.quantity * od.unit_price) > (SELECT AVG(sub.total_value) FROM (SELECT SUM(quantity * unit_price) AS total_value FROM order_details GROUP BY order_id) sub) ORDER BY total_value DESC;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard",
+      "question": "Những đơn hàng có tổng giá trị lớn hơn mức trung bình đơn hàng là gì?"
+    },
+    {
+      "id": "str_030",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT o.customer_id, SUM(od.quantity * od.unit_price) AS total_spent FROM orders o JOIN order_details od ON o.order_id = od.order_id GROUP BY o.customer_id ORDER BY total_spent DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium",
+      "question": "Top 5 khách hàng theo tổng chi tiêu là ai?"
+    },
+    {
+      "id": "hyb_021",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chiến lược AI FPT; SQL: SELECT COUNT(*) FROM customers;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "easy",
+      "question": "FPT mô tả chiến lược AI ra sao và tổng số khách hàng trong Northwind là bao nhiêu?"
+    },
+    {
+      "id": "hyb_022",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chiến lược sản phẩm Vinamilk; SQL: SELECT COUNT(*) FROM suppliers;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "easy",
+      "question": "Vinamilk nói về chiến lược sản phẩm thế nào và có bao nhiêu nhà cung cấp?"
+    },
+    {
+      "id": "hyb_023",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chuỗi cung ứng Masan; SQL: top 5 sản phẩm theo SUM(quantity).",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium",
+      "question": "Masan trình bày chuỗi cung ứng ra sao và top 5 sản phẩm bán chạy là gì?"
+    },
+    {
+      "id": "hyb_024",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: mục tiêu tăng trưởng FPT; SQL: doanh thu theo quốc gia khách hàng.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium",
+      "question": "FPT nêu mục tiêu tăng trưởng gì và tổng doanh thu theo quốc gia khách hàng là bao nhiêu?"
+    },
+    {
+      "id": "hyb_025",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: thị trường xuất khẩu Vinamilk; SQL: 5 đơn hàng gần nhất với khách hàng và nhân viên.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium",
+      "question": "Vinamilk mô tả thị trường xuất khẩu nào và 5 đơn hàng gần nhất gồm khách hàng, nhân viên là gì?"
+    },
+    {
+      "id": "hyb_026",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: quản trị rủi ro Masan; SQL: khách hàng chưa có đơn hàng.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium",
+      "question": "Masan nói về quản trị rủi ro ra sao và khách hàng chưa có đơn hàng nào?"
+    },
+    {
+      "id": "hyb_027",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: chuyển đổi số FPT; SQL: sản phẩm chưa từng được đặt hàng.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium",
+      "question": "FPT nói về chuyển đổi số và sản phẩm chưa từng được đặt hàng là gì?"
+    },
+    {
+      "id": "hyb_028",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: mục tiêu ESG Vinamilk; SQL: đơn hàng có tổng giá trị > trung bình.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard",
+      "question": "Vinamilk nêu mục tiêu ESG nào và những đơn hàng có giá trị lớn hơn mức trung bình là gì?"
+    },
+    {
+      "id": "hyb_029",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: kế hoạch mở rộng thị trường Masan; SQL: top 5 khách hàng theo tổng chi tiêu.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard",
+      "question": "Masan nêu kế hoạch mở rộng thị trường nào và top 5 khách hàng theo tổng chi tiêu là ai?"
+    },
+    {
+      "id": "hyb_030",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: kết quả tài chính FPT; SQL: nhân viên nhiều đơn hàng nhất năm 1997.",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard",
+      "question": "FPT báo cáo kết quả tài chính ra sao và nhân viên xử lý nhiều đơn hàng nhất năm 1997 là ai?"
+    },
+    {
+      "id": "unstr_031",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_032",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_033",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_034",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_035",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_036",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_037",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_038",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_039",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_040",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_041",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_042",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_043",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_044",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_045",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_046",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_047",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_048",
+      "question": "Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Masan 2025 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_049",
+      "question": "FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo FPT 2023 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "unstr_050",
+      "question": "Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?",
+      "ground_truth_intent": "RAG",
+      "ground_truth_answer": "Tìm trong báo cáo Vinamilk 2024 - tóm tắt điểm nổi bật, chỉ số, sự kiện",
+      "source_hint": "annual_reports",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_031",
+      "question": "Tổng số đơn hàng trong năm 2023 là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2023;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_032",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, SUM(quantity * unit_price) as total FROM order_details od JOIN orders o ON od.order_id=o.order_id GROUP BY customer_id ORDER BY total DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_033",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name, SUM(od.quantity) AS total_qty FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_qty DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_034",
+      "question": "Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year ORDER BY year;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_035",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT supplier_id, COUNT(*) FROM products GROUP BY supplier_id HAVING COUNT(*) > 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_036",
+      "question": "Tổng số đơn hàng trong năm 2025 là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2025;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_037",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, SUM(quantity * unit_price) as total FROM order_details od JOIN orders o ON od.order_id=o.order_id GROUP BY customer_id ORDER BY total DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_038",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name, SUM(od.quantity) AS total_qty FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_qty DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_039",
+      "question": "Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year ORDER BY year;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_040",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT supplier_id, COUNT(*) FROM products GROUP BY supplier_id HAVING COUNT(*) > 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_041",
+      "question": "Tổng số đơn hàng trong năm 2024 là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2024;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_042",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, SUM(quantity * unit_price) as total FROM order_details od JOIN orders o ON od.order_id=o.order_id GROUP BY customer_id ORDER BY total DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_043",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name, SUM(od.quantity) AS total_qty FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_qty DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_044",
+      "question": "Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year ORDER BY year;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_045",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT supplier_id, COUNT(*) FROM products GROUP BY supplier_id HAVING COUNT(*) > 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_046",
+      "question": "Tổng số đơn hàng trong năm 2023 là bao nhiêu?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT COUNT(*) FROM orders WHERE EXTRACT(YEAR FROM order_date) = 2023;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_047",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT customer_id, SUM(quantity * unit_price) as total FROM order_details od JOIN orders o ON od.order_id=o.order_id GROUP BY customer_id ORDER BY total DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "str_048",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT p.product_name, SUM(od.quantity) AS total_qty FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_qty DESC LIMIT 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_049",
+      "question": "Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year ORDER BY year;",
+      "source_hint": "northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "str_050",
+      "question": "Top khách hàng theo tổng chi tiêu (top N) là ai?",
+      "ground_truth_intent": "SQL",
+      "ground_truth_answer": "SELECT supplier_id, COUNT(*) FROM products GROUP BY supplier_id HAVING COUNT(*) > 5;",
+      "source_hint": "northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_031",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_032",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_033",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT customer_id, SUM(quantity*unit_price) as total FROM order_details GROUP BY customer_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_034",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_035",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_036",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_037",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT customer_id, SUM(quantity*unit_price) as total FROM order_details GROUP BY customer_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_038",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_039",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_040",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_041",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT customer_id, SUM(quantity*unit_price) as total FROM order_details GROUP BY customer_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_042",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_043",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_044",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_045",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT customer_id, SUM(quantity*unit_price) as total FROM order_details GROUP BY customer_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_046",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_047",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT COUNT(*) FROM orders;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_048",
+      "question": "Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Masan 2025; SQL: SELECT SUM(units_in_stock) FROM products;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    },
+    {
+      "id": "hyb_049",
+      "question": "Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược FPT 2023; SQL: SELECT customer_id, SUM(quantity*unit_price) as total FROM order_details GROUP BY customer_id ORDER BY total DESC LIMIT 1;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "hard"
+    },
+    {
+      "id": "hyb_050",
+      "question": "Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",
+      "ground_truth_intent": "HYBRID",
+      "ground_truth_answer": "RAG: tìm chiến lược Vinamilk 2024; SQL: SELECT EXTRACT(YEAR FROM order_date) as year, COUNT(*) FROM orders GROUP BY year;",
+      "source_hint": "annual_reports + northwind_db",
+      "difficulty": "medium"
+    }
+  ]
+}

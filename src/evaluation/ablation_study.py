@@ -368,7 +368,7 @@ def main():
     parser.add_argument(
         "--dataset",
         type=Path,
-        default=Path("benchmarks/datasets/eval_90_queries.json"),
+        default=Path("data/test_queries/eval_150_queries.json"),
         help="Path to query dataset",
     )
     parser.add_argument(

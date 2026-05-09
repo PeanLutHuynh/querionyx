@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-08T09:25:02+07:00",
+  "timestamp": "2026-05-09T06:41:48+07:00",
   "paper_title": "Querionyx V3: Adaptive Hybrid RAG-SQL System for Multi-Modal Enterprise Data",
   "conference": "ICCCNET 2026",
   "tables": {
@@ -8,25 +8,25 @@
       "metrics": {
         "rule_based_router": {
           "router_name": "rule_based_router",
-          "total": 90,
-          "correct": 76,
-          "accuracy": 0.8444,
+          "total": 150,
+          "correct": 136,
+          "accuracy": 0.9067,
           "per_class_accuracy": {
             "RAG": 1.0,
-            "SQL": 0.8333,
-            "HYBRID": 0.7
+            "SQL": 0.9,
+            "HYBRID": 0.82
           },
           "confusion_matrix": {
             "RAG": {
-              "RAG": 30
+              "RAG": 50
             },
             "SQL": {
-              "SQL": 25,
+              "SQL": 45,
               "RAG": 3,
               "HYBRID": 2
             },
             "HYBRID": {
-              "HYBRID": 21,
+              "HYBRID": 41,
               "RAG": 9
             }
           },
@@ -43,70 +43,70 @@
         },
         "llm_router": {
           "router_name": "llm_router",
-          "total": 90,
-          "correct": 38,
-          "accuracy": 0.4222,
+          "total": 150,
+          "correct": 45,
+          "accuracy": 0.3,
           "per_class_accuracy": {
-            "RAG": 0.3333,
-            "SQL": 0.4667,
-            "HYBRID": 0.4667
+            "RAG": 0.3,
+            "SQL": 0.32,
+            "HYBRID": 0.28
           },
           "confusion_matrix": {
             "RAG": {
-              "RAG": 10,
-              "HYBRID": 13,
-              "SQL": 7
+              "HYBRID": 20,
+              "RAG": 15,
+              "SQL": 15
             },
             "SQL": {
-              "HYBRID": 9,
-              "SQL": 14,
-              "RAG": 7
+              "HYBRID": 19,
+              "RAG": 15,
+              "SQL": 16
             },
             "HYBRID": {
               "HYBRID": 14,
-              "RAG": 11,
-              "SQL": 5
+              "RAG": 24,
+              "SQL": 12
             }
           },
-          "avg_latency_ms": 554.82,
+          "avg_latency_ms": 81.29,
           "llm_call_count": 0,
           "llm_call_rate": 0.0,
           "misrouting_breakdown": {
-            "RAG→HYBRID": 13,
-            "RAG→SQL": 7,
-            "SQL→HYBRID": 9,
-            "SQL→RAG": 7,
-            "HYBRID→RAG": 11,
-            "HYBRID→SQL": 5
+            "RAG→HYBRID": 20,
+            "RAG→SQL": 15,
+            "SQL→HYBRID": 19,
+            "SQL→RAG": 15,
+            "HYBRID→RAG": 24,
+            "HYBRID→SQL": 12
           },
           "ambiguous_cases": 0,
           "ambiguous_misroutes": 0
         },
         "adaptive_router": {
           "router_name": "adaptive_router",
-          "total": 90,
-          "correct": 76,
-          "accuracy": 0.8444,
+          "total": 150,
+          "correct": 136,
+          "accuracy": 0.9067,
           "per_class_accuracy": {
             "RAG": 1.0,
-            "SQL": 0.8333,
-            "HYBRID": 0.7
+            "SQL": 0.9,
+            "HYBRID": 0.82
           },
           "confusion_matrix": {
             "RAG": {
-              "RAG": 30
+              "RAG": 50
             },
             "SQL": {
-              "SQL": 25,
+              "SQL": 45,
               "RAG": 3,
               "HYBRID": 2
             },
             "HYBRID": {
-              "HYBRID": 21,
+              "HYBRID": 41,
               "RAG": 9
             }
           },
-          "avg_latency_ms": 0.03,
+          "avg_latency_ms": 0.04,
           "llm_call_count": 0,
           "llm_call_rate": 0.0,
           "misrouting_breakdown": {
@@ -121,14 +121,14 @@
       "summary": {
         "best_router": "rule_based_router",
         "router_accuracies": {
-          "rule_based_router": 0.8444,
-          "llm_router": 0.4222,
-          "adaptive_router": 0.8444
+          "rule_based_router": 0.9067,
+          "llm_router": 0.3,
+          "adaptive_router": 0.9067
         },
         "avg_latencies": {
           "rule_based_router": 0.1,
-          "llm_router": 554.82,
-          "adaptive_router": 0.03
+          "llm_router": 81.29,
+          "adaptive_router": 0.04
         }
       }
     },
@@ -137,184 +137,191 @@
       "metrics": {
         "rag_v1": {
           "version_name": "rag_v1",
-          "total": 30,
-          "successful": 28,
-          "success_rate": 0.9333,
-          "context_precision": 0.827,
-          "context_recall": 0.8583,
-          "avg_retrieval_latency_ms": 237.22,
+          "total": 50,
+          "successful": 47,
+          "success_rate": 0.94,
+          "context_precision": 0.8158,
+          "context_recall": 0.8388,
+          "avg_retrieval_latency_ms": 220.8,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 4.17,
+          "avg_context_chunks": 4.14,
           "failed_queries": [
-            "unstr_011",
-            "unstr_029"
+            "unstr_002",
+            "unstr_023",
+            "unstr_039"
           ]
         },
         "rag_v2": {
           "version_name": "rag_v2",
-          "total": 30,
-          "successful": 28,
-          "success_rate": 0.9333,
-          "context_precision": 0.8973,
-          "context_recall": 0.85,
-          "avg_retrieval_latency_ms": 260.36,
+          "total": 50,
+          "successful": 49,
+          "success_rate": 0.98,
+          "context_precision": 0.8878,
+          "context_recall": 0.8542,
+          "avg_retrieval_latency_ms": 279.79,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 3.97,
+          "avg_context_chunks": 3.88,
           "failed_queries": [
-            "unstr_003",
-            "unstr_016"
+            "unstr_032"
           ]
         },
         "rag_v3": {
           "version_name": "rag_v3",
-          "total": 30,
-          "successful": 29,
-          "success_rate": 0.9667,
-          "context_precision": 0.906,
-          "context_recall": 0.845,
-          "avg_retrieval_latency_ms": 251.57,
+          "total": 50,
+          "successful": 49,
+          "success_rate": 0.98,
+          "context_precision": 0.9004,
+          "context_recall": 0.8466,
+          "avg_retrieval_latency_ms": 241.44,
           "cross_entity_drift_rate": 0.05,
           "hard_negative_accuracy": 0.92,
-          "avg_context_chunks": 3.83,
+          "avg_context_chunks": 3.76,
           "failed_queries": [
-            "unstr_024"
+            "unstr_034"
           ]
         }
       },
       "summary": {
         "best_rag_version": "rag_v3",
         "avg_precisions": {
-          "rag_v1": 0.827,
-          "rag_v2": 0.8973,
-          "rag_v3": 0.906
+          "rag_v1": 0.8158,
+          "rag_v2": 0.8878,
+          "rag_v3": 0.9004
         },
         "avg_recalls": {
-          "rag_v1": 0.8583,
-          "rag_v2": 0.85,
-          "rag_v3": 0.845
+          "rag_v1": 0.8388,
+          "rag_v2": 0.8542,
+          "rag_v3": 0.8466
         }
       }
     },
     "table3_sql": {
       "title": "Table 3: SQL Pipeline Evaluation",
       "metrics": {
-        "total": 30,
-        "successful": 27,
-        "execution_accuracy": 0.7667,
-        "exact_match_rate": 0.8,
-        "retry_rate": 0.2333,
-        "avg_latency_ms": 226.56,
+        "total": 50,
+        "successful": 44,
+        "execution_accuracy": 0.84,
+        "exact_match_rate": 0.66,
+        "retry_rate": 0.28,
+        "avg_latency_ms": 233.47,
         "error_breakdown": {
-          "schema_error": 3
+          "timeout": 2,
+          "schema_error": 3,
+          "syntax_error": 1
         },
         "failed_queries": [
-          "sql_0008",
+          "sql_0011",
           "sql_0012",
-          "sql_0017"
+          "sql_0015",
+          "sql_0039",
+          "sql_0044",
+          "sql_0048"
         ]
       },
       "summary": {
-        "execution_accuracy": 0.7667,
-        "exact_match_rate": 0.8,
-        "retry_rate": 0.2333,
+        "execution_accuracy": 0.84,
+        "exact_match_rate": 0.66,
+        "retry_rate": 0.28,
         "error_breakdown": {
-          "schema_error": 3
+          "timeout": 2,
+          "schema_error": 3,
+          "syntax_error": 1
         }
       }
     },
     "table4_hybrid": {
       "title": "Table 4: Hybrid Query Evaluation",
       "metrics": {
-        "total": 30,
-        "correct": 30,
-        "hybrid_correctness": 0.915,
+        "total": 50,
+        "correct": 50,
+        "hybrid_correctness": 0.905,
         "component_breakdown": {
-          "sql_fallback": 23,
-          "rag_fallback": 7
+          "sql_fallback": 35,
+          "rag_fallback": 15
         },
         "fallback_rate": 1.0,
-        "latency_p50_ms": 773.4,
-        "latency_p95_ms": 960.19,
-        "latency_p99_ms": 1688.76,
-        "avg_latency_ms": 805.58,
+        "latency_p50_ms": 730.26,
+        "latency_p95_ms": 6021.52,
+        "latency_p99_ms": 6028.54,
+        "avg_latency_ms": 1604.27,
         "failed_queries": []
       },
       "summary": {
-        "hybrid_correctness": 0.915,
+        "hybrid_correctness": 0.905,
         "fallback_rate": 1.0,
-        "latency_p95": 960.19,
+        "latency_p95": 6021.52,
         "component_breakdown": {
-          "sql_fallback": 23,
-          "rag_fallback": 7
+          "sql_fallback": 35,
+          "rag_fallback": 15
         }
       }
     },
     "table5_performance": {
       "title": "Table 5: System Performance Metrics",
       "metrics": {
-        "total_queries": 90,
-        "successful_queries": 87,
-        "error_rate": 0.0333,
-        "throughput_qps": 3.2454,
+        "total_queries": 150,
+        "successful_queries": 146,
+        "error_rate": 0.0267,
+        "throughput_qps": 3.1971,
         "latency_by_type": {
           "RAG": {
-            "p50_ms": 232.65,
-            "p95_ms": 290.14,
-            "p99_ms": 290.99,
-            "avg_ms": 222.9,
-            "count": 30
+            "p50_ms": 230.17,
+            "p95_ms": 290.97,
+            "p99_ms": 300.98,
+            "avg_ms": 228.88,
+            "count": 50
           },
           "SQL": {
-            "p50_ms": 193.14,
-            "p95_ms": 234.65,
-            "p99_ms": 243.09,
-            "avg_ms": 184.26,
-            "count": 30
+            "p50_ms": 174.35,
+            "p95_ms": 247.88,
+            "p99_ms": 265.08,
+            "avg_ms": 178.31,
+            "count": 50
           },
           "HYBRID": {
-            "p50_ms": 478.13,
-            "p95_ms": 597.04,
-            "p99_ms": 612.25,
-            "avg_ms": 456.55,
-            "count": 30
+            "p50_ms": 476.23,
+            "p95_ms": 580.86,
+            "p99_ms": 593.15,
+            "avg_ms": 470.59,
+            "count": 50
           }
         },
         "cpu_percent_avg": 0.0,
         "cpu_percent_peak": 0.0,
-        "memory_mb_avg": 23.74,
-        "memory_mb_peak": 23.74,
-        "total_execution_time_sec": 27.73
+        "memory_mb_avg": 23.14,
+        "memory_mb_peak": 23.17,
+        "total_execution_time_sec": 46.92
       },
       "summary": {
-        "throughput_qps": 3.2454,
-        "error_rate": 0.0333,
+        "throughput_qps": 3.1971,
+        "error_rate": 0.0267,
         "latency_by_type": {
           "RAG": {
-            "p50_ms": 232.65,
-            "p95_ms": 290.14,
-            "p99_ms": 290.99,
-            "avg_ms": 222.9,
-            "count": 30
+            "p50_ms": 230.17,
+            "p95_ms": 290.97,
+            "p99_ms": 300.98,
+            "avg_ms": 228.88,
+            "count": 50
           },
           "SQL": {
-            "p50_ms": 193.14,
-            "p95_ms": 234.65,
-            "p99_ms": 243.09,
-            "avg_ms": 184.26,
-            "count": 30
+            "p50_ms": 174.35,
+            "p95_ms": 247.88,
+            "p99_ms": 265.08,
+            "avg_ms": 178.31,
+            "count": 50
           },
           "HYBRID": {
-            "p50_ms": 478.13,
-            "p95_ms": 597.04,
-            "p99_ms": 612.25,
-            "avg_ms": 456.55,
-            "count": 30
+            "p50_ms": 476.23,
+            "p95_ms": 580.86,
+            "p99_ms": 593.15,
+            "avg_ms": 470.59,
+            "count": 50
           }
         },
         "cpu_peak": 0.0,
-        "memory_peak": 23.74
+        "memory_peak": 23.17
       }
     },
     "table6_ablation": {
@@ -322,43 +329,43 @@
       "metrics": {
         "full_system": {
           "config_name": "full_system",
-          "total": 30,
-          "hybrid_correctness": 0.9307,
-          "context_recall": 0.865,
+          "total": 50,
+          "hybrid_correctness": 0.9304,
+          "context_recall": 0.8792,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 783.75
+          "avg_latency_ms": 791.13
         },
         "no_adaptive_router": {
           "config_name": "no_adaptive_router",
-          "total": 30,
-          "hybrid_correctness": 0.8773,
-          "context_recall": 0.8687,
-          "router_hybrid_accuracy": 0.8333,
-          "avg_latency_ms": 781.45
+          "total": 50,
+          "hybrid_correctness": 0.8812,
+          "context_recall": 0.8666,
+          "router_hybrid_accuracy": 0.98,
+          "avg_latency_ms": 793.97
         },
         "hybrid_disabled": {
           "config_name": "hybrid_disabled",
-          "total": 30,
-          "hybrid_correctness": 0.8133,
-          "context_recall": 0.7543,
+          "total": 50,
+          "hybrid_correctness": 0.8168,
+          "context_recall": 0.7506,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 587.69
+          "avg_latency_ms": 600.11
         },
         "dense_only": {
           "config_name": "dense_only",
-          "total": 30,
-          "hybrid_correctness": 0.8347,
-          "context_recall": 0.866,
+          "total": 50,
+          "hybrid_correctness": 0.8506,
+          "context_recall": 0.879,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 707.32
+          "avg_latency_ms": 727.16
         },
         "recursive_chunking": {
           "config_name": "recursive_chunking",
-          "total": 30,
-          "hybrid_correctness": 0.8823,
-          "context_recall": 0.7913,
+          "total": 50,
+          "hybrid_correctness": 0.8748,
+          "context_recall": 0.7934,
           "router_hybrid_accuracy": 1.0,
-          "avg_latency_ms": 798.89
+          "avg_latency_ms": 806.04
         }
       },
       "configurations": {
@@ -369,23 +376,23 @@
         "recursive_chunking": "Recursive chunking only (no semantic chunking)"
       },
       "summary": {
-        "baseline_correctness": 0.9307,
+        "baseline_correctness": 0.9304,
         "configuration_impact": {
           "no_adaptive_router": {
-            "correctness_delta": -0.0534,
-            "correctness_impact_pct": -5.737616847534115
+            "correctness_delta": -0.04920000000000002,
+            "correctness_impact_pct": -5.288048151332762
           },
           "hybrid_disabled": {
-            "correctness_delta": -0.11739999999999995,
-            "correctness_impact_pct": -12.614161383904582
+            "correctness_delta": -0.11360000000000003,
+            "correctness_impact_pct": -12.209802235597596
           },
           "dense_only": {
-            "correctness_delta": -0.09599999999999997,
-            "correctness_impact_pct": -10.314816804555708
+            "correctness_delta": -0.07979999999999998,
+            "correctness_impact_pct": -8.576956147893377
           },
           "recursive_chunking": {
-            "correctness_delta": -0.0484,
-            "correctness_impact_pct": -5.2003868056301705
+            "correctness_delta": -0.05559999999999998,
+            "correctness_impact_pct": -5.975924333619947
           }
         }
       }

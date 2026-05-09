@@ -17,7 +17,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.pipeline_v3 import QueryonixPipelineV3
 
-TEST_SET = PROJECT_ROOT / "data" / "test_queries" / "eval_90_queries.json"
+TEST_SET = PROJECT_ROOT / "data" / "test_queries" / "eval_150_queries.json"
 
 
 def load_cases(path: Path = TEST_SET) -> List[Dict[str, Any]]:

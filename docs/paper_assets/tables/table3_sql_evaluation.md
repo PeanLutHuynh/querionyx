@@ -1,10 +1,10 @@
 | Metric | Value |
 | --- | --- |
-| Total SQL queries | 30 |
-| Successful executions | 27 |
-| Execution accuracy | 76.67% |
-| Exact match rate | 80.00% |
-| Retry rate | 23.33% |
-| Average latency (ms) | 226.56 |
+| Total SQL queries | 50 |
+| Successful executions | 44 |
+| Execution accuracy | 84.00% |
+| Exact match rate | 66.00% |
+| Retry rate | 28.00% |
+| Average latency (ms) | 233.47 |
 | Schema errors | 3 |
-| Syntax errors | 0 |
+| Syntax errors | 1 |

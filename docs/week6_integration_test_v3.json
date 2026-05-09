@@ -6,13 +6,16 @@
     "passed": true,
     "error": null,
     "intent": "RAG",
-    "total_latency_ms": 1616.19,
+    "total_latency_ms": 1587.3,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "rag"
     ],
-    "answer_preview": "43\n03\nBối cảnh kinh tế vĩ mô\nChiến lược phát triển 2025 – 2027 \ncủa FPT\nTiềm năng và cơ hội phát triển của \nngành CNTT\n01\nTHÔNG ĐIỆP BAN LÃNH ĐẠO\n02\nDẤU ẤN 2024"
+    "answer_preview": "Tôi không có đủ thông tin đáng tin cậy để trả lời câu hỏi này.",
+    "query_start_iso": "2026-05-08T23:07:09.394011Z",
+    "query_end_iso": "2026-05-08T23:07:11.177085Z",
+    "timed_out": false
   },
   {
     "id": "unstr_002",
@@ -21,13 +24,16 @@
     "passed": true,
     "error": null,
     "intent": "RAG",
-    "total_latency_ms": 1315.86,
+    "total_latency_ms": 1573.61,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "rag"
     ],
-    "answer_preview": "1.1.2 HĐQT xem xét và phê duyệt định \nhướng chiến lược của Công ty, chính \nsách quản trị rủi ro, kế hoạch kinh \ndoanh hàng năm, các khoản đầu tư lớn \ncó giá trị"
+    "answer_preview": "1.1.2 HĐQT xem xét và phê duyệt định \nhướng chiến lược của Công ty, chính \nsách quản trị rủi ro, kế hoạch kinh \ndoanh hàng năm, các khoản đầu tư lớn \ncó giá trị",
+    "query_start_iso": "2026-05-08T23:07:11.191672Z",
+    "query_end_iso": "2026-05-08T23:07:12.782638Z",
+    "timed_out": false
   },
   {
     "id": "unstr_003",
@@ -36,13 +42,16 @@
     "passed": true,
     "error": null,
     "intent": "RAG",
-    "total_latency_ms": 1323.35,
+    "total_latency_ms": 1233.24,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "rag"
     ],
-    "answer_preview": "đầu. Chúng tôi đầu tư vào đào tạo an toàn nghề nghiệp và liên tục cải tiến quy trình sản xuất để duy trì các \ntiêu chuẩn an toàn cao nhất. Cam kết của chúng tôi"
+    "answer_preview": "đầu. Chúng tôi đầu tư vào đào tạo an toàn nghề nghiệp và liên tục cải tiến quy trình sản xuất để duy trì các \ntiêu chuẩn an toàn cao nhất. Cam kết của chúng tôi",
+    "query_start_iso": "2026-05-08T23:07:12.782866Z",
+    "query_end_iso": "2026-05-08T23:07:14.017299Z",
+    "timed_out": false
   },
   {
     "id": "str_001",
@@ -51,43 +60,52 @@
     "passed": true,
     "error": null,
     "intent": "SQL",
-    "total_latency_ms": 212.63,
+    "total_latency_ms": 494.86,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "sql"
     ],
-    "answer_preview": "Kết quả từ cơ sở dữ liệu:\n\n| total_products |\n| --- |\n| 77 |"
+    "answer_preview": "Kết quả từ cơ sở dữ liệu:\n\n| product_count |\n| --- |\n| 77 |",
+    "query_start_iso": "2026-05-08T23:07:14.017556Z",
+    "query_end_iso": "2026-05-08T23:07:14.516104Z",
+    "timed_out": false
   },
   {
     "id": "str_002",
     "expected_intent": "SQL",
     "question": "Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?",
-    "passed": false,
+    "passed": true,
     "error": null,
     "intent": "SQL",
-    "total_latency_ms": 132454.57,
+    "total_latency_ms": 358.67,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "sql"
     ],
-    "answer_preview": "Không truy vấn được cơ sở dữ liệu: syntax error at or near \";\"\nLINE 6:     JOIN order_details od ON o.order_id = od.order_id;\n                                  "
+    "answer_preview": "Kết quả từ cơ sở dữ liệu:\n\n| company_name | order_count |\n| --- | --- |\n| Save-a-lot Markets | 31 |\n| Ernst Handel | 30 |\n| QUICK-Stop | 28 |\n| Folk och fä HB |",
+    "query_start_iso": "2026-05-08T23:07:14.518249Z",
+    "query_end_iso": "2026-05-08T23:07:14.881099Z",
+    "timed_out": false
   },
   {
     "id": "str_003",
     "expected_intent": "SQL",
     "question": "Doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
-    "passed": false,
+    "passed": true,
     "error": null,
     "intent": "SQL",
-    "total_latency_ms": 64635.7,
+    "total_latency_ms": 132.9,
     "router_type_used": "rule_router",
     "llm_call_count": 0,
     "branches": [
       "sql"
     ],
-    "answer_preview": "Không truy vấn được cơ sở dữ liệu: Only read-only SELECT SQL is allowed."
+    "answer_preview": "Kết quả từ cơ sở dữ liệu:\n\n| avg_order_revenue |\n| --- |\n| 1525.05 |",
+    "query_start_iso": "2026-05-08T23:07:14.886339Z",
+    "query_end_iso": "2026-05-08T23:07:15.024313Z",
+    "timed_out": false
   },
   {
     "id": "hyb_001",
@@ -96,45 +114,54 @@
     "passed": true,
     "error": null,
     "intent": "HYBRID",
-    "total_latency_ms": 937.39,
+    "total_latency_ms": 1461.69,
     "router_type_used": "adaptive_rule",
     "llm_call_count": 0,
     "branches": [
       "rag",
       "sql"
     ],
-    "answer_preview": "Kết quả từ cơ sở dữ liệu cho câu hỏi này:\n\n| order_count |\n| --- |\n| 0 |"
+    "answer_preview": "Kết quả từ cơ sở dữ liệu cho câu hỏi này:\n\n| order_count |\n| --- |\n| 830 |",
+    "query_start_iso": "2026-05-08T23:07:15.028518Z",
+    "query_end_iso": "2026-05-08T23:07:16.492568Z",
+    "timed_out": false
   },
   {
     "id": "hyb_002",
     "expected_intent": "HYBRID",
     "question": "Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?",
-    "passed": false,
+    "passed": true,
     "error": null,
     "intent": "HYBRID",
-    "total_latency_ms": 58764.64,
+    "total_latency_ms": 1569.38,
     "router_type_used": "adaptive_rule",
     "llm_call_count": 0,
     "branches": [
       "rag",
       "sql"
     ],
-    "answer_preview": "Không truy vấn được cơ sở dữ liệu cho câu hỏi này.\n\nđịnh của chúng tôi khi thực hiện hai dự \nán chiến lược trọng điểm là Tái định vị \nthương hiệu và Chuyển đổi "
+    "answer_preview": "Kết quả từ cơ sở dữ liệu cho câu hỏi này:\n\n| product_count |\n| --- |\n| 77 |",
+    "query_start_iso": "2026-05-08T23:07:16.492809Z",
+    "query_end_iso": "2026-05-08T23:07:18.063397Z",
+    "timed_out": false
   },
   {
     "id": "hyb_003",
     "expected_intent": "HYBRID",
     "question": "Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?",
-    "passed": false,
+    "passed": true,
     "error": null,
     "intent": "HYBRID",
-    "total_latency_ms": 70061.37,
+    "total_latency_ms": 1350.81,
     "router_type_used": "adaptive_rule",
     "llm_call_count": 0,
     "branches": [
       "rag",
       "sql"
     ],
-    "answer_preview": "Không truy vấn được cơ sở dữ liệu cho câu hỏi này.\n\nSau đó, người tiêu dùng có thể nhận các ưu \nđãi khi mua nhu yếu phẩm bằng giải pháp \nthanh toán không dùng t"
+    "answer_preview": "Kết quả từ cơ sở dữ liệu cho câu hỏi này:\n\n| company_name | order_count |\n| --- | --- |\n| Save-a-lot Markets | 31 |\n| Ernst Handel | 30 |\n| QUICK-Stop | 28 |",
+    "query_start_iso": "2026-05-08T23:07:18.063664Z",
+    "query_end_iso": "2026-05-08T23:07:19.415816Z",
+    "timed_out": false
   }
 ]
