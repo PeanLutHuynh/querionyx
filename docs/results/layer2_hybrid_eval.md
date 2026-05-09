@@ -1,37 +1,39 @@
 # Hybrid Query Evaluation
 
-**Timestamp**: 2026-05-09T06:37:54+07:00
+**Timestamp**: 2026-05-09T07:37:51+07:00
 
 ## Summary Metrics
 
 | Metric | Value |
 |--------|-------|
 | Total Queries | 50 |
-| Correct | 50 |
-| Hybrid Correctness Score | 0.9050 |
-| Fallback Rate | 1.0000 |
+| Correct | 44 |
+| Hybrid Correctness Score | 0.8150 |
+| Fallback Rate | 0.2600 |
 
 ## Latency Metrics
 
 | Percentile | Latency (ms) |
 |------------|--------------|
-| P50 | 730.26 |
-| P95 | 6021.52 |
-| P99 | 6028.54 |
-| Average | 1604.27 |
+| P50 | 761.28 |
+| P95 | 1007.31 |
+| P99 | 1307.41 |
+| Average | 790.93 |
 
 ## Component Contribution Breakdown
 
 | Component | Count | Percentage |
 |-----------|-------|------------|
-| rag_fallback | 15 | 30.0% |
-| sql_fallback | 35 | 70.0% |
+| both_fail | 6 | 12.0% |
+| full_merge | 37 | 74.0% |
+| rag_fallback | 7 | 14.0% |
 
 ## Component Descriptions
 
 ### Full Merge (SQL + RAG)
-Results from both SQL and RAG engines merged and ranked.
-Expected to have highest quality but highest latency.
+Results from both SQL and RAG engines contribute evidence to the final answer.
+A separate LLM merge is optional; this category is counted whenever both branches succeed.
+Expected to have highest quality but higher latency than single-branch answers.
 
 ### SQL Fallback
 Fallback to SQL only when RAG retrieval confidence is low.

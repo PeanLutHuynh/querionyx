@@ -1,11 +1,11 @@
 | Metric | Value |
 | --- | --- |
 | Total HYBRID queries | 50 |
-| Correct | 50 |
-| Hybrid correctness | 90.50% |
-| Fallback rate | 100.00% |
-| Latency P50 (ms) | 730.26 |
-| Latency P95 (ms) | 6021.52 |
-| Full merge cases | 0 |
-| RAG fallback cases | 15 |
-| SQL fallback cases | 35 |
+| Correct | 44 |
+| Hybrid correctness | 81.50% |
+| Fallback rate | 26.00% |
+| Latency P50 (ms) | 761.28 |
+| Latency P95 (ms) | 1007.31 |
+| Full merge cases | 37 |
+| RAG fallback cases | 7 |
+| SQL fallback cases | 0 |

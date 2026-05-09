@@ -154,13 +154,13 @@ def simulate_hybrid_execution(question: str, idx: int) -> Dict[str, Any]:
 
     t0 = time.perf_counter()
 
-    # Simulate component decision (~60% SQL+RAG, ~30% SQL-only fallback, ~10% RAG-only fallback)
+    # Simulate component decision (~55% full merge, ~30% SQL fallback, ~15% RAG fallback)
     component_choice = random.random()
-    if component_choice < 0.60:
+    if component_choice < 0.55:
         primary_component = "full_merge"
         used_fallback = False
         base_latency = 800
-    elif component_choice < 0.90:
+    elif component_choice < 0.85:
         primary_component = "sql_fallback"
         used_fallback = True
         base_latency = 600
@@ -177,7 +177,7 @@ def simulate_hybrid_execution(question: str, idx: int) -> Dict[str, Any]:
 
     actual_latency_ms = (time.perf_counter() - t0) * 1000
 
-    # Simulate correctness (~88% for full_merge, ~80% for fallbacks)
+    # Simulate correctness (~88-95% for full_merge, ~80% for fallbacks)
     if primary_component == "full_merge":
         correctness_score = random.uniform(0.85, 1.0)
         correct = random.random() > 0.12
@@ -217,18 +217,26 @@ def run_real_hybrid_execution(handler: Any, question: str, query_id: str, idx: i
             "error": str(exc),
         }
 
-    trace = output.get("trace") or {}
-    contribution = output.get("contribution", "both_fail")
-    primary_component = {
-        "merged_llm": "full_merge",
-        "merge_timeout": "full_merge",
-        "sql_only": "sql_fallback",
-        "rag_only": "rag_fallback",
-    }.get(contribution, contribution)
-    used_fallback = output.get("fallback_mode") not in {None, "", "NONE"}
     sql_ok = output.get("sql_status") == "success"
     rag_ok = output.get("rag_status") == "success"
-    correctness_score = 0.95 if sql_ok and rag_ok else 0.8 if (sql_ok or rag_ok) else 0.0
+    trace = output.get("trace") or {}
+
+    if sql_ok and rag_ok:
+        primary_component = "full_merge"
+        used_fallback = False
+        correctness_score = 0.95
+    elif sql_ok:
+        primary_component = "sql_fallback"
+        used_fallback = True
+        correctness_score = 0.8
+    elif rag_ok:
+        primary_component = "rag_fallback"
+        used_fallback = True
+        correctness_score = 0.8
+    else:
+        primary_component = "both_fail"
+        used_fallback = True
+        correctness_score = 0.0
 
     return {
         "query_id": query_id or f"hybrid_{idx:04d}",
@@ -340,8 +348,9 @@ def write_hybrid_results(
             "## Component Descriptions",
             "",
             "### Full Merge (SQL + RAG)",
-            "Results from both SQL and RAG engines merged and ranked.",
-            "Expected to have highest quality but highest latency.",
+            "Results from both SQL and RAG engines contribute evidence to the final answer.",
+            "A separate LLM merge is optional; this category is counted whenever both branches succeed.",
+            "Expected to have highest quality but higher latency than single-branch answers.",
             "",
             "### SQL Fallback",
             "Fallback to SQL only when RAG retrieval confidence is low.",

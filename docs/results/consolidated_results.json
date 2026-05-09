@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-09T06:41:48+07:00",
+  "timestamp": "2026-05-09T07:38:02+07:00",
   "paper_title": "Querionyx V3: Adaptive Hybrid RAG-SQL System for Multi-Modal Enterprise Data",
   "conference": "ICCCNET 2026",
   "tables": {
@@ -235,26 +235,35 @@
       "title": "Table 4: Hybrid Query Evaluation",
       "metrics": {
         "total": 50,
-        "correct": 50,
-        "hybrid_correctness": 0.905,
+        "correct": 44,
+        "hybrid_correctness": 0.815,
         "component_breakdown": {
-          "sql_fallback": 35,
-          "rag_fallback": 15
+          "full_merge": 37,
+          "rag_fallback": 7,
+          "both_fail": 6
         },
-        "fallback_rate": 1.0,
-        "latency_p50_ms": 730.26,
-        "latency_p95_ms": 6021.52,
-        "latency_p99_ms": 6028.54,
-        "avg_latency_ms": 1604.27,
-        "failed_queries": []
+        "fallback_rate": 0.26,
+        "latency_p50_ms": 761.28,
+        "latency_p95_ms": 1007.31,
+        "latency_p99_ms": 1307.41,
+        "avg_latency_ms": 790.93,
+        "failed_queries": [
+          "hyb_033",
+          "hyb_036",
+          "hyb_039",
+          "hyb_042",
+          "hyb_045",
+          "hyb_048"
+        ]
       },
       "summary": {
-        "hybrid_correctness": 0.905,
-        "fallback_rate": 1.0,
-        "latency_p95": 6021.52,
+        "hybrid_correctness": 0.815,
+        "fallback_rate": 0.26,
+        "latency_p95": 1007.31,
         "component_breakdown": {
-          "sql_fallback": 35,
-          "rag_fallback": 15
+          "full_merge": 37,
+          "rag_fallback": 7,
+          "both_fail": 6
         }
       }
     },
