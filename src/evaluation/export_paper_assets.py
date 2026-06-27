@@ -87,7 +87,7 @@ def export_table_1_system_overview(tables: dict[str, Any]) -> None:
             "Execution accuracy",
             pct(sql["execution_accuracy"]),
             pct(sql["successful"] / sql["total"]),
-            f'{sql["avg_latency_ms"]:.2f}',
+            f'{sql["avg_latency_ms"]:.2f} ms',
             "Structured database querying",
         ],
         [
@@ -193,34 +193,68 @@ def export_figures(tables: dict[str, Any]) -> None:
 
 
 def export_figure_1_architecture() -> None:
-    boxes = [
-        ("User Query", 330, 30, 180, 50),
-        ("Adaptive Router", 330, 120, 180, 50),
-        ("RAG Pipeline", 90, 220, 180, 60),
-        ("SQL Pipeline", 330, 220, 180, 60),
-        ("HYBRID Handler", 570, 220, 180, 60),
-        ("Fusion Layer", 330, 340, 180, 55),
-        ("Grounded Answer", 330, 450, 180, 50),
-    ]
+    """Export the reviewer-requested algorithmic workflow.
+
+    The paper originally used this slot for a component architecture diagram.
+    Reviewer feedback asks for the actual query-processing workflow, so Figure 1
+    is now a flowchart equivalent of Algorithm 1.
+    """
+
+    width, height = 1800, 930
+    parts = svg_header(width, height)
+    parts.append(text(90, 102, "Input: user_query q", size=22, weight="600"))
+    parts.append(text(90, 136, "Output: grounded_answer a", size=22, weight="600"))
+
+    boxes = {
+        "query": ("USER QUERY\nq", 80, 365, 250, 86),
+        "router": ("ADAPTIVE ROUTER\nintent + routing scores", 390, 345, 405, 120),
+        "rag": ("RAG\nRAGPipeline(q)", 875, 155, 380, 106),
+        "sql": ("SQL\nTextToSQL(q)", 875, 345, 380, 106),
+        "hybrid": ("HYBRID\nasync RAG + SQL", 875, 535, 465, 112),
+        "fusion": ("BOTH SUCCEED\nFusionLayer", 1370, 490, 340, 106),
+        "fallback": ("ONE BRANCH FAILS\nFallback", 1370, 635, 340, 106),
+        "answer": ("GROUNDED ANSWER\na", 1510, 325, 260, 106),
+        "log": ("TRACE LOG SIDE CHANNEL\nrouting, branch status, fallback\nevidence, SQL, latency", 560, 770, 760, 110),
+    }
+
+    for key, (label, x, y, w, h) in boxes.items():
+        fill = "#eff6ff" if key in {"router", "fusion", "answer"} else "#f8fafc"
+        stroke = BLUE if key in {"router", "fusion", "answer"} else SLATE
+        if key == "log":
+            fill = "#fffbeb"
+            stroke = AMBER
+        parts.append(rect(x, y, w, h, fill=fill, stroke=stroke, radius=8))
+        add_multiline_text(parts, x + w / 2, y + h / 2, label, size=19, weight="700", anchor="middle")
+
     arrows = [
-        ((420, 80), (420, 120)),
-        ((420, 170), (180, 220)),
-        ((420, 170), (420, 220)),
-        ((420, 170), (660, 220)),
-        ((180, 280), (420, 340)),
-        ((420, 280), (420, 340)),
-        ((660, 280), (420, 340)),
-        ((420, 395), (420, 450)),
+        ((330, 408), (390, 408)),
+        ((795, 405), (875, 208)),
+        ((795, 405), (875, 398)),
+        ((795, 405), (875, 591)),
+        ((1255, 208), (1510, 378)),
+        ((1255, 398), (1510, 378)),
+        ((1340, 591), (1370, 543)),
+        ((1340, 591), (1370, 688)),
+        ((1710, 543), (1760, 378)),
+        ((1710, 688), (1760, 378)),
     ]
-    parts = svg_header(840, 540)
-    for label, x, y, w, h in boxes:
-        fill = LIGHT if label not in {"Adaptive Router", "Fusion Layer"} else "#eff6ff"
-        parts.append(rect(x, y, w, h, fill=fill, stroke=BLUE if label in {"Adaptive Router", "Fusion Layer"} else SLATE))
-        parts.append(text(x + w / 2, y + h / 2 + 5, label, size=14, weight="600", anchor="middle"))
     for start, end in arrows:
         parts.append(arrow(start, end))
+
+    trace_arrows = [
+        ((590, 465), (720, 770)),
+        ((1065, 261), (800, 770)),
+        ((1065, 451), (890, 770)),
+        ((1105, 647), (995, 770)),
+        ((1540, 741), (1180, 770)),
+        ((1640, 431), (1260, 770)),
+    ]
+    for start, end in trace_arrows:
+        parts.append(dashed_arrow(start, end, AMBER))
+
     parts.append(svg_footer())
     write_svg("figure1_system_architecture", parts)
+    export_figure_1_architecture_png()
 
 
 def export_figure_2_rag(metrics: dict[str, Any]) -> None:
@@ -364,15 +398,78 @@ def export_figure_2_rag(metrics: dict[str, Any]) -> None:
     write_svg("figure2_rag_comparison", parts)
 
 
-def draw_legend(parts: list[str], items: list[tuple[str, str]], x: int, y: int) -> None:
-    offset = 0
-    item_width = 82
-    for color, label in items:
-        # ô màu
-        parts.append(rect(x + offset, y, 16, 16, fill=color, stroke=color, radius=2))
-        # text căn theo baseline ô màu
-        parts.append(text(x + offset + 22, y + 13, label, size=11))
-        offset += item_width
+def export_figure_1_architecture_png() -> None:
+    """Export a 300 DPI raster companion for Word workflows."""
+    try:
+        import matplotlib.pyplot as plt
+        from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+    except ModuleNotFoundError:
+        return
+
+    fig, ax = plt.subplots(figsize=(12, 6.2), dpi=300)
+    ax.set_xlim(0, 1800)
+    ax.set_ylim(930, 0)
+    ax.axis("off")
+
+    def box(key: str, label: str, x: int, y: int, w: int, h: int) -> None:
+        fill = "#eff6ff" if key in {"router", "fusion", "answer"} else "#f8fafc"
+        edge = BLUE if key in {"router", "fusion", "answer"} else SLATE
+        if key == "log":
+            fill = "#fffbeb"
+            edge = AMBER
+        patch = FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.02,rounding_size=10", linewidth=1.8, edgecolor=edge, facecolor=fill)
+        ax.add_patch(patch)
+        ax.text(x + w / 2, y + h / 2, label, ha="center", va="center", fontsize=8.5, fontweight="bold", color="#0f172a", linespacing=1.25)
+
+    def arr(start: tuple[int, int], end: tuple[int, int], dashed: bool = False) -> None:
+        color = AMBER if dashed else SLATE
+        style = (0, (5, 5)) if dashed else "solid"
+        patch = FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=13, linewidth=1.6, linestyle=style, color=color)
+        ax.add_patch(patch)
+
+    ax.text(90, 102, "Input: user_query q", ha="left", va="center", fontsize=12.5, fontweight="bold")
+    ax.text(90, 136, "Output: grounded_answer a", ha="left", va="center", fontsize=12.5, fontweight="bold")
+
+    boxes = {
+        "query": ("USER QUERY\nq", 80, 365, 250, 86),
+        "router": ("ADAPTIVE ROUTER\nintent + routing scores", 390, 345, 405, 120),
+        "rag": ("RAG\nRAGPipeline(q)", 875, 155, 380, 106),
+        "sql": ("SQL\nTextToSQL(q)", 875, 345, 380, 106),
+        "hybrid": ("HYBRID\nasync RAG + SQL", 875, 535, 465, 112),
+        "fusion": ("BOTH SUCCEED\nFusionLayer", 1370, 490, 340, 106),
+        "fallback": ("ONE BRANCH FAILS\nFallback", 1370, 635, 340, 106),
+        "answer": ("GROUNDED ANSWER\na", 1510, 325, 260, 106),
+        "log": ("TRACE LOG SIDE CHANNEL\nrouting, branch status, fallback\nevidence, SQL, latency", 560, 770, 760, 110),
+    }
+    for key, values in boxes.items():
+        box(key, *values)
+
+    for start, end in [
+        ((330, 408), (390, 408)),
+        ((795, 405), (875, 208)),
+        ((795, 405), (875, 398)),
+        ((795, 405), (875, 591)),
+        ((1255, 208), (1510, 378)),
+        ((1255, 398), (1510, 378)),
+        ((1340, 591), (1370, 543)),
+        ((1340, 591), (1370, 688)),
+        ((1710, 543), (1760, 378)),
+        ((1710, 688), (1760, 378)),
+    ]:
+        arr(start, end)
+
+    for start, end in [
+        ((590, 465), (720, 770)),
+        ((1065, 261), (800, 770)),
+        ((1065, 451), (890, 770)),
+        ((1105, 647), (995, 770)),
+        ((1540, 741), (1180, 770)),
+        ((1640, 431), (1260, 770)),
+    ]:
+        arr(start, end, dashed=True)
+
+    fig.savefig(CHART_DIR / "figure1_system_architecture.png", dpi=300, bbox_inches="tight", pad_inches=0.08)
+    plt.close(fig)
 
 
 def export_figure_3_router_heatmap(matrix_payload: dict[str, dict[str, int]]) -> None:
@@ -380,24 +477,25 @@ def export_figure_3_router_heatmap(matrix_payload: dict[str, dict[str, int]]) ->
     matrix = [[matrix_payload.get(actual, {}).get(pred, 0) for pred in labels] for actual in labels]
     max_value = max(max(row) for row in matrix) or 1
 
-    width, height = 620, 520
-    left, top, cell = 150, 100, 105
+    width, height = 1400, 1100
+    left, top, cell = 315, 215, 230
     parts = svg_header(width, height)
-    parts.append(text(left + cell * 1.5, 70, "Predicted Intent", size=13, weight="600", anchor="middle"))
-    parts.append(text(38, top + cell * 1.5, "Ground Truth", size=13, weight="600", anchor="middle", rotate=-90))
+    parts.append(text(left + cell * 1.5, 145, "Predicted Intent", size=30, weight="700", anchor="middle"))
+    parts.append(text(90, top + cell * 1.5, "Ground Truth", size=30, weight="700", anchor="middle", rotate=-90))
     for i, actual in enumerate(labels):
-        parts.append(text(left - 16, top + i * cell + cell / 2 + 5, actual, size=12, weight="600", anchor="end"))
-        parts.append(text(left + i * cell + cell / 2, top - 15, labels[i], size=12, weight="600", anchor="middle"))
+        parts.append(text(left - 34, top + i * cell + cell / 2 + 10, actual, size=28, weight="700", anchor="end"))
+        parts.append(text(left + i * cell + cell / 2, top - 30, labels[i], size=28, weight="700", anchor="middle"))
         for j, _pred in enumerate(labels):
             value = matrix[i][j]
             strength = value / max_value
-            fill = heat_color(strength)
+            fill = heat_color(strength, row=i, col=j)
             x, y = left + j * cell, top + i * cell
             parts.append(rect(x, y, cell, cell, fill=fill, stroke="#ffffff", radius=0))
             text_color = "#ffffff" if strength > 0.55 else "#0f172a"
-            parts.append(text(x + cell / 2, y + cell / 2 + 7, str(value), size=20, weight="700", anchor="middle", fill=text_color))
+            parts.append(text(x + cell / 2, y + cell / 2 + 18, str(value), size=58, weight="700", anchor="middle", fill=text_color))
     parts.append(svg_footer())
     write_svg("figure3_router_confusion_matrix", parts)
+    export_figure_3_router_heatmap_png(labels, matrix)
 
 
 def export_figure_4_ablation(metrics: dict[str, Any]) -> None:
@@ -410,23 +508,94 @@ def export_figure_4_ablation(metrics: dict[str, Any]) -> None:
     ]
     drops = [(label, (baseline - score) / baseline * 100) for label, score in items]
 
-    width, height = 820, 460
-    left, top, chart_w, chart_h = 85, 70, 650, 290
+    width, height = 1500, 950
+    left, top, chart_w, chart_h = 165, 130, 1060, 540
     max_drop = max(value for _, value in drops) * 1.2
     parts = svg_header(width, height)
-    draw_axes(parts, left, top, chart_w, chart_h, "Correctness Drop (%)", "Configuration")
-    bar_w = 85
+    draw_axes(parts, left, top, chart_w, chart_h, "Correctness Drop (%)", "Configuration", axis_label_size=20)
+    bar_w = 100
     gap = chart_w / len(drops)
+    line_points: list[tuple[float, float]] = []
     for i, (label, value) in enumerate(drops):
         h = (value / max_drop) * chart_h
         x = left + gap * i + gap / 2 - bar_w / 2
         y = top + chart_h - h
         color = RED if "Hybrid" in label else BLUE
         parts.append(rect(x, y, bar_w, h, fill=color, stroke=color, radius=2))
-        parts.append(text(x + bar_w / 2, y - 8, f"-{value:.1f}%", size=11, weight="600", anchor="middle"))
-        parts.append(text(x + bar_w / 2, top + chart_h + 28, label, size=11, anchor="middle"))
+        parts.append(text(x + bar_w / 2, y - 20, f"-{value:.1f}%", size=26, weight="700", anchor="middle"))
+        add_multiline_text(parts, x + bar_w / 2, top + chart_h + 55, label.replace(" ", "\n"), size=22, weight="700", anchor="middle")
+        line_points.append((x + bar_w / 2, y))
+    parts.append(polyline(line_points, AMBER))
+    for x, y in line_points:
+        parts.append(circle(x, y, 7, AMBER))
+    draw_legend(parts, [(BLUE, "Correctness drop"), (RED, "Largest drop"), (AMBER, "Drop trend")], x=335, y=690)
     parts.append(svg_footer())
     write_svg("figure4_ablation_impact", parts)
+    export_figure_4_ablation_png(drops)
+
+
+def export_figure_3_router_heatmap_png(labels: list[str], matrix: list[list[int]]) -> None:
+    """Export a 300 DPI raster companion for Word/PDF workflows."""
+    try:
+        import matplotlib.pyplot as plt
+    except ModuleNotFoundError:
+        return
+
+    fig, ax = plt.subplots(figsize=(10, 8), dpi=300)
+    import matplotlib.colors as mcolors
+
+    max_value = max(max(row) for row in matrix) or 1
+    colors = [
+        [mcolors.to_rgb(heat_color(value / max_value, row=i, col=j)) for j, value in enumerate(row)]
+        for i, row in enumerate(matrix)
+    ]
+    ax.imshow(colors)
+    ax.set_xticks(range(len(labels)), labels=labels, fontsize=18, fontweight="bold")
+    ax.set_yticks(range(len(labels)), labels=labels, fontsize=18, fontweight="bold")
+    ax.set_xlabel("Predicted Intent", fontsize=22, fontweight="bold", labelpad=28)
+    ax.set_ylabel("Ground Truth", fontsize=22, fontweight="bold", labelpad=18)
+    for i, row in enumerate(matrix):
+        for j, value in enumerate(row):
+            color = "white" if value > max(max(r) for r in matrix) * 0.55 else "#0f172a"
+            ax.text(j, i, str(value), ha="center", va="center", color=color, fontsize=34, fontweight="bold")
+    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.18, left=0.20)
+    fig.savefig(CHART_DIR / "figure3_router_confusion_matrix.png", dpi=300)
+    plt.close(fig)
+
+
+def export_figure_4_ablation_png(drops: list[tuple[str, float]]) -> None:
+    """Export the ablation chart as a true matplotlib chart, not a screenshot."""
+    try:
+        import matplotlib.pyplot as plt
+    except ModuleNotFoundError:
+        return
+
+    labels = [label.replace(" ", "\n") for label, _ in drops]
+    values = [value for _, value in drops]
+    colors = [RED if "Hybrid" in label else "#4da6ff" for label, _ in drops]
+
+    fig, ax = plt.subplots(figsize=(10, 6.5), dpi=300)
+    bars = ax.bar(labels, values, color=colors, width=0.52)
+    ax.plot(labels, values, color=AMBER, marker="o", linewidth=3.2, markersize=8)
+    ax.set_ylabel("Correctness Drop (%)", fontsize=18, fontweight="bold")
+    ax.set_xlabel("Configuration", fontsize=18, fontweight="bold", labelpad=16)
+    ax.set_ylim(0, max(values) * 1.25)
+    ax.tick_params(axis="both", labelsize=15)
+    ax.grid(axis="y", linestyle="--", alpha=0.35)
+    for bar, value in zip(bars, values):
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + max(values) * 0.03,
+            f"-{value:.1f}%",
+            ha="center",
+            fontsize=17,
+            fontweight="bold",
+        )
+    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.20, left=0.13)
+    fig.savefig(CHART_DIR / "figure4_ablation_impact.png", dpi=300)
+    plt.close(fig)
 
 
 def export_narrative_snippets() -> None:
@@ -522,6 +691,23 @@ def text(
     )
 
 
+def add_multiline_text(
+    parts: list[str],
+    x: float,
+    y: float,
+    value: str,
+    size: int = 12,
+    weight: str = "400",
+    anchor: str = "start",
+    fill: str = "#0f172a",
+    line_height: float = 1.25,
+) -> None:
+    lines = value.split("\n")
+    start_y = y - (len(lines) - 1) * size * line_height / 2
+    for idx, line_text in enumerate(lines):
+        parts.append(text(x, start_y + idx * size * line_height + size * 0.35, line_text, size=size, weight=weight, anchor=anchor, fill=fill))
+
+
 def line(x1: float, y1: float, x2: float, y2: float, stroke: str = GRID, width: float = 1.2) -> str:
     return f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{stroke}" stroke-width="{width}"/>'
 
@@ -530,6 +716,13 @@ def arrow(start: tuple[float, float], end: tuple[float, float]) -> str:
     return (
         f'<line x1="{start[0]:.1f}" y1="{start[1]:.1f}" x2="{end[0]:.1f}" y2="{end[1]:.1f}" '
         'stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)"/>'
+    )
+
+
+def dashed_arrow(start: tuple[float, float], end: tuple[float, float], stroke: str) -> str:
+    return (
+        f'<line x1="{start[0]:.1f}" y1="{start[1]:.1f}" x2="{end[0]:.1f}" y2="{end[1]:.1f}" '
+        f'stroke="{stroke}" stroke-width="1.4" stroke-dasharray="6 6" marker-end="url(#arrow)"/>'
     )
 
 
@@ -542,14 +735,26 @@ def polyline(points: Iterable[tuple[float, float]], stroke: str) -> str:
     return f'<polyline points="{point_text}" fill="none" stroke="{stroke}" stroke-width="2.5"/>'
 
 
-def draw_axes(parts: list[str], left: int, top: int, chart_w: int, chart_h: int, y_label: str, x_label: str) -> None:
+def draw_axes(
+    parts: list[str],
+    left: int,
+    top: int,
+    chart_w: int,
+    chart_h: int,
+    y_label: str,
+    x_label: str,
+    axis_label_size: int = 12,
+) -> None:
     parts.append(line(left, top, left, top + chart_h, SLATE, 1.5))
     parts.append(line(left, top + chart_h, left + chart_w, top + chart_h, SLATE, 1.5))
     for i in range(1, 5):
         y = top + chart_h - chart_h * i / 4
         parts.append(line(left, y, left + chart_w, y, GRID, 0.8))
-    parts.append(text(left - 48, top + chart_h / 2, y_label, size=12, weight="600", anchor="middle", rotate=-90))
-    parts.append(text(left + chart_w / 2, top + chart_h + 58, x_label, size=12, weight="600", anchor="middle"))
+    offset = 62 if axis_label_size > 12 else 48
+    x_offset = 78 if axis_label_size > 12 else 58
+    weight = "700" if axis_label_size > 12 else "600"
+    parts.append(text(left - offset, top + chart_h / 2, y_label, size=axis_label_size, weight=weight, anchor="middle", rotate=-90))
+    parts.append(text(left + chart_w / 2, top + chart_h + x_offset, x_label, size=axis_label_size, weight=weight, anchor="middle"))
 
 
 def draw_legend(parts: list[str], items: list[tuple[str, str]], x: int, y: int) -> None:
@@ -560,10 +765,13 @@ def draw_legend(parts: list[str], items: list[tuple[str, str]], x: int, y: int) 
         offset += 92
 
 
-def heat_color(strength: float) -> str:
+def heat_color(strength: float, row: int = 0, col: int = 0) -> str:
     strength = max(0.0, min(1.0, strength))
     start = (239, 246, 255)
     end = (37, 99, 235)
+    if strength == 0.0:
+        # Keep zero values visibly light, but avoid identical cells in print.
+        strength = 0.015 * (row + col)
     rgb = tuple(math.floor(start[i] + (end[i] - start[i]) * strength) for i in range(3))
     return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
 

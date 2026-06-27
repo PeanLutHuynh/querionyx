@@ -13,3 +13,4 @@ ragas
 python-dotenv
 psutil
 python-multipart
+matplotlib

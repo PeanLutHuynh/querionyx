@@ -148,11 +148,7 @@ The RAG runtime uses chunks of 800 characters with 120-character overlap. Dense 
 
 The SQL module validates generated queries before execution. Only `SELECT` and `WITH` statements are allowed, and unsafe keywords such as `DROP`, `DELETE`, `UPDATE`, `INSERT`, `ALTER`, and `TRUNCATE` are explicitly blocked. PostgreSQL execution also runs in a read-only session. This validation is important because Text-to-SQL output is executable code, not only generated text.
 
-Figure 5 summarizes the observable orchestration layer added to the implementation.
-
-![Figure 5. Observable Hybrid Orchestration](figures/figure5_observable_hybrid_orchestration.svg)
-
-**Figure 5.** Observable hybrid orchestration in Querionyx. The updated runtime records routing signals, branch status, fallback mode, evidence, generated SQL, and per-query error types.
+The observable orchestration layer is now integrated into Figure 1 as dashed trace arrows. This avoids duplicating the workflow and makes clear that logging is a side channel rather than a main answer-generation step.
 
 ---
 

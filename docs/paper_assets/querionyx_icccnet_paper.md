@@ -76,9 +76,9 @@ Querionyx is designed as a modular enterprise Q&A system. A user query is first 
 
 The production implementation follows a full-stack architecture. The backend is implemented using FastAPI and exposes query endpoints, health checks, and metrics. The frontend is implemented in Next.js and provides an interactive chat interface, source panels, metrics panels, and debug views. The retrieval layer uses ChromaDB for dense vector search and BM25 for sparse retrieval. The structured layer uses PostgreSQL with the Northwind database.
 
-![Figure 1. Querionyx V3 System Architecture](figures/figure1_system_architecture.svg)
+![Figure 1. Algorithmic workflow for Querionyx query processing](figures/figure1_system_architecture.svg)
 
-**Figure 1.** Querionyx system architecture.
+**Figure 1.** Algorithmic workflow for Querionyx query processing.
 
 ### 3.2 Adaptive Query Router
 
@@ -134,7 +134,7 @@ The router evaluation compares rule-based routing, LLM-based routing, and adapti
 | --- | --- | --- | --- | --- | --- |
 | Adaptive Router | Intent accuracy | 84.44% | N/A | 0.02 | Routes queries to RAG, SQL, or HYBRID |
 | RAG V3 | Context precision | 89.60% | 93.33% | 259.67 | Unstructured document retrieval |
-| Text-to-SQL | Execution accuracy | 86.67% | 93.33% | 214.84 | Structured database querying |
+| Text-to-SQL | Execution accuracy | 86.67% | 93.33% | 214.84 ms | Structured database querying |
 | Hybrid Handler | Hybrid correctness | 85.00% | 80.00% | 722.11 / 849.70 | Combines evidence from documents and SQL |
 | End-to-End System | Query success | 96.67% | 96.67% | 440.72 / 573.36 | Full pipeline performance |
 
@@ -222,7 +222,7 @@ The ablation study evaluates the contribution of core system components on HYBRI
 
 ![Figure 4. Ablation Impact on Hybrid Correctness](figures/figure4_ablation_impact.svg)
 
-**Figure 4.** Correctness decrease under ablated configurations.
+**Figure 4.** Correctness decrease under ablated configurations, shown as a bar chart with a trend line.
 
 Disabling hybrid execution produces the largest correctness drop, reducing correctness by 14.50%. This confirms that hybrid execution is central to the system contribution. Dense-only retrieval reduces correctness by 8.64%, supporting the use of hybrid dense-sparse retrieval. Removing adaptive routing reduces correctness by 5.83%, showing that routing contributes to the overall pipeline but is less dominant than hybrid execution itself.
 
