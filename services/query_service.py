@@ -12,6 +12,30 @@ import pickle
 import re
 import time
 import uuid
+
+
+def build_db_connect_kwargs() -> Dict[str, Any]:
+    """Build psycopg connection kwargs for local or hosted Postgres services."""
+    host = os.getenv("PGHOST") or os.getenv("PG_HOST") or "localhost"
+    port = int(os.getenv("PGPORT") or os.getenv("PG_PORT") or "5432")
+    dbname = os.getenv("PGDATABASE") or os.getenv("PG_DB") or "northwind"
+    user = os.getenv("PGUSER") or os.getenv("PG_USER") or "postgres"
+    password = os.getenv("PGPASSWORD") or os.getenv("PG_PASSWORD") or ""
+    sslmode = os.getenv("PGSSLMODE") or os.getenv("PG_SSLMODE")
+
+    kwargs: Dict[str, Any] = {
+        "host": host,
+        "port": port,
+        "dbname": dbname,
+        "user": user,
+        "password": password,
+        "connect_timeout": 2,
+    }
+    if sslmode:
+        kwargs["sslmode"] = sslmode
+    elif ".supabase.co" in host:
+        kwargs["sslmode"] = "require"
+    return kwargs
 from collections import Counter, OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
@@ -610,14 +634,7 @@ class QueryService:
         try:
             import psycopg2
 
-            with psycopg2.connect(
-                host=os.getenv("PGHOST") or os.getenv("PG_HOST") or "localhost",
-                port=int(os.getenv("PGPORT") or os.getenv("PG_PORT") or "5432"),
-                dbname=os.getenv("PGDATABASE") or os.getenv("PG_DB") or "northwind",
-                user=os.getenv("PGUSER") or os.getenv("PG_USER") or "postgres",
-                password=os.getenv("PGPASSWORD") or os.getenv("PG_PASSWORD") or "",
-                connect_timeout=2,
-            ):
+            with psycopg2.connect(**build_db_connect_kwargs()):
                 return "ok"
         except Exception as exc:
             return f"unavailable: {str(exc)[:120]}"

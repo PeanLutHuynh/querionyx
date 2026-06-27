@@ -231,13 +231,16 @@ class TextToSQLPipeline:
         return json.dumps(key_payload, ensure_ascii=False, sort_keys=True)
 
     def _connect(self):
-        return psycopg2.connect(
-            host=self.db_host,
-            port=self.db_port,
-            dbname=self.db_name,
-            user=self.db_user,
-            password=self.db_password,
-        )
+        kwargs = {
+            "host": self.db_host,
+            "port": self.db_port,
+            "dbname": self.db_name,
+            "user": self.db_user,
+            "password": self.db_password,
+        }
+        if ".supabase.co" in str(self.db_host):
+            kwargs["sslmode"] = "require"
+        return psycopg2.connect(**kwargs)
 
     def load_schema(self) -> Dict[str, List[Tuple[str, str]]]:
         schema: Dict[str, List[Tuple[str, str]]] = {}
