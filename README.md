@@ -54,6 +54,30 @@ Querionyx is a thesis project (2023-2025) that combines Retrieval-Augmented Gene
    # Expected output: ChromaDB OK, PostgreSQL OK
    ```
 
+## Supabase migration
+
+You can move the main demo data to Supabase in this order:
+
+1. Export your local PostgreSQL database and import it into Supabase Postgres.
+2. Upload your annual-report PDFs into a Supabase Storage bucket.
+3. Rebuild the vector index/chunks from those PDFs so RAG answers can be retrieved again.
+
+Example:
+
+```bash
+python scripts/supabase_migrate.py db --source-dsn "postgresql://postgres:postgres@localhost:5432/northwind" --destination-dsn "postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres"
+python scripts/supabase_migrate.py files --bucket annual-reports
+```
+
+Required environment variables:
+
+```bash
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+PGSOURCE_DSN=postgresql://postgres:postgres@localhost:5432/northwind
+PGDEST_DSN=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres
+```
+
 ## Project Structure
 
 ```
