@@ -41,6 +41,86 @@ textarea {
   gap: 16px;
 }
 
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.status-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status-strip span:not(.status-dot) {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--panel);
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #9aa4b2;
+}
+
+.status-dot.ok {
+  background: #039855;
+}
+
+.status-dot.bad {
+  background: var(--danger);
+}
+
+.prompt-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.prompt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.prompt-chip:hover {
+  border-color: #8cc7bf;
+}
+
+.prompt-chip:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 .messages {
   flex: 1;
   overflow: auto;
@@ -56,6 +136,7 @@ textarea {
   padding: 14px;
   max-width: 980px;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .message.user {
@@ -85,6 +166,7 @@ textarea {
   background: var(--accent);
   color: white;
   cursor: pointer;
+  min-height: 44px;
 }
 
 .composer button:disabled {
@@ -105,11 +187,44 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
+  overflow: hidden;
 }
 
 .panel h2 {
   margin: 0 0 10px;
   font-size: 14px;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) minmax(0, 1fr);
+  gap: 7px 12px;
+  font-size: 13px;
+}
+
+.metric-grid span {
+  color: var(--muted);
+}
+
+.metric-grid strong {
+  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.source-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.source-pill {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .badges {
@@ -149,6 +264,8 @@ pre {
 table {
   border-collapse: collapse;
   width: 100%;
+  margin-top: 10px;
+  font-size: 13px;
 }
 
 td,
@@ -163,9 +280,21 @@ th {
     grid-template-columns: 1fr;
   }
 
+  .chat {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .topbar {
+    flex-direction: column;
+  }
+
+  .status-strip {
+    justify-content: flex-start;
+  }
+
   .side {
     border-left: 0;
     border-top: 1px solid var(--line);
   }
 }
-

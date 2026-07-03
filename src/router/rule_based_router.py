@@ -71,6 +71,9 @@ class RuleBasedRouter:
         }
 
         self.rag_keywords = {
+            "báo cáo",
+            "tài liệu",
+            "đề cập",
             "quy trình",
             "chính sách",
             "hướng dẫn",
@@ -79,9 +82,14 @@ class RuleBasedRouter:
             "như thế nào",
             "giải thích",
             "chiến lược",
+            "cơ hội",
             "mục tiêu",
             "rủi ro",
             "kế hoạch",
+            "annual report",
+            "document",
+            "pdf",
+            "mention",
             "process",
             "policy",
             "guidance",
@@ -90,6 +98,7 @@ class RuleBasedRouter:
             "how",
             "explain",
             "strategy",
+            "opportunity",
             "objective",
             "goal",
             "plan",

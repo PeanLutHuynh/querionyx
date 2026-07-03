@@ -22,6 +22,7 @@ from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 
 from src.runtime.config import RuntimeConfig
+from src.runtime.fallbacks import INSUFFICIENT_EVIDENCE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _LIGHTWEIGHT_CHUNKS_CACHE: Optional[List[Dict[str, Any]]] = None
@@ -194,6 +195,83 @@ class HybridQueryHandler:
     def _tokenize(text: str) -> List[str]:
         return [token for token in re.split(r"\W+", text.lower()) if len(token) >= 3]
 
+    @staticmethod
+    def _clean_lightweight_text(text: str) -> str:
+        text = re.sub(r"\s+", " ", str(text or "")).strip()
+        text = re.sub(r"^[0-9]{1,3}\s+", "", text)
+        text = re.sub(r"\s+([,.;:])", r"\1", text)
+        return text
+
+    @staticmethod
+    def _clip_sentence(text: str, max_chars: int = 260) -> str:
+        cleaned = HybridQueryHandler._clean_lightweight_text(text)
+        if len(cleaned) <= max_chars:
+            return cleaned
+        clipped = cleaned[:max_chars].rstrip()
+        boundary = max(clipped.rfind("."), clipped.rfind(";"), clipped.rfind(","))
+        if boundary >= 120:
+            clipped = clipped[:boundary]
+        return clipped.rstrip(" ,;:") + "..."
+
+    def _compose_lightweight_answer(
+        self,
+        question: str,
+        chunks: List[Dict[str, Any]],
+        query_tokens: set[str],
+        topic_terms: List[str],
+        company_terms: List[str],
+    ) -> str:
+        if not chunks:
+            return ""
+
+        query_lower = question.lower()
+        company_label = company_terms[0].upper() if company_terms else "tài liệu"
+        if "rủi ro" in query_lower or "risk" in query_lower:
+            intro = f"Dựa trên các đoạn được truy xuất, {company_label} đề cập một số rủi ro và cách quản trị liên quan:"
+        elif "cơ hội" in query_lower or "opportunity" in query_lower:
+            intro = f"Dựa trên các đoạn được truy xuất, {company_label} nhấn mạnh các cơ hội chính:"
+        elif "chiến lược" in query_lower or "strategy" in query_lower or "tăng trưởng" in query_lower:
+            intro = f"Dựa trên các đoạn được truy xuất, {company_label} mô tả định hướng tăng trưởng như sau:"
+        else:
+            intro = "Dựa trên các đoạn được truy xuất, thông tin liên quan là:"
+
+        candidates: List[tuple[float, str]] = []
+        split_pattern = r"(?:[•■]|(?<=[.!?])\s+)"
+        for chunk in chunks:
+            raw_text = self._clean_lightweight_text(chunk.get("text", ""))
+            for part in re.split(split_pattern, raw_text):
+                sentence = self._clean_lightweight_text(part)
+                if len(sentence) < 45:
+                    continue
+                if len(sentence) < 110 and sentence[-1:] not in {".", "!", "?", ";", ":", "”"}:
+                    continue
+                lower = sentence.lower()
+                token_hits = len(query_tokens & set(self._tokenize(sentence)))
+                topic_hits = sum(1 for term in topic_terms if term in lower)
+                company_hits = sum(1 for company in company_terms if company in lower)
+                score = token_hits + (2.5 * topic_hits) + (1.5 * company_hits)
+                if score > 0:
+                    candidates.append((score, sentence))
+
+        candidates.sort(key=lambda item: item[0], reverse=True)
+        selected: List[str] = []
+        seen: set[str] = set()
+        for _, sentence in candidates:
+            clipped = self._clip_sentence(sentence)
+            key = clipped.lower()[:90]
+            if key in seen:
+                continue
+            seen.add(key)
+            selected.append(clipped)
+            if len(selected) >= 3:
+                break
+
+        if not selected:
+            selected = [self._clip_sentence(chunk.get("text", ""), max_chars=420) for chunk in chunks[:1]]
+
+        bullets = "\n".join(f"- {sentence}" for sentence in selected if sentence)
+        return f"{intro}\n{bullets}" if bullets else ""
+
     def _run_lightweight_rag(self, question: str) -> Dict[str, Any]:
         index = self._load_lightweight_index()
         if not index:
@@ -206,25 +284,56 @@ class HybridQueryHandler:
             }
 
         query_lower = question.lower()
+        unsupported_terms = [
+            "bí mật",
+            "công thức bí mật",
+            "dự báo giá cổ phiếu",
+            "giá cổ phiếu",
+            "mật khẩu",
+            "password",
+            "email",
+            "số điện thoại",
+        ]
+        if any(term in query_lower for term in unsupported_terms):
+            return {
+                "context_passages": [],
+                "citations": [],
+                "answer": "",
+                "score": None,
+                "error": "Question asks for unsupported or unavailable document content.",
+            }
+
         stopwords = {
             "bao",
             "báo",
             "cáo",
             "cho",
+            "câu",
             "của",
+            "dữ",
             "đề",
+            "hãy",
+            "hỏi",
+            "không",
             "nào",
             "nêu",
+            "này",
+            "nếu",
+            "nói",
+            "rõ",
             "tài",
             "the",
             "trong",
             "tóm",
             "tắt",
             "liệu",
+            "biết",
+            "data",
             "report",
             "summarize",
             "what",
             "which",
+            "gì",
         }
         query_tokens = set(self._tokenize(question)) - stopwords
         company_terms = [term for term in ["fpt", "vinamilk", "masan"] if term in query_lower]
@@ -233,8 +342,8 @@ class HybridQueryHandler:
             topic_terms = ["rủi ro", "risk", "bất lợi", "ảnh hưởng bất lợi", "quản lý rủi ro"]
         elif "cơ hội" in query_lower or "opportunity" in query_lower:
             topic_terms = ["cơ hội", "opportunity", "tiềm năng", "tăng trưởng", "mở ra"]
-        elif "chiến lược" in query_lower or "strategy" in query_lower:
-            topic_terms = ["chiến lược", "strategy", "định hướng", "mục tiêu", "kế hoạch"]
+        elif "chiến lược" in query_lower or "strategy" in query_lower or "tăng trưởng" in query_lower:
+            topic_terms = ["chiến lược", "strategy", "định hướng", "mục tiêu", "kế hoạch", "tăng trưởng", "doanh thu", "thị trường"]
         scored = []
         for item in index:
             chunk = item["chunk"]
@@ -257,10 +366,17 @@ class HybridQueryHandler:
             for chunk in selected
         ]
         best_score = scored[0][0] / max(1, len(query_tokens)) if scored else None
+        answer = self._compose_lightweight_answer(
+            question=question,
+            chunks=selected,
+            query_tokens=query_tokens,
+            topic_terms=topic_terms,
+            company_terms=company_terms,
+        )
         return {
             "context_passages": passages,
             "citations": citations,
-            "answer": passages[0] if passages else "",
+            "answer": answer,
             "score": best_score,
             "error": None if passages else "No relevant document context found.",
         }
@@ -505,12 +621,28 @@ class HybridQueryHandler:
 
         if router_intent == "RAG" or self._is_doc_question(question):
             rag_result = await self._run_rag(question)
-            answer = self._deterministic_rag_answer(rag_result)
+            rag_low = (
+                rag_result.get("score") is not None
+                and float(rag_result["score"]) < self.runtime_config.rag_low_confidence_threshold
+            )
+            if rag_result.get("error") or rag_low:
+                rag_result["answer"] = ""
+                if rag_low and not rag_result.get("error"):
+                    rag_result["error"] = "Retrieved document context is below confidence threshold."
+                answer = INSUFFICIENT_EVIDENCE
+                sources = []
+                contribution = "both_fail"
+                fallback_mode = "BOTH_FAILED"
+            else:
+                answer = self._deterministic_rag_answer(rag_result)
+                sources = [f"DOC:{c}" for c in rag_result.get("citations", [])]
+                contribution = "rag_only"
+                fallback_mode = "RAG_ONLY"
             return HybridResult(
                 question=question,
                 answer=answer,
-                sources=[f"DOC:{c}" for c in rag_result.get("citations", [])],
-                contribution="rag_only",
+                sources=sources,
+                contribution=contribution,
                 rag_result=rag_result,
                 error=rag_result.get("error"),
                 timings={
@@ -518,13 +650,13 @@ class HybridQueryHandler:
                     "rag_ms": (rag_result.get("timings") or {}).get("total_ms"),
                 },
                 rag_status=self._branch_status(rag_result, "rag"),
-                fallback_mode="RAG_ONLY",
+                fallback_mode=fallback_mode,
                 trace=self._build_trace(
                     question,
                     rag_result,
                     {},
-                    "rag_only",
-                    "RAG_ONLY",
+                    contribution,
+                    fallback_mode,
                     round((time.perf_counter() - started) * 1000, 2),
                 ),
             ).__dict__
@@ -580,7 +712,7 @@ class HybridQueryHandler:
                 contribution = "sql_only"
                 fallback_mode = "SQL_DOMINANT"
         else:
-            answer = "Tôi không có đủ thông tin để trả lời câu hỏi này."
+            answer = INSUFFICIENT_EVIDENCE
             sources = []
             fallback_mode = "BOTH_FAILED"
 

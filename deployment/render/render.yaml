@@ -6,17 +6,35 @@ services:
     buildCommand: pip install -r ../requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
       - key: ENABLE_HEAVY_RAG
         value: "0"
       - key: QUERIONYX_LIGHTWEIGHT_RAG
+        value: "1"
+      - key: QUERIONYX_CACHE_ENABLED
         value: "1"
       - key: QUERIONYX_MERGE_LLM_ENABLED
         value: "0"
       - key: QUERIONYX_USE_LLM_ROUTER
         value: "0"
+      - key: QUERIONYX_RAG_LOW_CONFIDENCE_THRESHOLD
+        value: "0.6"
       - key: QUERIONYX_LIGHTWEIGHT_RAG_MS
         value: "4000"
       - key: QUERIONYX_SQL_EXECUTION_MS
         value: "5000"
       - key: QUERIONYX_END_TO_END_MS
         value: "10000"
+      - key: PGDATABASE
+        value: "postgres"
+      - key: PGHOST
+        value: "aws-1-ap-northeast-1.pooler.supabase.com"
+      - key: PGPORT
+        value: "6543"
+      - key: PGSSLMODE
+        value: "require"
+      - key: PGUSER
+        value: "postgres.ycgdvyapkgeekrqqxkle"
+      - key: PGPASSWORD
+        sync: false

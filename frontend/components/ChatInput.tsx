@@ -16,11 +16,15 @@ export function ChatInput({ disabled, onSend }: { disabled: boolean; onSend: (va
 
   return (
     <form className="composer" onSubmit={submit}>
-      <textarea value={value} onChange={(event) => setValue(event.target.value)} />
+      <textarea
+        rows={2}
+        value={value}
+        placeholder="Ask about annual reports or Northwind data"
+        onChange={(event) => setValue(event.target.value)}
+      />
       <button disabled={disabled} title="Send query" aria-label="Send query">
         <Send size={18} />
       </button>
     </form>
   );
 }
-
