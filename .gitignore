@@ -21,3 +21,5 @@ profiling/*/*
 frontend/node_modules/
 frontend/.next/
 frontend/out/
+
+.vercel
