@@ -17,12 +17,12 @@ class TimeoutConfig:
     deterministic_router_ms: int = 100
     router_llm_ms: int = 2000
     sql_planning_cache_ms: int = 500
-    sql_execution_ms: int = 3000
-    lightweight_rag_ms: int = 1500
+    sql_execution_ms: int = 5000
+    lightweight_rag_ms: int = 4000
     full_rag_ms: int = 5000
     merge_llm_ms: int = 2500
     hybrid_total_ms: int = 6000
-    end_to_end_ms: int = 8000
+    end_to_end_ms: int = 10000
 
 
 @dataclass

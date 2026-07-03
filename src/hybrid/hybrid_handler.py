@@ -25,6 +25,7 @@ from src.runtime.config import RuntimeConfig
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _LIGHTWEIGHT_CHUNKS_CACHE: Optional[List[Dict[str, Any]]] = None
+_LIGHTWEIGHT_INDEX_CACHE: Optional[List[Dict[str, Any]]] = None
 _RAG_PIPELINE_SINGLETONS: Dict[tuple[Any, ...], Any] = {}
 
 
@@ -169,13 +170,33 @@ class HybridQueryHandler:
         _LIGHTWEIGHT_CHUNKS_CACHE = self._lightweight_chunks
         return self._lightweight_chunks
 
+    def _load_lightweight_index(self) -> List[Dict[str, Any]]:
+        global _LIGHTWEIGHT_INDEX_CACHE
+        if _LIGHTWEIGHT_INDEX_CACHE is not None:
+            return _LIGHTWEIGHT_INDEX_CACHE
+
+        indexed = []
+        for chunk in self._load_lightweight_chunks():
+            text = str(chunk.get("text", ""))
+            source = str(chunk.get("source", ""))
+            indexed.append(
+                {
+                    "chunk": chunk,
+                    "text_lower": text.lower(),
+                    "source_lower": source.lower(),
+                    "tokens": set(self._tokenize(text)),
+                }
+            )
+        _LIGHTWEIGHT_INDEX_CACHE = indexed
+        return indexed
+
     @staticmethod
     def _tokenize(text: str) -> List[str]:
         return [token for token in re.split(r"\W+", text.lower()) if len(token) >= 3]
 
     def _run_lightweight_rag(self, question: str) -> Dict[str, Any]:
-        chunks = self._load_lightweight_chunks()
-        if not chunks:
+        index = self._load_lightweight_index()
+        if not index:
             return {
                 "context_passages": [],
                 "citations": [],
@@ -184,16 +205,47 @@ class HybridQueryHandler:
                 "error": "No local document chunks are available.",
             }
 
-        query_tokens = set(self._tokenize(question))
-        company_terms = [term for term in ["fpt", "vinamilk", "masan"] if term in question.lower()]
+        query_lower = question.lower()
+        stopwords = {
+            "bao",
+            "báo",
+            "cáo",
+            "cho",
+            "của",
+            "đề",
+            "nào",
+            "nêu",
+            "tài",
+            "the",
+            "trong",
+            "tóm",
+            "tắt",
+            "liệu",
+            "report",
+            "summarize",
+            "what",
+            "which",
+        }
+        query_tokens = set(self._tokenize(question)) - stopwords
+        company_terms = [term for term in ["fpt", "vinamilk", "masan"] if term in query_lower]
+        topic_terms: List[str] = []
+        if "rủi ro" in query_lower or "risk" in query_lower:
+            topic_terms = ["rủi ro", "risk", "bất lợi", "ảnh hưởng bất lợi", "quản lý rủi ro"]
+        elif "cơ hội" in query_lower or "opportunity" in query_lower:
+            topic_terms = ["cơ hội", "opportunity", "tiềm năng", "tăng trưởng", "mở ra"]
+        elif "chiến lược" in query_lower or "strategy" in query_lower:
+            topic_terms = ["chiến lược", "strategy", "định hướng", "mục tiêu", "kế hoạch"]
         scored = []
-        for chunk in chunks:
-            text = chunk.get("text", "")
-            text_lower = text.lower()
-            tokens = set(self._tokenize(text))
-            overlap = len(query_tokens & tokens)
-            company_bonus = 3 if any(company in text_lower or company in chunk.get("source", "").lower() for company in company_terms) else 0
-            score = overlap + company_bonus
+        for item in index:
+            chunk = item["chunk"]
+            text_lower = item["text_lower"]
+            source_lower = item["source_lower"]
+            if company_terms and not any(company in text_lower or company in source_lower for company in company_terms):
+                continue
+            overlap = len(query_tokens & item["tokens"])
+            company_bonus = 3 if company_terms else 0
+            topic_bonus = sum(4 for term in topic_terms if term in text_lower)
+            score = overlap + company_bonus + topic_bonus
             if score > 0:
                 scored.append((score, chunk))
 
