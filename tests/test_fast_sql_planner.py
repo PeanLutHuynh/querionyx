@@ -44,10 +44,40 @@ class TestFastSqlPlanner(unittest.TestCase):
             "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 10;",
         )
 
+    def test_product_sold_the_most_uses_quantity_fast_path(self) -> None:
+        pipeline = TextToSQLPipeline.__new__(TextToSQLPipeline)
+
+        sql = pipeline._generate_fast_sql("Which product sold the most?")
+
+        self.assertEqual(
+            sql,
+            "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 1;",
+        )
+
     def test_vietnamese_best_selling_product_uses_quantity_fast_path(self) -> None:
         pipeline = TextToSQLPipeline.__new__(TextToSQLPipeline)
 
         sql = pipeline._generate_fast_sql("Sản phẩm bán chạy nhất theo số lượng là gì?")
+
+        self.assertEqual(
+            sql,
+            "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 1;",
+        )
+
+    def test_vietnamese_short_best_selling_product_uses_quantity_fast_path(self) -> None:
+        pipeline = TextToSQLPipeline.__new__(TextToSQLPipeline)
+
+        sql = pipeline._generate_fast_sql("Sản phẩm bán chạy nhất")
+
+        self.assertEqual(
+            sql,
+            "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 1;",
+        )
+
+    def test_vietnamese_most_sold_product_uses_quantity_fast_path(self) -> None:
+        pipeline = TextToSQLPipeline.__new__(TextToSQLPipeline)
+
+        sql = pipeline._generate_fast_sql("Sản phẩm bán nhiều nhất")
 
         self.assertEqual(
             sql,

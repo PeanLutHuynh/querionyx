@@ -213,6 +213,24 @@ class HybridQueryHandler:
             clipped = clipped[:boundary]
         return clipped.rstrip(" ,;:") + "..."
 
+    @staticmethod
+    def _focus_leadership_sentence(text: str) -> str:
+        cleaned = HybridQueryHandler._clean_lightweight_text(text)
+        lower = cleaned.lower()
+        anchors = [
+            "hđqt fpt gồm",
+            "hdqt fpt gom",
+            "thành viên hội đồng quản trị",
+            "thanh vien hoi dong quan tri",
+            "giới thiệu ban lãnh đạo",
+            "gioi thieu ban lanh dao",
+        ]
+        for anchor in anchors:
+            idx = lower.find(anchor)
+            if idx >= 0:
+                return cleaned[idx:]
+        return cleaned
+
     def _compose_lightweight_answer(
         self,
         question: str,
@@ -243,6 +261,8 @@ class HybridQueryHandler:
             raw_text = self._clean_lightweight_text(chunk.get("text", ""))
             for part in re.split(split_pattern, raw_text):
                 sentence = self._clean_lightweight_text(part)
+                if any(term in query_lower for term in ["ban lãnh đạo", "lãnh đạo", "hội đồng quản trị", "hđqt"]):
+                    sentence = self._focus_leadership_sentence(sentence)
                 if len(sentence) < 45:
                     continue
                 if len(sentence) < 110 and sentence[-1:] not in {".", "!", "?", ";", ":", "”"}:

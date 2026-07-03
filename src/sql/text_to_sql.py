@@ -550,7 +550,15 @@ class TextToSQLPipeline:
         if self._contains_all(q, ["shipper", "company", "shipment", "counts"]):
             return "SELECT s.company_name, COUNT(o.order_id) AS shipment_count FROM shippers s JOIN orders o ON s.shipper_id = o.ship_via GROUP BY s.company_name ORDER BY shipment_count DESC, s.company_name LIMIT 10;"
         if self._contains_all(q, ["product", "sold", "quantity"]):
-            return "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 10;"
+            limit = 1 if ("most" in q or "best" in q) and "top" not in q else top_limit
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"
+        if (
+            ("product" in q or "products" in q)
+            and ("sold" in q or "selling" in q)
+            and ("most" in q or "best" in q or "top" in q)
+        ):
+            limit = 1 if ("most" in q or "best" in q) and "top" not in q else top_limit
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"
         if (
             ("product" in q or "products" in q)
             and ("order" in q or "orders" in q)
@@ -687,6 +695,12 @@ class TextToSQLPipeline:
             return "SELECT c.country, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS revenue FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.country ORDER BY revenue DESC, c.country LIMIT 10;"
         if self._contains_all(q, ["top 5", "san pham", "ban chay"]):
             return "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 5;"
+        if self._contains_all(q, ["san pham", "ban chay"]):
+            limit = 1 if "nhat" in q and "top" not in q else top_limit
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"
+        if self._contains_all(q, ["san pham", "ban nhieu"]):
+            limit = 1 if "nhat" in q and "top" not in q else top_limit
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"
         if self._contains_all(q, ["san pham", "ban chay", "so luong"]):
             limit = 1 if "nhat" in q else top_limit
             return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"

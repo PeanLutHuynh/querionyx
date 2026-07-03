@@ -82,6 +82,12 @@ class RuleBasedRouter:
             "list",
             "filter",
             "sort",
+            "sold",
+            "selling",
+            "best selling",
+            "quantity sold",
+            "sold the most",
+            "most",
         }
 
         self.rag_keywords = {
