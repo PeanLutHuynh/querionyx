@@ -58,6 +58,10 @@ class AdaptiveRouter:
             "rủi ro",
             "kế hoạch",
             "mục tiêu",
+            "chuyển đổi số",
+            "chuỗi cung ứng",
+            "lợi thế cạnh tranh",
+            "sản phẩm chính",
             "strategy",
             "policy",
             "risk",
@@ -313,6 +317,8 @@ class QueryonixPipelineV3:
             timings["sql_latency_ms"] = round((time.perf_counter() - branch_started) * 1000, 2)
             branches.append("sql")
             sql_success = sql_output.get("error") is None
+            if not sql_success:
+                fallback_used = True
             cache_hit = (sql_output.get("timings") or {}).get("sql_cache_hit") == 1.0
             formatting_started = time.perf_counter()
             answer = self._format_sql_answer(sql_output) if sql_success else INSUFFICIENT_EVIDENCE

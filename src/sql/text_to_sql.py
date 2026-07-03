@@ -484,6 +484,10 @@ class TextToSQLPipeline:
         Unknown or ambiguous queries still fall back to the LLM path.
         """
         q = self._normalize_text(question)
+        top_limit_match = re.search(r"\btop\s+(\d+)\b", q)
+        top_limit = max(1, min(50, int(top_limit_match.group(1)))) if top_limit_match else 10
+        if "top n" in q:
+            top_limit = 5
 
         # Simple listing queries.
         if self._contains_all(q, ["first 10", "product", "name", "alphabetical"]):
@@ -547,6 +551,18 @@ class TextToSQLPipeline:
             return "SELECT s.company_name, COUNT(o.order_id) AS shipment_count FROM shippers s JOIN orders o ON s.shipper_id = o.ship_via GROUP BY s.company_name ORDER BY shipment_count DESC, s.company_name LIMIT 10;"
         if self._contains_all(q, ["product", "sold", "quantity"]):
             return "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM order_details od JOIN products p ON od.product_id = p.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 10;"
+        if (
+            ("product" in q or "products" in q)
+            and ("order" in q or "orders" in q)
+            and ("top" in q or "best" in q or "number" in q or "count" in q)
+        ):
+            return f"SELECT p.product_name, COUNT(DISTINCT od.order_id) AS order_count FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY order_count DESC, p.product_name LIMIT {top_limit};"
+        if (
+            ("product" in q or "products" in q)
+            and ("top" in q or "best" in q)
+            and "count" in q
+        ):
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {top_limit};"
         if self._contains_all(q, ["customer", "company", "latest", "order", "date"]):
             return "SELECT c.company_name, MAX(o.order_date) AS latest_order_date FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY latest_order_date DESC, c.company_name LIMIT 10;"
         if self._contains_all(q, ["order", "ids", "customer", "company"]):
@@ -605,7 +621,7 @@ class TextToSQLPipeline:
             return "SELECT COUNT(*) AS product_count FROM products;"
         if self._contains_all(q, ["bao nhieu", "nhan vien"]):
             return "SELECT COUNT(*) AS employee_count FROM employees;"
-        if self._contains_all(q, ["tong", "so", "don hang"]):
+        if self._contains_all(q, ["tong", "so", "don hang"]) or self._contains_all(q, ["bao nhieu", "don hang"]):
             return "SELECT COUNT(*) AS order_count FROM orders;"
         if self._contains_all(q, ["bao nhieu", "khach hang"]):
             return "SELECT COUNT(*) AS customer_count FROM customers;"
@@ -631,8 +647,12 @@ class TextToSQLPipeline:
             return "SELECT c.company_name, COUNT(o.order_id) AS order_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY order_count DESC, c.company_name LIMIT 5;"
         if self._contains_all(q, ["top 3", "khach hang", "don hang"]):
             return "SELECT c.company_name, COUNT(o.order_id) AS order_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY order_count DESC, c.company_name LIMIT 3;"
-        if self._contains_all(q, ["top 5", "khach hang", "tong", "chi tieu"]) or self._contains_all(q, ["khach hang", "chi tieu", "nhieu nhat"]):
-            return "SELECT c.company_name, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.company_name ORDER BY total_spent DESC, c.company_name LIMIT 5;"
+        if (
+            self._contains_all(q, ["top", "khach hang", "chi tieu"])
+            or self._contains_all(q, ["top 5", "khach hang", "tong", "chi tieu"])
+            or self._contains_all(q, ["khach hang", "chi tieu", "nhieu nhat"])
+        ):
+            return f"SELECT c.company_name, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.company_name ORDER BY total_spent DESC, c.company_name LIMIT {top_limit};"
         if self._contains_all(q, ["chi tieu", "nhieu nhat", "khach hang"]):
             return "SELECT c.company_name, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS total_spent FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.company_name ORDER BY total_spent DESC, c.company_name LIMIT 1;"
         if self._contains_all(q, ["doanh thu", "trung binh", "moi", "don hang"]):
@@ -647,12 +667,16 @@ class TextToSQLPipeline:
             return "SELECT c.category_name, COUNT(p.product_id) AS product_count FROM categories c JOIN products p ON c.category_id = p.category_id GROUP BY c.category_name ORDER BY product_count ASC, c.category_name LIMIT 1;"
         if self._contains_all(q, ["nha cung cap", "nhieu", "san pham"]):
             return "SELECT s.company_name, COUNT(p.product_id) AS product_count FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY product_count DESC, s.company_name LIMIT 5;"
+        if self._contains_all(q, ["nha cung cap", "cung cap", "nhieu"]):
+            return "SELECT s.company_name, COUNT(p.product_id) AS product_count FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY product_count DESC, s.company_name LIMIT 5;"
         if self._contains_all(q, ["gia", "trung binh", "nha cung cap"]):
             return "SELECT s.company_name, ROUND(AVG(p.unit_price)::numeric, 2) AS avg_unit_price FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY avg_unit_price DESC, s.company_name LIMIT 10;"
         if self._contains_all(q, ["nhan vien", "so don hang"]) or self._contains_all(q, ["nhan vien", "xu ly", "don hang"]):
             if "1997" in q:
                 return "SELECT e.first_name || ' ' || e.last_name AS employee_name, COUNT(o.order_id) AS order_count FROM employees e JOIN orders o ON e.employee_id = o.employee_id WHERE o.order_date >= DATE '1997-01-01' AND o.order_date < DATE '1998-01-01' GROUP BY employee_name ORDER BY order_count DESC, employee_name LIMIT 5;"
             return "SELECT e.first_name || ' ' || e.last_name AS employee_name, COUNT(o.order_id) AS order_count FROM employees e JOIN orders o ON e.employee_id = o.employee_id GROUP BY employee_name ORDER BY order_count DESC, employee_name LIMIT 10;"
+        if self._contains_all(q, ["nhan vien", "kinh doanh", "gioi nhat"]):
+            return "SELECT e.first_name || ' ' || e.last_name AS employee_name, COUNT(o.order_id) AS order_count FROM employees e JOIN orders o ON e.employee_id = o.employee_id GROUP BY employee_name ORDER BY order_count DESC, employee_name LIMIT 5;"
         if self._contains_all(q, ["5", "don hang", "gan nhat"]):
             return "SELECT o.order_id, o.order_date, c.company_name, e.first_name || ' ' || e.last_name AS employee_name FROM orders o JOIN customers c ON o.customer_id = c.customer_id JOIN employees e ON o.employee_id = e.employee_id ORDER BY o.order_date DESC, o.order_id DESC LIMIT 5;"
         if self._contains_all(q, ["san pham", "chua tung", "dat hang"]):
@@ -663,10 +687,15 @@ class TextToSQLPipeline:
             return "SELECT c.country, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS revenue FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_details od ON o.order_id = od.order_id GROUP BY c.country ORDER BY revenue DESC, c.country LIMIT 10;"
         if self._contains_all(q, ["top 5", "san pham", "ban chay"]):
             return "SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT 5;"
+        if self._contains_all(q, ["san pham", "ban chay", "so luong"]):
+            limit = 1 if "nhat" in q else top_limit
+            return f"SELECT p.product_name, SUM(od.quantity) AS total_quantity_sold FROM products p JOIN order_details od ON p.product_id = od.product_id GROUP BY p.product_name ORDER BY total_quantity_sold DESC, p.product_name LIMIT {limit};"
         if self._contains_all(q, ["so luong", "don hang", "cong ty", "van chuyen"]):
             return "SELECT s.company_name, COUNT(o.order_id) AS order_count FROM shippers s JOIN orders o ON s.shipper_id = o.ship_via GROUP BY s.company_name ORDER BY order_count DESC, s.company_name;"
         if self._contains_all(q, ["don hang", "theo thang"]):
             return "SELECT DATE_TRUNC('month', order_date)::date AS order_month, COUNT(*) AS order_count FROM orders GROUP BY order_month ORDER BY order_month;"
+        if self._contains_all(q, ["truy van", "doanh thu", "don hang", "phan nhom"]):
+            return "SELECT EXTRACT(YEAR FROM order_date) AS year, COUNT(*) AS order_count FROM orders GROUP BY year ORDER BY year;"
         if self._contains_all(q, ["don hang", "lon hon", "trung binh"]):
             return "SELECT order_id, order_revenue FROM (SELECT o.order_id, ROUND(SUM(od.unit_price * od.quantity * (1 - od.discount))::numeric, 2) AS order_revenue FROM orders o JOIN order_details od ON o.order_id = od.order_id GROUP BY o.order_id) order_totals WHERE order_revenue > (SELECT AVG(order_revenue) FROM (SELECT SUM(unit_price * quantity * (1 - discount)) AS order_revenue FROM order_details GROUP BY order_id) avg_totals) ORDER BY order_revenue DESC LIMIT 10;"
 

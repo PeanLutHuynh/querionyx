@@ -46,6 +46,20 @@ class RuleBasedRouter:
             "doanh thu",
             "đếm",
             "liệt kê",
+            "bán chạy",
+            "bán nhiều",
+            "chi tiêu",
+            "chưa có",
+            "chưa từng",
+            "danh mục",
+            "gần nhất",
+            "kinh doanh giỏi",
+            "nhiều đơn hàng",
+            "phân nhóm",
+            "so luong",
+            "số lượng",
+            "tính toàn bộ",
+            "xử lý",
             "xếp hạng",
             "nhiều nhất",
             "ít nhất",
@@ -74,6 +88,14 @@ class RuleBasedRouter:
             "báo cáo",
             "tài liệu",
             "đề cập",
+            "ban lãnh đạo",
+            "chuyển đổi số",
+            "chuỗi cung ứng",
+            "lãnh đạo",
+            "lợi thế cạnh tranh",
+            "sản phẩm chính",
+            "hội đồng quản trị",
+            "hđqt",
             "quy trình",
             "chính sách",
             "hướng dẫn",
@@ -124,6 +146,11 @@ class RuleBasedRouter:
         rag_count = len(matched_rag)
         sql_score = self._score(normalized, matched_sql, "sql")
         rag_score = self._score(normalized, matched_rag, "rag")
+        generic_rag_only = set(matched_rag).issubset({"là gì", "what is"})
+        if sql_score > 0 and generic_rag_only:
+            rag_score = 0.0
+            matched_rag = []
+            rag_count = 0
         ambiguous = abs(sql_score - rag_score) < self.ambiguity_margin and (sql_score > 0 or rag_score > 0)
 
         # Determine intent based on keyword presence

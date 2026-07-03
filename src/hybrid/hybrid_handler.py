@@ -232,6 +232,8 @@ class HybridQueryHandler:
             intro = f"Dựa trên các đoạn được truy xuất, {company_label} nhấn mạnh các cơ hội chính:"
         elif "chiến lược" in query_lower or "strategy" in query_lower or "tăng trưởng" in query_lower:
             intro = f"Dựa trên các đoạn được truy xuất, {company_label} mô tả định hướng tăng trưởng như sau:"
+        elif any(term in query_lower for term in ["ban lãnh đạo", "lãnh đạo", "hội đồng quản trị", "hđqt"]):
+            intro = f"Dựa trên các đoạn được truy xuất, {company_label} mô tả ban lãnh đạo/quản trị như sau:"
         else:
             intro = "Dựa trên các đoạn được truy xuất, thông tin liên quan là:"
 
@@ -344,6 +346,8 @@ class HybridQueryHandler:
             topic_terms = ["cơ hội", "opportunity", "tiềm năng", "tăng trưởng", "mở ra"]
         elif "chiến lược" in query_lower or "strategy" in query_lower or "tăng trưởng" in query_lower:
             topic_terms = ["chiến lược", "strategy", "định hướng", "mục tiêu", "kế hoạch", "tăng trưởng", "doanh thu", "thị trường"]
+        elif any(term in query_lower for term in ["ban lãnh đạo", "lãnh đạo", "hội đồng quản trị", "hđqt"]):
+            topic_terms = ["ban lãnh đạo", "lãnh đạo", "hội đồng quản trị", "hđqt", "thành viên", "quản trị công ty"]
         scored = []
         for item in index:
             chunk = item["chunk"]
