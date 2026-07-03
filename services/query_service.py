@@ -380,6 +380,7 @@ class QueryService:
             "cache": self.cache.stats(),
             "avg_latency": self.metrics.snapshot(self.cache.stats())["latency"]["avg_ms"],
             "db_status": self._db_status(),
+            "rag_status": self._rag_status(),
             "timestamp": now_iso(),
         }
 
@@ -638,6 +639,20 @@ class QueryService:
                 return "ok"
         except Exception as exc:
             return f"unavailable: {str(exc)[:120]}"
+
+    def _rag_status(self) -> Dict[str, Any]:
+        if not CHUNKS_FILE.exists():
+            return {"chunks_file": "missing", "chunk_count": 0}
+        try:
+            with CHUNKS_FILE.open("rb") as f:
+                chunks = pickle.load(f)
+            return {
+                "chunks_file": "ok",
+                "chunk_count": len(chunks) if isinstance(chunks, list) else 0,
+                "size_mb": round(CHUNKS_FILE.stat().st_size / (1024 * 1024), 2),
+            }
+        except Exception as exc:
+            return {"chunks_file": "unreadable", "chunk_count": 0, "error": str(exc)[:120]}
 
     def _load_router_summary_if_available(self) -> None:
         path = PROJECT_ROOT / "metrics" / "latency" / "router_stress_summary.json"

@@ -76,6 +76,15 @@ class RuntimeConfig:
         cfg.routing_low_confidence_threshold = float(
             os.getenv("QUERIONYX_ROUTING_LOW_CONFIDENCE_THRESHOLD", str(cfg.routing_low_confidence_threshold))
         )
+        cfg.timeouts.deterministic_router_ms = _env_int("QUERIONYX_DETERMINISTIC_ROUTER_MS", cfg.timeouts.deterministic_router_ms)
+        cfg.timeouts.router_llm_ms = _env_int("QUERIONYX_ROUTER_LLM_MS", cfg.timeouts.router_llm_ms)
+        cfg.timeouts.sql_planning_cache_ms = _env_int("QUERIONYX_SQL_PLANNING_CACHE_MS", cfg.timeouts.sql_planning_cache_ms)
+        cfg.timeouts.sql_execution_ms = _env_int("QUERIONYX_SQL_EXECUTION_MS", cfg.timeouts.sql_execution_ms)
+        cfg.timeouts.lightweight_rag_ms = _env_int("QUERIONYX_LIGHTWEIGHT_RAG_MS", cfg.timeouts.lightweight_rag_ms)
+        cfg.timeouts.full_rag_ms = _env_int("QUERIONYX_FULL_RAG_MS", cfg.timeouts.full_rag_ms)
+        cfg.timeouts.merge_llm_ms = _env_int("QUERIONYX_MERGE_LLM_MS", cfg.timeouts.merge_llm_ms)
+        cfg.timeouts.hybrid_total_ms = _env_int("QUERIONYX_HYBRID_TOTAL_MS", cfg.timeouts.hybrid_total_ms)
+        cfg.timeouts.end_to_end_ms = _env_int("QUERIONYX_END_TO_END_MS", cfg.timeouts.end_to_end_ms)
         return cfg
 
     @classmethod
@@ -101,3 +110,13 @@ def _env_bool(name: str, default: bool) -> bool:
     if raw is None:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default

@@ -14,3 +14,9 @@ services:
         value: "0"
       - key: QUERIONYX_USE_LLM_ROUTER
         value: "0"
+      - key: QUERIONYX_LIGHTWEIGHT_RAG_MS
+        value: "4000"
+      - key: QUERIONYX_SQL_EXECUTION_MS
+        value: "5000"
+      - key: QUERIONYX_END_TO_END_MS
+        value: "10000"

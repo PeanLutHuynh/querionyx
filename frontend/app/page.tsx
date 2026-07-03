@@ -23,17 +23,23 @@ export default function Home() {
       { id: crypto.randomUUID(), role: "user", content: question },
       { id: assistantId, role: "assistant", content: "", response: null }
     ]);
-    const response = await fetch(`${API_BASE}/query/stream`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question, debug })
-    });
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    let finalPayload: any = null;
+    try {
+      const response = await fetch(`${API_BASE}/query/stream`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, debug })
+      });
+      if (!response.ok) {
+        throw new Error(`API request failed (${response.status})`);
+      }
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error("API response stream is empty.");
+      }
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let finalPayload: any = null;
 
-    if (reader) {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -59,11 +65,17 @@ export default function Home() {
           }
         }
       }
+      if (finalPayload) {
+        setLastResponse(finalPayload);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown API error";
+      setMessages((items) =>
+        items.map((item) => (item.id === assistantId ? { ...item, content: `Request failed: ${message}` } : item))
+      );
+    } finally {
+      setLoading(false);
     }
-    if (finalPayload) {
-      setLastResponse(finalPayload);
-    }
-    setLoading(false);
   }
 
   return (
@@ -78,7 +90,7 @@ export default function Home() {
         </button>
         <MetricsPanel response={lastResponse} />
         <SourcePanel sources={lastResponse?.sources || []} />
-        <DebugPanel response={lastResponse} />
+        {debug ? <DebugPanel response={lastResponse} /> : null}
       </aside>
     </main>
   );

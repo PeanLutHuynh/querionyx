@@ -536,6 +536,11 @@ class TextToSQLPipeline:
             return "SELECT p.product_name, s.company_name AS supplier_name FROM products p JOIN suppliers s ON p.supplier_id = s.supplier_id ORDER BY p.product_name LIMIT 10;"
         if self._contains_all(q, ["customer", "company", "order", "counts"]):
             return "SELECT c.company_name, COUNT(o.order_id) AS order_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY order_count DESC, c.company_name LIMIT 10;"
+        if (
+            self._contains_all(q, ["top 5", "customers", "number", "orders"])
+            or self._contains_all(q, ["top 5", "customers", "order", "count"])
+        ):
+            return "SELECT c.company_name, COUNT(o.order_id) AS order_count FROM customers c JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.company_name ORDER BY order_count DESC, c.company_name LIMIT 5;"
         if self._contains_all(q, ["employee", "names", "order", "counts"]):
             return "SELECT e.first_name || ' ' || e.last_name AS employee_name, COUNT(o.order_id) AS order_count FROM employees e JOIN orders o ON e.employee_id = o.employee_id GROUP BY employee_name ORDER BY order_count DESC, employee_name LIMIT 10;"
         if self._contains_all(q, ["shipper", "company", "shipment", "counts"]):
