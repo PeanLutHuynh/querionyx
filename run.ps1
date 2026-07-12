@@ -10,28 +10,25 @@ function Write-Usage {
     Write-Host "Querionyx Command Runner"
     Write-Host ""
     Write-Host "Usage:"
-    Write-Host "  .\\run.ps1 up        # Start Docker services"
-    Write-Host "  .\\run.ps1 down      # Stop Docker services"
-    Write-Host "  .\\run.ps1 restart   # Restart Docker services"
+    Write-Host "  .\\run.ps1 up        # Start the local full-stack Docker demo"
+    Write-Host "  .\\run.ps1 down      # Stop the local Docker demo"
+    Write-Host "  .\\run.ps1 restart   # Restart the local Docker demo"
     Write-Host "  .\\run.ps1 ps        # Show service status"
     Write-Host "  .\\run.ps1 logs      # Show recent docker logs"
-    Write-Host "  .\\run.ps1 test      # Run test_connection.py"
-    Write-Host "  .\\run.ps1 api       # Run FastAPI app if available"
+    Write-Host "  .\\run.ps1 test      # Run the focused backend tests"
+    Write-Host "  .\\run.ps1 api       # Run the FastAPI backend locally"
     Write-Host "  .\\run.ps1 help      # Show this help"
 }
 
 function Ensure-DockerCli {
-    $dockerComposeCmd = Get-Command docker-compose -ErrorAction SilentlyContinue
-    if (-not $dockerComposeCmd) {
-        $dockerPath = "C:\Program Files\Docker\Docker\resources\bin"
-        if (Test-Path $dockerPath) {
-            $env:Path += ";$dockerPath"
-        }
+    $dockerCmd = Get-Command docker -ErrorAction SilentlyContinue
+    if (-not $dockerCmd) {
+        throw "docker not found. Install Docker Desktop and try again."
     }
 
-    $dockerComposeCmd = Get-Command docker-compose -ErrorAction SilentlyContinue
-    if (-not $dockerComposeCmd) {
-        throw "docker-compose not found. Install Docker Desktop and try again."
+    docker compose version | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Docker Compose v2 is required. Update Docker Desktop and try again."
     }
 }
 
@@ -48,42 +45,38 @@ function Ensure-VenvPython {
 
 Push-Location $PSScriptRoot
 try {
+    $composeFile = Join-Path $PSScriptRoot "deployment\docker\docker-compose.full-stack.yml"
     switch ($Action) {
         "up" {
             Ensure-DockerCli
-            docker-compose up -d
-            docker-compose ps
+            docker compose -f $composeFile up -d
+            docker compose -f $composeFile ps
         }
         "down" {
             Ensure-DockerCli
-            docker-compose down
+            docker compose -f $composeFile down
         }
         "restart" {
             Ensure-DockerCli
-            docker-compose down
-            docker-compose up -d
-            docker-compose ps
+            docker compose -f $composeFile down
+            docker compose -f $composeFile up -d
+            docker compose -f $composeFile ps
         }
         "ps" {
             Ensure-DockerCli
-            docker-compose ps
+            docker compose -f $composeFile ps
         }
         "logs" {
             Ensure-DockerCli
-            docker-compose logs --tail=80
+            docker compose -f $composeFile logs --tail=80
         }
         "test" {
             $pythonExe = Ensure-VenvPython
-            & $pythonExe "test_connection.py"
+            & $pythonExe -m unittest tests.test_db_connect tests.test_fast_sql_planner
         }
         "api" {
             $pythonExe = Ensure-VenvPython
-            $apiEntry = Join-Path $PSScriptRoot "src\api\main.py"
-            if (-not (Test-Path $apiEntry)) {
-                Write-Host "src/api/main.py not found yet. API entrypoint chưa được tạo."
-                exit 0
-            }
-            & $pythonExe -m uvicorn src.api.main:app --host 0.0.0.0 --port 8080 --reload
+            & $pythonExe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
         }
         default {
             Write-Usage

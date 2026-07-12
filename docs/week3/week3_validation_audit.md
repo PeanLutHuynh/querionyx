@@ -94,7 +94,7 @@ RAG V1 generation is not fake or placeholder-based. It calls `self.llm.invoke(pr
 | Có bao nhiêu sản phẩm trong hệ thống? | SQL | PASS; SQL route detected, graceful V1 placeholder |
 | Chiến lược của Vinamilk là gì và tổng đơn hàng là bao nhiêu? | HYBRID | PASS; HYBRID route detected, partial RAG retrieval preview only |
 
-SQL and HYBRID execution are intentionally incomplete in V1. `src/pipeline_check.py` contains TODO comments marking Week 4 integration points.
+SQL and HYBRID execution were intentionally incomplete in V1. The historical check is preserved at `scripts/legacy/pipeline_check_v1.py`; the current implementation is `src/pipeline_v3.py`.
 
 ## G. Anti-Hallucination Verification
 
