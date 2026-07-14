@@ -10,6 +10,8 @@ services:
         value: "3.12.8"
       - key: ENABLE_HEAVY_RAG
         value: "0"
+      - key: QUERIONYX_EXECUTION_MODE
+        value: "demo_no_ollama"
       - key: QUERIONYX_LIGHTWEIGHT_RAG
         value: "1"
       - key: QUERIONYX_CACHE_ENABLED

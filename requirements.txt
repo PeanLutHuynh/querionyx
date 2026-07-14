@@ -1,18 +1,7 @@
-fastapi
-uvicorn
-langchain
-langchain-openai
-langchain-community
-langchain-ollama
-chromadb
-sentence-transformers
-psycopg2-binary
-pymupdf
-rank-bm25
-ragas
-python-dotenv
-psutil
-python-multipart
-matplotlib
-supabase
-supabase
+# Public demo and API runtime
+fastapi==0.136.1
+pydantic==2.13.4
+uvicorn==0.46.0
+psycopg2-binary==2.9.12
+python-dotenv==1.2.2
+psutil==7.2.2

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import pickle
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -12,10 +11,11 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 
+from src.runtime.chunk_store import CHUNKS_FILE, save_chunks
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RAW_REPORTS_DIR = PROJECT_ROOT / "data" / "raw" / "annual_reports"
-NOTES_PATH = PROJECT_ROOT / "docs" / "data_prep" / "chunking_notes.md"
-PICKLE_PATH = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
+NOTES_PATH = PROJECT_ROOT / "reports" / "data_prep" / "chunking_notes.md"
 
 
 @dataclass(frozen=True)
@@ -56,10 +56,10 @@ def parse_args() -> argparse.Namespace:
         help="Output markdown file for benchmark notes",
     )
     parser.add_argument(
-        "--output-pkl",
+        "--output-chunks",
         type=Path,
-        default=PICKLE_PATH,
-        help="Output pickle path for full corpus recursive chunks",
+        default=CHUNKS_FILE,
+        help="Output compressed JSON path for full-corpus recursive chunks",
     )
     return parser.parse_args()
 
@@ -187,7 +187,7 @@ def build_markdown(results: list[StrategyResult], sample_files: list[Path], sema
     for sample_file in sample_files:
         lines.append(f"  - {sample_file.name}")
     lines.append(f"- Semantic chunking cosine distance threshold: {semantic_threshold}")
-    lines.append("- Preliminary Context Precision: retrieval hit-rate on 10 probe queries")
+    lines.append("- Probe retrieval hit rate: exact-term retrieval on 10 diagnostic queries")
     lines.append("")
     lines.append("## Comparison Table")
     lines.append("")
@@ -218,7 +218,7 @@ def build_markdown(results: list[StrategyResult], sample_files: list[Path], sema
     return "\n".join(lines)
 
 
-def process_full_corpus(input_dir: Path, output_pickle: Path) -> int:
+def process_full_corpus(input_dir: Path, output_chunks: Path) -> int:
     pdf_paths = sorted(input_dir.glob("*.pdf"))
     splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "\n", ".", " "],
@@ -245,10 +245,7 @@ def process_full_corpus(input_dir: Path, output_pickle: Path) -> int:
                     }
                 )
 
-    output_pickle.parent.mkdir(parents=True, exist_ok=True)
-    with output_pickle.open("wb") as file:
-        pickle.dump(all_chunks, file)
-    return len(all_chunks)
+    return save_chunks(all_chunks, output_chunks)
 
 
 def select_sample_files(pdf_paths: list[Path], sample_count: int) -> list[Path]:
@@ -321,8 +318,8 @@ def main() -> int:
     args.output_md.write_text(build_markdown(results, sample_files, args.semantic_threshold), encoding="utf-8")
     print(f"Benchmark report written to {args.output_md}")
 
-    chunk_count = process_full_corpus(args.input_dir, args.output_pkl)
-    print(f"Recursive chunks saved to {args.output_pkl} (total: {chunk_count})")
+    chunk_count = process_full_corpus(args.input_dir, args.output_chunks)
+    print(f"Recursive chunks saved to {args.output_chunks} (total: {chunk_count})")
     return 0
 
 

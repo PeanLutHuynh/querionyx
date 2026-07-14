@@ -10,7 +10,6 @@ Purpose:
 """
 
 import os
-import pickle
 import sys
 from pathlib import Path
 from typing import Optional
@@ -19,8 +18,9 @@ import chromadb
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 
+from src.runtime.chunk_store import CHUNKS_FILE, load_chunks as load_chunk_store
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-CHUNKS_FILE = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
 CHROMA_DB_PATH = PROJECT_ROOT / "data" / "chroma_db"
 EMBEDDING_CACHE_DIR = PROJECT_ROOT / "data" / "models" / "sentence_transformers"
 
@@ -35,15 +35,14 @@ if hasattr(sys.stderr, "reconfigure"):
 
 
 def load_chunks(verbose: bool = True) -> list:
-    """Load preprocessed chunks from pickle."""
+    """Load preprocessed chunks from the versioned compressed JSON store."""
     if not CHUNKS_FILE.exists():
         raise FileNotFoundError(f"Chunks file not found: {CHUNKS_FILE}")
 
     if verbose:
         print(f"Loading chunks from {CHUNKS_FILE}...", flush=True)
 
-    with open(CHUNKS_FILE, "rb") as f:
-        chunks = pickle.load(f)
+    chunks = load_chunk_store()
 
     if verbose:
         print(f"   Loaded {len(chunks)} chunks", flush=True)

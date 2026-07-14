@@ -1,26 +1,43 @@
+# Python
+.venv/
 venv/
 __pycache__/
-*.pyc
-.env
-.chroma/
+*.py[cod]
 .pytest_cache/
-data/raw/annual_reports/*.pdf
-.settings.json
-data/models/
-data/chroma_db/
-data/raw/uploads/
-reports/experiment_runs/*
-!reports/experiment_runs/.gitkeep
-reports/tables/*
-!reports/tables/.gitkeep
-reports/charts/*
-!reports/charts/.gitkeep
-metrics/*/*
-!metrics/*/.gitkeep
-profiling/*/*
-!profiling/*/.gitkeep
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local configuration and editors
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Frontend and hosting caches
 frontend/node_modules/
 frontend/.next/
 frontend/out/
+frontend/.vercel/
+.vercel/
 
-.vercel
+# Rebuildable or non-redistributed data
+data/raw/
+data/models/
+data/chroma_db/
+data/cache/
+data/processed/*
+!data/processed/chunks_recursive.json.gz
+
+# Runtime outputs
+metrics/
+profiling/
+reports/*
+!reports/experiment_runs/
+reports/experiment_runs/*
+!reports/experiment_runs/final_*/
+!reports/experiment_runs/final_*/**
+*.log

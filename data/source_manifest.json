@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "source_files_redistributed": false,
+  "source_location": "data/raw/annual_reports",
+  "processed_corpus": {
+    "path": "data/processed/chunks_recursive.json.gz",
+    "sha256": "12fcd9ad0a2036b483380fd4b07506fc2ea1126702a09e6d15abdeee86a932d9",
+    "chunk_count": 9670,
+    "format": "gzip-compressed UTF-8 JSON"
+  },
+  "annual_reports": [
+    {"file": "fpt_2023.pdf", "bytes": 14037222, "sha256": "930d0d8de3a286afab2fb4fb6fcd9caf7aa0731fda86f092f03150a796a38020"},
+    {"file": "fpt_2024.pdf", "bytes": 16042174, "sha256": "041c5a2ac49f0e8f4a29f2b1fdb82aea00608579ad33c0606adf9ad06dd8da40"},
+    {"file": "fpt_2025.pdf", "bytes": 12345876, "sha256": "9449a7251d126b635988974dbc72c2773c7fff39f4e5e858b5f7d3928b4e0e6c"},
+    {"file": "masan_2023.pdf", "bytes": 10778490, "sha256": "4af33f3dcc539b30df62e808206aa4bdfd71f8ba59057eda6fc18409e3727cf6"},
+    {"file": "masan_2024.pdf", "bytes": 27710747, "sha256": "e6ea377afda600c70f3caa59c18da231e0828c619caf060fb0aeae6985d4feac"},
+    {"file": "masan_2025.pdf", "bytes": 67651389, "sha256": "3708b2ed484221c2397bac41ca561ca5bbc265378112915abe258f187d04ba52"},
+    {"file": "vinamilk_2023.pdf", "bytes": 9196286, "sha256": "db7e3ae1fe5132777e0f992bca111ebee1f7fdfe5d4eb6fce35438c74bf91471"},
+    {"file": "vinamilk_2024.pdf", "bytes": 26068030, "sha256": "f0d99c9a6650e5f718f098784de037b342a5b9fff4184f5fd00ef7f8656c774a"},
+    {"file": "vinamilk_2025.pdf", "bytes": 28848414, "sha256": "0d9dad54f5198554094ca0490093b1bc4985767aa7998df6c7d22ad45634a118"}
+  ]
+}
