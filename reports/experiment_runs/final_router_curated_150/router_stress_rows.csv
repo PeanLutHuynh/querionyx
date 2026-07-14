@@ -1,12 +1,12 @@
 actual_intent,calibration_error,confidence,correct,expected_intent,latency_ms,query_id,question,reason,router_type
-RAG,0.32999999999999996,0.67,True,RAG,0.12,unstr_001,FPT có chiến lược phát triển nào cho năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.13,unstr_001,FPT có chiến lược phát triển nào cho năm 2025?,Found 1 RAG keyword(s),rule_router
 RAG,0.22999999999999998,0.77,True,RAG,0.07,unstr_002,Chính sách bán hàng của Vinamilk là gì?,Found 2 RAG keyword(s),rule_router
-RAG,0.15000000000000002,0.85,True,RAG,0.06,unstr_003,Masan mô tả quy trình sản xuất như thế nào?,Found 3 RAG keyword(s),rule_router
-RAG,0.25,0.75,True,RAG,0.05,unstr_004,Mục tiêu tăng trưởng của FPT là gì?,Found 2 RAG keyword(s),rule_router
+RAG,0.15000000000000002,0.85,True,RAG,0.05,unstr_003,Masan mô tả quy trình sản xuất như thế nào?,Found 3 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,unstr_004,Mục tiêu tăng trưởng của FPT là gì?,Found 2 RAG keyword(s),rule_router
 RAG,0.13,0.87,True,RAG,0.05,unstr_005,Vinamilk giải thích rủi ro kinh doanh như thế nào?,Found 3 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_006,Cấu trúc tổ chức của Masan là gì?,Found 1 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_007,FPT có những hướng dẫn gì cho nhân viên?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.05,unstr_008,Chương trình phát triển bền vững của Vinamilk là gì?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_008,Chương trình phát triển bền vững của Vinamilk là gì?,Found 1 RAG keyword(s),rule_router
 RAG,0.25,0.75,True,RAG,0.05,unstr_009,Masan mô tả các thách thức trong ngành như thế nào?,Found 2 RAG keyword(s),rule_router
 RAG,0.25,0.75,True,RAG,0.04,unstr_010,Quy trình quản lý chất lượng của FPT là gì?,Found 2 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_011,Vinamilk có kế hoạch mở rộng thị trường nào?,Found 1 RAG keyword(s),rule_router
@@ -20,11 +20,11 @@ RAG,0.35,0.65,True,RAG,0.04,unstr_018,Masan có những sản phẩm chính nào
 RAG,0.25,0.75,True,RAG,0.04,unstr_019,FPT mô tả lợi thế cạnh tranh của mình ra sao?,Found 2 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_020,Vinamilk có kế hoạch gì cho tương lai?,Found 1 RAG keyword(s),rule_router
 SQL,0.35,0.65,True,SQL,0.04,str_001,Có bao nhiêu sản phẩm trong hệ thống Northwind?,Found 1 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.07,str_002,Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.15000000000000002,0.85,True,SQL,0.05,str_003,Doanh thu trung bình mỗi đơn hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.05,str_002,Top 5 khách hàng có tổng đơn hàng nhiều nhất là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.04,str_003,Doanh thu trung bình mỗi đơn hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
 SQL,0.18999999999999995,0.81,True,SQL,0.04,str_004,Liệt kê tên nhân viên và số đơn hàng họ xử lý?,Found 2 SQL keyword(s),rule_router
 SQL,0.25,0.75,True,SQL,0.04,str_005,Sản phẩm nào có đơn giá cao nhất?,Found 2 SQL keyword(s),rule_router
-SQL,0.15000000000000002,0.85,True,SQL,0.04,str_006,Xếp hạng các danh mục sản phẩm theo số lượng sản phẩm?,Found 3 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.05,str_006,Xếp hạng các danh mục sản phẩm theo số lượng sản phẩm?,Found 3 SQL keyword(s),rule_router
 SQL,0.35,0.65,True,SQL,0.03,str_007,Có bao nhiêu nhân viên trong công ty?,Found 1 SQL keyword(s),rule_router
 SQL,0.25,0.75,True,SQL,0.04,str_008,Tổng số đơn hàng là bao nhiêu?,Found 2 SQL keyword(s),rule_router
 SQL,0.25,0.75,True,SQL,0.04,str_009,Chi phí vận chuyển trung bình là bao nhiêu?,Found 2 SQL keyword(s),rule_router
@@ -37,11 +37,11 @@ SQL,0.35,0.65,True,SQL,0.04,str_015,Số sản phẩm bị hết hàng là bao n
 SQL,0.25,0.75,True,SQL,0.04,str_016,Tính tổng số lượng sản phẩm có sẵn?,Found 2 SQL keyword(s),rule_router
 SQL,0.15000000000000002,0.85,True,SQL,0.04,str_017,Chi tiêu nhiều nhất của khách hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
 SQL,0.25,0.75,True,SQL,0.04,str_018,Liệt kê các đơn hàng theo tháng?,Found 2 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.05,str_019,Xếp hạng nhân viên theo số đơn hàng xử lý từ cao đến thấp?,Found 2 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_019,Xếp hạng nhân viên theo số đơn hàng xử lý từ cao đến thấp?,Found 2 SQL keyword(s),rule_router
 SQL,0.35,0.65,True,SQL,0.04,str_020,Sản phẩm nào có mức giá thấp nhất?,Found 1 SQL keyword(s),rule_router
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_001,FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_002,Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_003,Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.06,hyb_003,Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?,Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_004,Quy trình sản xuất FPT được mô tả như thế nào và có bao nhiêu nhân viên đang làm việc?,Found mixed SQL (1) and RAG (3) signals,rule_router
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_005,Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?,Found mixed SQL (1) and RAG (2) signals,rule_router
 HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_006,Rủi ro kinh doanh của Masan là gì và chi phí vận chuyển trung bình là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
@@ -61,91 +61,91 @@ HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_019,Kế hoạch mở rộ
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_020,Triển vọng tương lai của Vinamilk được mô tả ra sao và khách hàng nào chi tiêu nhiều nhất?,Found mixed SQL (2) and RAG (1) signals,rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_021,FPT giới thiệu các lĩnh vực hoạt động chính nào trong báo cáo?,Found 1 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.04,unstr_022,Vinamilk là doanh nghiệp trong ngành nào theo báo cáo thường niên?,Found 1 RAG keyword(s),rule_router
-RAG,0.32999999999999996,0.67,True,RAG,0.05,unstr_023,Masan trình bày chiến lược mở rộng bán lẻ ra sao?,Found 1 RAG keyword(s),rule_router
-RAG,0.29000000000000004,0.71,True,RAG,0.05,unstr_024,FPT mô tả hoạt động đào tạo và phát triển nhân sự thế nào?,Found 1 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.04,unstr_023,Masan trình bày chiến lược mở rộng bán lẻ ra sao?,Found 1 RAG keyword(s),rule_router
+RAG,0.29000000000000004,0.71,True,RAG,0.04,unstr_024,FPT mô tả hoạt động đào tạo và phát triển nhân sự thế nào?,Found 1 RAG keyword(s),rule_router
 RAG,0.55,0.45,True,RAG,0.04,unstr_025,Vinamilk nói gì về hoạt động R&D và đổi mới sản phẩm?,No keywords matched; defaulting to RAG (safe fallback),rule_router
 RAG,0.13,0.87,True,RAG,0.04,unstr_026,Masan báo cáo các rủi ro chuỗi cung ứng nào nổi bật?,Found 3 RAG keyword(s),rule_router
 RAG,0.050000000000000044,0.95,True,RAG,0.04,unstr_027,FPT mô tả chiến lược chuyển đổi số cho khách hàng như thế nào?,Found 4 RAG keyword(s),rule_router
-RAG,0.32999999999999996,0.67,True,RAG,0.05,unstr_028,Vinamilk trình bày hệ thống quản trị rủi ro ra sao?,Found 1 RAG keyword(s),rule_router
-RAG,0.25,0.75,True,RAG,0.07,unstr_029,Masan nêu kế hoạch mở rộng thị trường quốc tế như thế nào?,Found 2 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.05,unstr_030,FPT nhấn mạnh mục tiêu ESG hoặc phát triển bền vững nào?,Found 1 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.04,unstr_028,Vinamilk trình bày hệ thống quản trị rủi ro ra sao?,Found 1 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,unstr_029,Masan nêu kế hoạch mở rộng thị trường quốc tế như thế nào?,Found 2 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_030,FPT nhấn mạnh mục tiêu ESG hoặc phát triển bền vững nào?,Found 1 RAG keyword(s),rule_router
 SQL,0.18999999999999995,0.81,True,SQL,0.05,str_021,Liệt kê 5 đơn hàng gần nhất với tên khách hàng và nhân viên phụ trách.,Found 2 SQL keyword(s),rule_router
-SQL,0.35,0.65,True,SQL,0.07,str_022,Những sản phẩm nào chưa từng được đặt hàng?,Found 1 SQL keyword(s),rule_router
-SQL,0.15000000000000002,0.85,True,SQL,0.08,str_023,Tổng doanh thu theo quốc gia khách hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.05,str_024,Top 5 sản phẩm bán chạy theo số lượng là gì?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.06,str_025,Nhân viên nào xử lý nhiều đơn hàng nhất trong năm 1997?,Found 2 SQL keyword(s),rule_router
-SQL,0.35,0.65,True,SQL,0.05,str_026,Danh sách khách hàng chưa có đơn hàng nào.,Found 1 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.05,str_027,Số lượng đơn hàng theo công ty vận chuyển là bao nhiêu?,Found 2 SQL keyword(s),rule_router
-SQL,0.15000000000000002,0.85,True,SQL,0.05,str_028,Giá trung bình của sản phẩm theo nhà cung cấp là bao nhiêu?,Found 3 SQL keyword(s),rule_router
-SQL,0.15000000000000002,0.85,True,SQL,0.07,str_029,Những đơn hàng có tổng giá trị lớn hơn mức trung bình đơn hàng là gì?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.08,str_030,Top 5 khách hàng theo tổng chi tiêu là ai?,Found 3 SQL keyword(s),rule_router
-HYBRID,0.17000000000000004,0.83,True,HYBRID,0.08,hyb_021,FPT mô tả chiến lược AI ra sao và tổng số khách hàng trong Northwind là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_022,Vinamilk nói về chiến lược sản phẩm thế nào và có bao nhiêu nhà cung cấp?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.17000000000000004,0.83,True,HYBRID,0.09,hyb_023,Masan trình bày chuỗi cung ứng ra sao và top 5 sản phẩm bán chạy là gì?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_024,FPT nêu mục tiêu tăng trưởng gì và tổng doanh thu theo quốc gia khách hàng là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_025,"Vinamilk mô tả thị trường xuất khẩu nào và 5 đơn hàng gần nhất gồm khách hàng, nhân viên là gì?",Found mixed SQL (1) and RAG (2) signals,rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_022,Những sản phẩm nào chưa từng được đặt hàng?,Found 1 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.04,str_023,Tổng doanh thu theo quốc gia khách hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.04,str_024,Top 5 sản phẩm bán chạy theo số lượng là gì?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_025,Nhân viên nào xử lý nhiều đơn hàng nhất trong năm 1997?,Found 2 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_026,Danh sách khách hàng chưa có đơn hàng nào.,Found 1 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_027,Số lượng đơn hàng theo công ty vận chuyển là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.04,str_028,Giá trung bình của sản phẩm theo nhà cung cấp là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.05,str_029,Những đơn hàng có tổng giá trị lớn hơn mức trung bình đơn hàng là gì?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.04,str_030,Top 5 khách hàng theo tổng chi tiêu là ai?,Found 3 SQL keyword(s),rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_021,FPT mô tả chiến lược AI ra sao và tổng số khách hàng trong Northwind là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_022,Vinamilk nói về chiến lược sản phẩm thế nào và có bao nhiêu nhà cung cấp?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_023,Masan trình bày chuỗi cung ứng ra sao và top 5 sản phẩm bán chạy là gì?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_024,FPT nêu mục tiêu tăng trưởng gì và tổng doanh thu theo quốc gia khách hàng là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_025,"Vinamilk mô tả thị trường xuất khẩu nào và 5 đơn hàng gần nhất gồm khách hàng, nhân viên là gì?",Found mixed SQL (1) and RAG (2) signals,rule_router
 HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_026,Masan nói về quản trị rủi ro ra sao và khách hàng chưa có đơn hàng nào?,Found mixed SQL (1) and RAG (1) signals,rule_router
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_027,FPT nói về chuyển đổi số và sản phẩm chưa từng được đặt hàng là gì?,Found mixed SQL (1) and RAG (2) signals,rule_router
-HYBRID,0.17000000000000004,0.83,True,HYBRID,0.07,hyb_028,Vinamilk nêu mục tiêu ESG nào và những đơn hàng có giá trị lớn hơn mức trung bình là gì?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_028,Vinamilk nêu mục tiêu ESG nào và những đơn hàng có giá trị lớn hơn mức trung bình là gì?,Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_029,Masan nêu kế hoạch mở rộng thị trường nào và top 5 khách hàng theo tổng chi tiêu là ai?,Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_030,FPT báo cáo kết quả tài chính ra sao và nhân viên xử lý nhiều đơn hàng nhất năm 1997 là ai?,Found mixed SQL (2) and RAG (1) signals,rule_router
-RAG,0.35,0.65,True,RAG,0.08,unstr_031,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.08,unstr_032,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.08,unstr_033,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.1,unstr_034,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.08,unstr_035,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.08,unstr_036,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.07,unstr_037,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.06,unstr_038,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.06,unstr_039,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.07,unstr_040,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.07,unstr_041,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.07,unstr_042,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.04,unstr_043,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.04,unstr_044,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.04,unstr_045,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.04,unstr_046,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
-RAG,0.35,0.65,True,RAG,0.04,unstr_047,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_030,FPT báo cáo kết quả tài chính ra sao và nhân viên xử lý nhiều đơn hàng nhất năm 1997 là ai?,Found mixed SQL (2) and RAG (1) signals,rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_031,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_032,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_033,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_034,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_035,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_036,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_037,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_038,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_039,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_040,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_041,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_042,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_043,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_044,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_045,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_046,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.03,unstr_047,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.03,unstr_048,Masan có những điểm nổi bật nào trong báo cáo thường niên năm 2025?,Found 1 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.03,unstr_049,FPT có những điểm nổi bật nào trong báo cáo thường niên năm 2023?,Found 1 RAG keyword(s),rule_router
 RAG,0.35,0.65,True,RAG,0.03,unstr_050,Vinamilk có những điểm nổi bật nào trong báo cáo thường niên năm 2024?,Found 1 RAG keyword(s),rule_router
 SQL,0.25,0.75,True,SQL,0.04,str_031,Tổng số đơn hàng trong năm 2023 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_032,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.07,str_033,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.07,str_034,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_035,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.06,str_036,Tổng số đơn hàng trong năm 2025 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.05,str_037,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.05,str_038,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.06,str_039,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_040,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.06,str_041,Tổng số đơn hàng trong năm 2024 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_042,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_043,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.07,str_044,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.05,str_045,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.09,str_046,Tổng số đơn hàng trong năm 2023 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_047,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_048,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-SQL,0.25,0.75,True,SQL,0.07,str_049,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
-SQL,0.125,0.875,True,SQL,0.06,str_050,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.09,hyb_031,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.08,hyb_032,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+SQL,0.125,0.875,True,SQL,0.04,str_032,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_033,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_034,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_035,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_036,Tổng số đơn hàng trong năm 2025 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_037,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_038,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.03,str_039,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_040,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.03,str_041,Tổng số đơn hàng trong năm 2024 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_042,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_043,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_044,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.04,str_045,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_046,Tổng số đơn hàng trong năm 2023 là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_047,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_048,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.03,str_049,Truy vấn doanh thu/đơn hàng/phân nhóm theo yêu cầu,Found 2 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.03,str_050,Top khách hàng theo tổng chi tiêu (top N) là ai?,Found 3 SQL keyword(s),rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_031,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_032,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_033,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_034,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_035,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_036,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_037,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_038,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_039,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_040,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_041,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_042,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_043,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_044,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_045,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_046,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_047,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_048,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.08,hyb_035,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.09,hyb_036,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_037,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_038,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_039,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_040,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_041,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_042,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_043,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_044,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_045,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_046,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.07,hyb_047,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_048,"Theo báo cáo Masan năm 2025, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
 HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_049,"Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
-HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_050,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_050,"Theo báo cáo Vinamilk năm 2024, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?",Both document and structured-data signals detected.,adaptive_rule

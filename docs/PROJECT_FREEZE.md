@@ -16,7 +16,7 @@
 | Credential hygiene | User action required | Rotate credentials previously shared outside secret stores |
 
 The software and research evidence are frozen under source snapshot
-`aef151b9f149d080df3d12fba8c6356c60bea37f86f7ac181645e3f3044b1709`.
+`4e01bbfb21aee8b3a57033a15ecf2df06a39c6b8bb1b5c7bac995a7e38d9ecaf`.
 All six final evidence groups are reportable and the project lock passes.
 
 ## Allowed Changes

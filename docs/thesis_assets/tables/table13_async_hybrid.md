@@ -1,10 +1,10 @@
 | Measure | Value | Unit |
 | --- | --- | --- |
-| sequential P50 latency | 435.86 | ms |
-| sequential P95 latency | 1050.09 | ms |
-| sequential mean latency | 537.16 | ms |
-| async P50 latency | 383.51 | ms |
-| async P95 latency | 586.41 | ms |
-| async mean latency | 418.01 | ms |
-| P50 speedup | 1.137 | x |
+| sequential P50 latency | 309.63 | ms |
+| sequential P95 latency | 863.03 | ms |
+| sequential mean latency | 408.04 | ms |
+| async P50 latency | 340.84 | ms |
+| async P95 latency | 459.52 | ms |
+| async mean latency | 339.14 | ms |
+| P50 speedup | 0.908 | x |
 | Exact output-match rate | 100 | % |

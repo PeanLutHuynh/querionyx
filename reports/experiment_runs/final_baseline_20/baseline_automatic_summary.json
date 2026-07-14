@@ -12,7 +12,7 @@
       "automatic_score": 0.2336,
       "automatic_pass_rate": 0.0,
       "technical_success_rate": 1.0,
-      "mean_latency_ms": 6022.15,
+      "mean_latency_ms": 6143.82,
       "per_intent_score": {
         "RAG": 0.3516,
         "SQL": 0.15,
@@ -24,7 +24,7 @@
       "automatic_score": 0.5187,
       "automatic_pass_rate": 0.25,
       "technical_success_rate": 1.0,
-      "mean_latency_ms": 114.57,
+      "mean_latency_ms": 129.94,
       "per_intent_score": {
         "RAG": 0.9525,
         "SQL": 0.15,
@@ -36,7 +36,7 @@
       "automatic_score": 0.9446,
       "automatic_pass_rate": 1.0,
       "technical_success_rate": 1.0,
-      "mean_latency_ms": 173.19,
+      "mean_latency_ms": 169.66,
       "per_intent_score": {
         "RAG": 0.8133,
         "SQL": 1.0,

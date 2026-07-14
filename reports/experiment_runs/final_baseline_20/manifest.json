@@ -1,10 +1,10 @@
 {
   "schema_version": "1.1",
   "run_id": "final_baseline_20",
-  "git_commit": "d10fbef02f8fd7fad786fd406e9e1170962c64c6",
+  "git_commit": "c0b782cb59f6d3c6f95e2eb5b0d5b886a9927ed8",
   "git_dirty": true,
   "git_state_scope": "experiment_start",
-  "source_snapshot_sha256": "aef151b9f149d080df3d12fba8c6356c60bea37f86f7ac181645e3f3044b1709",
+  "source_snapshot_sha256": "4e01bbfb21aee8b3a57033a15ecf2df06a39c6b8bb1b5c7bac995a7e38d9ecaf",
   "source_snapshot_file_count": 94,
   "source_snapshot_files": {
     ".dockerignore": "cfcb342590a50035d3c3a3b13085c30c424ea57058a30c59219404edc8fe173d",
@@ -55,7 +55,7 @@
     "scripts/clean_workspace.ps1": "1a99e3bd4c02b670b513b4066f6850ed82354043a8d05f60b5290db5e3ab7e9e",
     "scripts/generate_thesis_assets.py": "e56a97b551220aec1ba7d1586980747aecba433a5f563c6e7429be36f4645020",
     "services/__init__.py": "9fd1f070bd859f48036d02166549a1780bf5bbb3334b6404ca5184bce4fea31d",
-    "services/query_service.py": "5f7f8de77c5046db330c42301b4d6cc64447b80b683fb379ce62ae567d50c9ce",
+    "services/query_service.py": "60b957eff46db134d2eeb5ef1b3ab63f241f07b6d042be2e1144d29dd83bbadd",
     "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/data_prep/__init__.py": "6cf8b9c6cd99bfbe12dc844a29f2dac87318708bb655665f124f962dac6518db",
@@ -102,7 +102,7 @@
     "tests/test_hybrid_merge.py": "e88a4c0cd5116de6ab1cfae19304064a466f8a91462c5554dd4a932c797e63f9",
     "tests/test_no_ollama_audit.py": "b463590d31282456b9656ed815b98cd3b2f62eaf5ff90b8a21181f1e74167cea"
   },
-  "timestamp": "2026-07-15T01:47:47+07:00",
+  "timestamp": "2026-07-15T02:06:29+07:00",
   "execution_mode": "evaluation_real",
   "evidence_type": "measured",
   "provenance_ready": true,
@@ -209,7 +209,7 @@
     "plain_rag",
     "querionyx"
   ],
-  "ollama_preflight_ms": 1045.78,
+  "ollama_preflight_ms": 1996.14,
   "automatic_reference_file": "benchmarks/references/eval_90_sql_references.json",
   "automatic_reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213",
   "scoring_method": "deterministic_reference_and_evidence_alignment"

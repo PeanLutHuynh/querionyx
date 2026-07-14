@@ -9,4 +9,4 @@ C07,RAG outputs align with the expected company/topic evidence in the frozen ben
 C08,SQL outputs match independently executed Northwind reference results.,Automatically derived,Approved with scope,None
 C09,"Hybrid variants differ in evidence alignment, branch completion, and latency.",Automatically derived,Approved with scope,Explain that single-branch variants are intentionally penalized for missing the other branch
 C10,Querionyx can be compared with LLM-only Qwen 2.5 3B and Plain RAG under one evidence rubric.,Automatically derived,Approved with scope,None
-C11,Sequential and asynchronous hybrid execution can be compared for latency and exact canonical output equivalence.,Measured/derived,Approved with scope,None
+C11,Sequential and asynchronous hybrid execution can be compared for latency and exact canonical output equivalence.,Measured/derived,Approved with scope,Do not generalize a universal speedup from one local run; report both P50 and P95

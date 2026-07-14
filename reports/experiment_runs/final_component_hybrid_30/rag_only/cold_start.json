@@ -1,10 +1,10 @@
 {
-  "pipeline_init_ms": 2.4,
-  "retrieval_warmup_ms": 0.01,
-  "total_startup_ms": 2.41,
-  "timestamp": "2026-07-15T01:48:48+07:00",
+  "pipeline_init_ms": 2.27,
+  "retrieval_warmup_ms": 0.02,
+  "total_startup_ms": 2.29,
+  "timestamp": "2026-07-15T02:07:30+07:00",
   "resource_snapshot": {
     "cpu_percent": 0.0,
-    "ram_mb": 1058.96
+    "ram_mb": 1060.19
   }
 }

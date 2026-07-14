@@ -7,10 +7,10 @@
   "misrouting_rate": 0.0,
   "confidence_calibration_error": 0.2019,
   "latency": {
-    "avg": 0.05,
-    "p50": 0.05,
-    "p95": 0.08,
-    "p99": 0.1
+    "avg": 0.04,
+    "p50": 0.04,
+    "p95": 0.07,
+    "p99": 0.09
   },
   "confusion_matrix": {
     "SQL": {

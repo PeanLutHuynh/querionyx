@@ -1,7 +1,7 @@
 | Variant | Queries | Automatic evidence score | Technical pass rate | Mean latency (ms) |
 | --- | --- | --- | --- | --- |
-| full_querionyx | 30 | 89.35% | 100.00% | 228.34 |
-| dense_only | 30 | 94.10% | 100.00% | 166.87 |
-| rag_only | 30 | 3.47% | 0.00% | 230.13 |
-| sql_only | 30 | 40.20% | 0.00% | 134.46 |
-| no_fallback | 30 | 88.50% | 100.00% | 260.86 |
+| full_querionyx | 30 | 89.35% | 100.00% | 292.81 |
+| dense_only | 30 | 94.10% | 100.00% | 145.54 |
+| rag_only | 30 | 3.47% | 0.00% | 199.44 |
+| sql_only | 30 | 40.20% | 0.00% | 112.64 |
+| no_fallback | 30 | 88.50% | 100.00% | 262.16 |

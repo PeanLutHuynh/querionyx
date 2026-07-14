@@ -39,7 +39,7 @@ coverage, not a semantic answer-quality claim.
 ## Final Evaluation Snapshot
 
 All result artifacts below share source snapshot
-`aef151b9f149d080df3d12fba8c6356c60bea37f86f7ac181645e3f3044b1709`
+`4e01bbfb21aee8b3a57033a15ecf2df06a39c6b8bb1b5c7bac995a7e38d9ecaf`
 and pass the project evidence gate.
 
 | Evaluation | Final result |
@@ -52,7 +52,8 @@ and pass the project evidence gate.
 | HYBRID integration score | 0.9917 |
 | Router accuracy, curated 150 | 100% |
 | Router accuracy, stress 100 | 89% |
-| Async P50 speedup, 10 paired queries | 1.137x |
+| Sequential / async P50, 10 paired queries | 309.63 / 340.84 ms |
+| Sequential / async P95, 10 paired queries | 863.03 / 459.52 ms |
 | Async exact canonical output matches | 100% |
 
 On the frozen 20-query baseline, automatic evidence scores were `0.9446` for
