@@ -1,0 +1,12 @@
+﻿ID,Claim,Evidence label,Status,Required work
+C01,"The corpus contains nine FPT, Masan, and Vinamilk reports and 9,670 chunks.",Measured,Approved,None
+C02,"The corpus covers 1,406 distinct per-document page identifiers.",Derived,Approved with caveat,None
+C03,The deterministic router matches all labels in the curated 150-query set.,Measured,Approved with scope,None
+C04,The deterministic router remains effective on adversarial queries.,Measured,Approved with scope,None
+C05,The no-Ollama demo has route and SQL fast-path coverage for the curated set.,Measured/derived,Approved with scope,None
+C06,"The public artifact uses Vercel, Render, and Supabase in no-Ollama mode.",Measured configuration,Approved with deployment caveat,Reset the Render database secret and capture final screenshots
+C07,RAG outputs align with the expected company/topic evidence in the frozen benchmark.,Automatically derived,Approved with scope,None
+C08,SQL outputs match independently executed Northwind reference results.,Automatically derived,Approved with scope,None
+C09,"Hybrid variants differ in evidence alignment, branch completion, and latency.",Automatically derived,Approved with scope,Explain that single-branch variants are intentionally penalized for missing the other branch
+C10,Querionyx can be compared with LLM-only Qwen 2.5 3B and Plain RAG under one evidence rubric.,Automatically derived,Approved with scope,None
+C11,Sequential and asynchronous hybrid execution can be compared for latency and exact canonical output equivalence.,Measured/derived,Approved with scope,None

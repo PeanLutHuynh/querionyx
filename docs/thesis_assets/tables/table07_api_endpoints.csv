@@ -1,0 +1,5 @@
+﻿Method,Endpoint,Purpose
+POST,/query,Execute one natural-language query
+POST,/query/stream,Stream metadata and result with server-sent events
+GET,/health,"Report API, database, RAG, and cache health"
+GET,/metrics,"Report runtime latency, cache, routing, and failures"

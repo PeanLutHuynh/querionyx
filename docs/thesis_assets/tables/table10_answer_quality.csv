@@ -1,0 +1,5 @@
+﻿Intent,Queries,Automatic evidence score,Technical pass rate
+RAG,30,78.80%,100.00%
+SQL,30,100.00%,100.00%
+HYBRID,30,96.98%,100.00%
+Overall,90,91.93%,100.00%

@@ -1,0 +1,14 @@
+| Setting | Value |
+| --- | --- |
+| cache_enabled | True |
+| config_name | full_v3 |
+| execution_mode | evaluation_real |
+| force_merge_llm | False |
+| force_mode | null |
+| hybrid_enabled | True |
+| lightweight_rag | True |
+| low_resource_mode | True |
+| merge_llm_enabled | False |
+| parallel_enabled | True |
+| use_llm_router | False |
+| chunk_store | data/processed/chunks_recursive.json.gz |

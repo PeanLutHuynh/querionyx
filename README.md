@@ -1,221 +1,282 @@
 # Querionyx
 
-Querionyx is a graduation project that answers natural-language questions over two evidence sources:
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB)]()
+[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688)]()
+[![Next.js](https://img.shields.io/badge/UI-Next.js-111111)]()
+[![PostgreSQL](https://img.shields.io/badge/Data-PostgreSQL-4169E1)]()
+[![Evaluation](https://img.shields.io/badge/Evaluation-real--only-0F766E)]()
 
-- **Northwind PostgreSQL data** for structured questions, such as product counts and top customers.
-- **Annual-report documents** for grounded company questions about FPT, Vinamilk, and Masan.
+Querionyx is a graduation-project demonstrator for answering bilingual natural-
+language questions across two enterprise evidence sources:
 
-The system routes each question to SQL, retrieval-augmented generation (RAG), or both. Its production demo is intentionally designed to work without Ollama: common SQL intents use deterministic query plans and document answers use lightweight evidence-based retrieval.
+- Northwind PostgreSQL for structured, aggregative questions.
+- FPT, Masan, and Vinamilk annual reports for cited document questions.
 
-## Highlights
+The router selects SQL, RAG, or parallel HYBRID execution. The deployed demo is
+designed to run without Ollama by combining deterministic SQL planners with a
+lightweight extractive retriever.
 
-- Bilingual Vietnamese and English question routing.
-- SQL fast paths for stable Northwind demo questions.
-- Lightweight RAG with source citations from annual-report chunks.
-- Hybrid execution that combines database and document evidence.
-- Explicit insufficient-evidence response for unsupported or low-confidence questions.
-- Debug traces, latency metrics, cache status, health checks, and a streaming API.
-- Evaluation scripts and reproducible benchmark artifacts for the thesis.
+Configured deployments:
 
-## Live Demo
+- Frontend: `https://querionyx.vercel.app/`
+- Backend: `https://querionyx.onrender.com/`
 
-- Web application: `https://querionyx.vercel.app/`
-- API health check: `https://querionyx.onrender.com/health`
+## What Is Included
+
+- Vietnamese and English rule-based routing.
+- Deterministic Northwind SQL fast paths with read-only validation.
+- A safe, compressed corpus of 9,670 chunks from nine annual reports.
+- Lightweight cited RAG for small hosting instances.
+- Optional dense + BM25 retrieval and Ollama generation for local research.
+- Parallel HYBRID execution, timeout/fallback traces, cache metrics, and SSE.
+- Frozen datasets, configs, references, and content-addressed manifests.
+- Real-only evaluation collectors; simulated legacy results are not retained.
+
+The static no-Ollama audit currently covers 150 curated prompts, including 100
+SQL/HYBRID prompts requiring deterministic SQL plans. This is implementation
+coverage, not a semantic answer-quality claim.
+
+## Final Evaluation Snapshot
+
+All result artifacts below share source snapshot
+`aef151b9f149d080df3d12fba8c6356c60bea37f86f7ac181645e3f3044b1709`
+and pass the project evidence gate.
+
+| Evaluation | Final result |
+| --- | ---: |
+| 90-query automatic evidence score | 0.9193 |
+| 90-query automatic pass rate | 94.44% |
+| 90-query technical pass rate | 100% |
+| SQL result F1 | 1.0000 |
+| RAG evidence alignment | 0.8345 |
+| HYBRID integration score | 0.9917 |
+| Router accuracy, curated 150 | 100% |
+| Router accuracy, stress 100 | 89% |
+| Async P50 speedup, 10 paired queries | 1.137x |
+| Async exact canonical output matches | 100% |
+
+On the frozen 20-query baseline, automatic evidence scores were `0.9446` for
+Querionyx, `0.5187` for Plain RAG, and `0.2336` for LLM-only Qwen 2.5 3B.
+These values are bounded reference/evidence metrics for the named datasets.
 
 ## Architecture
 
-```text
-Question
-   |
-Rule-based router
-   |---- SQL ------> deterministic planner -> PostgreSQL -> table / answer
-   |---- RAG ------> lightweight retriever -> annual-report chunks -> cited answer
-   '---> HYBRID ---> SQL and RAG in parallel -> evidence-aware combined answer
-                                      |
-                                FastAPI response
-                                      |
-                                Next.js interface
-```
-
-`backend/main.py` exposes the API. `services/query_service.py` handles caching, metrics, streaming, uploads, and response serialization. The core pipeline lives in `src/`.
-
-## Project Structure
+![Querionyx architecture](docs/thesis_assets/figures/fig01_system_architecture.png)
 
 ```text
-querionyx/
-├── backend/                    # FastAPI entry point
-├── frontend/                   # Next.js demo interface
-├── services/                   # API-facing orchestration, cache, and metrics
-├── src/
-│   ├── hybrid/                 # Hybrid SQL + RAG execution
-│   ├── rag/                    # RAG baselines and retrieval implementations
-│   ├── router/                 # Rule-based and optional Ollama routers
-│   ├── runtime/                # Timeouts, schemas, logging, fallbacks, config
-│   ├── sql/                    # Text-to-SQL planner and PostgreSQL execution
-│   ├── evaluation/             # Thesis benchmark and paper-asset scripts
-│   ├── data_prep/              # PDF inspection, chunking, and index utilities
-│   └── uat/                    # User-acceptance test runner
-├── scripts/                    # Small developer and demo utilities
-├── tests/                      # Focused automated tests
-├── data/
-│   ├── processed/              # Versioned document chunks required by lightweight RAG
-│   ├── cache/                  # SQL planning cache
-│   └── test_queries/           # Evaluation datasets
-├── benchmarks/                 # Benchmark manifests and smoke datasets
-├── deployment/
-│   ├── render/                 # Render Blueprint and environment template
-│   └── docker/                 # Local Docker Compose configurations
-├── docs/                       # Deployment, evaluation, results, and paper artifacts
-└── run.ps1                     # Windows helper for local Docker/API/test commands
+Question -> Rule router
+             |-- RAG -----> compressed report chunks ------|
+             |-- SQL -----> PostgreSQL ---------------------|-> answer + trace
+             '-- HYBRID --> RAG and SQL in parallel --------|
 ```
 
-## Requirements
+FastAPI exposes the application through `backend/main.py`. API orchestration,
+caching and metrics live in `services/query_service.py`; the frozen
+pipeline is implemented under `src/`.
 
-- Python 3.12 recommended.
-- Node.js 22 recommended for the frontend.
-- A PostgreSQL database containing the Northwind schema and data.
-- The tracked `data/processed/chunks_recursive.pkl` file for lightweight RAG.
-
-Ollama is optional for local research experiments. It is not required for the deployed demo configuration.
-
-## Local Setup
+## Quick Start
 
 ### 1. Backend
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-Copy-Item deployment\render\env.example .env
-```
-
-Edit `.env` with your PostgreSQL credentials. For a Supabase connection pooler, use `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`, and `PGSSLMODE=require`.
-
-Run the API:
+Requirements: Python 3.12 and a PostgreSQL database containing the Northwind
+schema. Ollama and embedding models are not needed for public-demo mode.
 
 ```powershell
-uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+git clone <repository-url>
+cd querionyx
+Copy-Item .env.example .env
+.\run.ps1 setup
+.\run.ps1 api
 ```
 
-Then open `http://localhost:8000/docs` for the interactive API documentation or check `http://localhost:8000/health`.
+Edit `.env` with your database connection first. Open:
+
+- API docs: `http://localhost:8000/docs`
+- Health: `http://localhost:8000/health`
+
+Without a database, the API and document path still start, while SQL requests
+return an explicit unavailable/insufficient-evidence result.
 
 ### 2. Frontend
 
-```powershell
-cd frontend
-npm ci
-$env:NEXT_PUBLIC_API_BASE = "http://localhost:8000"
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-### 3. Local Docker demo
-
-The full-stack Compose file starts PostgreSQL, ChromaDB, the backend, and the frontend:
+Requirements: Node.js 22.
 
 ```powershell
-.\run.ps1 up
-.\run.ps1 ps
-.\run.ps1 logs
-.\run.ps1 down
+.\run.ps1 frontend
 ```
 
-The alternative `deployment/docker/docker-compose.remote-db.yml` starts only the application services and expects a reachable external database.
+Open `http://localhost:3000`. The default API base is
+`http://localhost:8000`.
 
-## Environment Configuration
+### 3. Docker
 
-For the Render demo, use the template in [deployment/render/env.example](deployment/render/env.example). The important no-Ollama configuration is:
+The Compose stack builds the backend and frontend but deliberately expects an
+external Northwind PostgreSQL service; it does not ship a misleading empty
+database container.
 
-```env
-ENABLE_HEAVY_RAG=0
-QUERIONYX_LIGHTWEIGHT_RAG=1
-QUERIONYX_CACHE_ENABLED=1
-QUERIONYX_MERGE_LLM_ENABLED=0
-QUERIONYX_USE_LLM_ROUTER=0
-QUERIONYX_RAG_LOW_CONFIDENCE_THRESHOLD=0.6
-QUERIONYX_LIGHTWEIGHT_RAG_MS=4000
-QUERIONYX_SQL_EXECUTION_MS=5000
-QUERIONYX_END_TO_END_MS=10000
+```powershell
+Copy-Item .env.example .env
+docker compose up --build
 ```
 
-Set `PGPASSWORD` only in the hosting provider's secret manager. Never commit `.env`, database passwords, or service tokens.
+## Dependency Tiers
 
-For Vercel, configure:
+The default clone remains small by separating runtime and research packages.
 
-```env
-NEXT_PUBLIC_API_BASE=https://querionyx.onrender.com
+```powershell
+# FastAPI, PostgreSQL, and lightweight RAG
+pip install -r requirements.txt
+
+# Optional ChromaDB, sentence transformers, Ollama, and thesis figures
+pip install -r requirements-research.txt
 ```
+
+Downloaded models, Chroma indexes, raw PDFs, virtual environments, Next build
+output, metrics, and non-final experiment runs are ignored by Git.
 
 ## Demo Prompts
 
-Use prompts within the supported evidence scope. The system can answer paraphrases, but these are the most reliable live-demo questions.
-
-| Mode | Prompts |
+| Path | Example |
 | --- | --- |
-| SQL | `Có bao nhiêu sản phẩm trong cơ sở dữ liệu?`<br>`Top 5 customers by number of orders.`<br>`Which product sold the most?`<br>`Sản phẩm bán chạy nhất.`<br>`Top khách hàng theo tổng chi tiêu là ai?` |
-| RAG | `Tóm tắt rủi ro trong báo cáo của FPT.`<br>`Ban lãnh đạo FPT gồm những ai?`<br>`Chiến lược tăng trưởng của Vinamilk là gì?`<br>`Masan đề cập cơ hội nào trong tài liệu?` |
-| Hybrid | `Theo báo cáo FPT năm 2023, chiến lược chính là gì và hiện có bao nhiêu đơn hàng trong hệ thống?`<br>`Masan trình bày chuỗi cung ứng ra sao và top 5 sản phẩm bán chạy là gì?` |
-| Unsupported | `Giá cổ phiếu Vinamilk hiện tại là bao nhiêu?`<br>`Công thức bí mật sản xuất sữa của Vinamilk là gì?` |
+| SQL | `Which product sold the most?` |
+| SQL | `Top 5 customers by number of orders.` |
+| RAG | `Tóm tắt rủi ro trong báo cáo của FPT.` |
+| RAG | `Ban lãnh đạo FPT gồm những ai?` |
+| RAG | `Chiến lược tăng trưởng của Vinamilk là gì?` |
+| HYBRID | `Masan trình bày chuỗi cung ứng ra sao và top 5 sản phẩm bán chạy là gì?` |
+| Unsupported | `Giá cổ phiếu Vinamilk hiện tại là bao nhiêu?` |
 
-For unsupported questions, the expected behavior is the explicit Vietnamese insufficient-evidence response, not a fabricated answer.
+Unsupported or weakly supported questions must return the explicit
+insufficient-evidence response rather than a fabricated answer.
 
 ## API
 
 | Method | Endpoint | Purpose |
 | --- | --- | --- |
-| `POST` | `/query` | Run a question through the pipeline. |
-| `POST` | `/query/stream` | Receive server-sent events for a query. |
-| `POST` | `/upload` | Add a PDF to the local chunk store; embedding is optional. |
-| `GET` | `/health` | Check service, database, RAG, and cache status. |
-| `GET` | `/metrics` | Inspect request, latency, cache, and routing metrics. |
-
-Example request:
+| `POST` | `/query` | Execute one query. |
+| `POST` | `/query/stream` | Stream metadata and result with SSE. |
+| `GET` | `/health` | Inspect API, database, RAG, and cache health. |
+| `GET` | `/metrics` | Inspect latency, cache, routing, and failures. |
 
 ```bash
 curl -X POST http://localhost:8000/query \
   -H "Content-Type: application/json" \
-  -d '{"question":"Which product sold the most?", "debug":true}'
+  -d '{"question":"Which product sold the most?","debug":true}'
 ```
 
 ## Verification
 
-Run focused regression tests:
+The clone-level checks do not require PostgreSQL, Ollama, ChromaDB, or model
+downloads:
 
 ```powershell
-python -m unittest tests.test_db_connect tests.test_fast_sql_planner
+.\run.ps1 check
 ```
 
-Audit the no-Ollama demo coverage without needing a database, embedding model, or LLM:
+Equivalent commands:
 
 ```powershell
+python -m compileall -q backend services src scripts tests
+python -m unittest tests.test_db_connect tests.test_fast_sql_planner tests.test_evaluation_lock tests.test_chunk_store tests.test_automatic_scoring tests.test_hybrid_merge tests.test_no_ollama_audit
 python scripts/audit_no_ollama_readiness.py
+python scripts/check_project_lock.py
 ```
 
-The audit reads the 150-query evaluation set and writes a report to `docs/evaluation/no_ollama_readiness.md`. Before a defense, run both commands and verify `/health` in the deployed API.
+## Research Workflow
 
-For the broader thesis evaluation workflow, see [docs/EVALUATION_PIPELINE.md](docs/EVALUATION_PIPELINE.md) and the paper-ready artifacts in [docs/paper_assets](docs/paper_assets/README.md).
+Evaluation is fully automatic and fail-closed. SQL is scored by row-level
+equivalence against independent read-only references; RAG is scored by expected
+company/topic evidence, citations, and extractive overlap; HYBRID additionally
+checks both-branch completion and integration. These are bounded evidence
+metrics, not an unqualified free-form semantic-correctness score.
+
+```powershell
+.\run.ps1 research-setup
+python -m src.data_prep.reindex_chromadb
+```
+
+Run the complete evaluation and regenerate report assets with:
+
+```powershell
+.\run.ps1 evaluate
+```
+
+The exact protocol is documented in the
+[evaluation policy](docs/evaluation/EVALUATION_POLICY.md). Final runs record the
+source snapshot, dataset/config/reference hashes, environment, and per-query
+traces. Missing services or references fail the run instead of producing a
+placeholder score.
+
+Regenerate report-ready design/setup assets with:
+
+```powershell
+.\run.ps1 assets
+```
+
+## Project Structure
+
+```text
+querionyx/
+|-- backend/                 FastAPI entry point and runtime image
+|-- frontend/                Next.js demo interface
+|-- services/                API orchestration, cache, and metrics
+|-- src/
+|   |-- router/              deterministic and optional Ollama routing
+|   |-- sql/                 planner, validation, PostgreSQL execution
+|   |-- rag/                 optional dense + sparse local RAG
+|   |-- hybrid/              parallel branch execution and merge/fallback
+|   |-- runtime/             config, traces, timeouts, chunk store
+|   |-- evaluation/          real-only benchmark and provenance tools
+|   '-- data_prep/           PDF inspection, chunking, dense indexing
+|-- benchmarks/              frozen datasets, configs, and manifests
+|-- data/                    compressed corpus and source checksums
+|-- scripts/                 setup checks, evidence gates, asset export
+|-- tests/                   focused unit/regression tests
+|-- deployment/render/       Render Blueprint
+|-- docs/                    current deployment and thesis governance
+|-- compose.yaml             lightweight backend + frontend stack
+`-- run.ps1                 Windows command runner
+```
+
+## Data and Reproducibility
+
+`data/processed/chunks_recursive.json.gz` is compressed UTF-8 JSON rather than
+Pickle. It is safe to inspect and reduces the tracked corpus from about 5.4 MiB
+to about 1.4 MiB. Original PDFs are excluded from Git; their filenames, sizes,
+and SHA-256 checksums are recorded in
+[`data/source_manifest.json`](data/source_manifest.json).
+
+Runtime Text-to-SQL cache files are also excluded. Cache improves repeated
+latency only and is never treated as training data, knowledge, or evaluation
+evidence.
 
 ## Deployment
 
-- **Backend:** Render Blueprint at [deployment/render/render.yaml](deployment/render/render.yaml).
-- **Frontend:** Vercel project rooted at `frontend/`.
-- **Database:** Supabase PostgreSQL with SSL required.
+- Render: [`deployment/render/render.yaml`](deployment/render/render.yaml)
+- Vercel: set the project root to `frontend/`
+- Database: PostgreSQL/Supabase with SSL for hosted connections
+- Secrets: configure only in `.env` locally or the hosting secret manager
 
-The backend is deployed from the `backend/` directory, while the Render build installs Python dependencies from the repository root. The render blueprint deliberately disables heavy RAG and LLM routing so the public demo remains reproducible on a small web service.
+Live verification on 2026-07-15 returned HTTP 200 from both Vercel and Render,
+and Render loaded all 9,670 chunks. Render reported the Supabase database as
+unavailable while the same database passed the local reference runs, so reset
+the Render `PGPASSWORD` secret and verify `db_status=ok` before the final demo.
 
-## Scope and Limitations
+See the [deployment checklist](docs/deployment_demo_checklist.md) before a
+defense demo.
 
-Querionyx is a demonstrator and research artifact, not a general-purpose assistant. Its answer quality is bounded by the Northwind database, the indexed annual reports, and the supported routing/planning patterns. Cache entries improve repeat-query latency only; they do not add knowledge or make unsupported questions answerable.
+## Scope
+
+Querionyx is a bounded research demonstrator, not a general-purpose assistant.
+Its answers are limited to the indexed annual reports, the connected Northwind
+database, and supported planners/retrieval behavior. Current claim status is
+tracked in the [claim-evidence matrix](docs/thesis_claim_evidence_matrix.md).
 
 ## Documentation
 
-- [Deployment demo checklist](docs/deployment_demo_checklist.md)
-- [No-Ollama readiness report](docs/evaluation/no_ollama_readiness.md)
-- [Evaluation pipeline](docs/EVALUATION_PIPELINE.md)
+- [Project freeze](docs/PROJECT_FREEZE.md)
+- [Evaluation policy](docs/evaluation/EVALUATION_POLICY.md)
+- [Claim-evidence matrix](docs/thesis_claim_evidence_matrix.md)
+- [Thesis asset catalog](docs/thesis_assets/README.md)
 - [Northwind schema notes](docs/data_prep/northwind_schema.md)
-- [Paper assets](docs/paper_assets/README.md)
-
----
-
-Querionyx is maintained as a graduation project for the 2025-2026 academic year.
+- [Data layout and source verification](data/README.md)
