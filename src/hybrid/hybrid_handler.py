@@ -12,8 +12,8 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-import pickle
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -22,12 +22,14 @@ from typing import Any, Dict, List, Optional
 from dotenv import load_dotenv
 
 from src.runtime.config import RuntimeConfig
+from src.runtime.chunk_store import CHUNKS_FILE, load_chunks
 from src.runtime.fallbacks import INSUFFICIENT_EVIDENCE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _LIGHTWEIGHT_CHUNKS_CACHE: Optional[List[Dict[str, Any]]] = None
 _LIGHTWEIGHT_INDEX_CACHE: Optional[List[Dict[str, Any]]] = None
 _RAG_PIPELINE_SINGLETONS: Dict[tuple[Any, ...], Any] = {}
+_RAG_PIPELINE_LOCK = threading.Lock()
 
 
 @dataclass
@@ -57,7 +59,7 @@ class HybridQueryHandler:
         merge_timeout_ms: int = 8000,
         rag_passages: int = 2,
         rag_chars_per_passage: int = 500,
-        sql_rows: int = 5,
+        sql_rows: int = 10,
         sql_columns: int = 8,
         runtime_config: Optional[RuntimeConfig] = None,
     ):
@@ -142,17 +144,28 @@ class HybridQueryHandler:
             )
             self.rag_pipeline = _RAG_PIPELINE_SINGLETONS.get(key)
             if self.rag_pipeline is None:
-                self.rag_pipeline = RAGPipelineV2(
-                    final_top_k=self.rag_passages,
-                    max_generation_chunks=self.rag_passages,
-                    max_context_chars_per_chunk=self.rag_chars_per_passage,
-                    llm_timeout_seconds=max(5, self.timeout_per_module_ms // 1000),
-                    enable_cache=self.runtime_config.cache_enabled,
-                    verbose=False,
-                )
-                self.rag_pipeline.load_chunks(verbose=False)
-                _RAG_PIPELINE_SINGLETONS[key] = self.rag_pipeline
+                with _RAG_PIPELINE_LOCK:
+                    self.rag_pipeline = _RAG_PIPELINE_SINGLETONS.get(key)
+                    if self.rag_pipeline is None:
+                        pipeline = RAGPipelineV2(
+                            final_top_k=self.rag_passages,
+                            max_generation_chunks=self.rag_passages,
+                            max_context_chars_per_chunk=self.rag_chars_per_passage,
+                            llm_timeout_seconds=max(5, self.timeout_per_module_ms // 1000),
+                            enable_cache=self.runtime_config.cache_enabled,
+                            verbose=False,
+                        )
+                        pipeline.load_chunks(verbose=False)
+                        _RAG_PIPELINE_SINGLETONS[key] = pipeline
+                        self.rag_pipeline = pipeline
         return self.rag_pipeline
+
+    def warm_up_retrieval(self) -> None:
+        """Initialize retrieval assets outside per-query timeout windows."""
+        if self.enable_heavy_rag:
+            self._get_rag_pipeline()
+        else:
+            self._load_lightweight_index()
 
     def _load_lightweight_chunks(self) -> List[Dict[str, Any]]:
         global _LIGHTWEIGHT_CHUNKS_CACHE
@@ -161,12 +174,10 @@ class HybridQueryHandler:
         if _LIGHTWEIGHT_CHUNKS_CACHE is not None:
             self._lightweight_chunks = _LIGHTWEIGHT_CHUNKS_CACHE
             return self._lightweight_chunks
-        chunks_file = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
-        if not chunks_file.exists():
+        if not CHUNKS_FILE.exists():
             self._lightweight_chunks = []
             return self._lightweight_chunks
-        with chunks_file.open("rb") as f:
-            chunks = pickle.load(f)
+        chunks = load_chunks()
         self._lightweight_chunks = chunks if isinstance(chunks, list) else []
         _LIGHTWEIGHT_CHUNKS_CACHE = self._lightweight_chunks
         return self._lightweight_chunks
@@ -448,7 +459,10 @@ class HybridQueryHandler:
                 if not self.enable_heavy_rag:
                     return self._run_lightweight_rag(question)
                 rag = self._get_rag_pipeline()
-                chunks = rag.retrieve_hybrid(question, final_top_k=self.rag_passages)
+                if self.runtime_config.rag_retrieval_mode == "dense_only":
+                    chunks = rag.retrieve_dense(question, top_k=self.rag_passages)
+                else:
+                    chunks = rag.retrieve_hybrid(question, final_top_k=self.rag_passages)
                 passages = []
                 citations = []
                 scores = []
@@ -458,7 +472,13 @@ class HybridQueryHandler:
                     page = chunk.get("page", -1)
                     passages.append(text)
                     citations.append(f"{source}#p{page}")
-                    scores.append(float(chunk.get("rrf_score") or (1.0 - chunk.get("distance", 1.0))))
+                    if chunk.get("rrf_score") is not None:
+                        rrf_k = float(getattr(rag, "rrf_k", 60.0))
+                        max_rrf_score = 2.0 / (rrf_k + 1.0)
+                        confidence = float(chunk["rrf_score"]) / max_rrf_score
+                    else:
+                        confidence = 1.0 - float(chunk.get("distance", 1.0))
+                    scores.append(max(0.0, min(1.0, confidence)))
 
                 score = max(scores) if scores else None
                 answer = passages[0] if passages else ""
@@ -616,6 +636,7 @@ class HybridQueryHandler:
 
     async def aquery(self, question: str, router_intent: Optional[str] = None) -> Dict[str, Any]:
         started = time.perf_counter()
+        has_explicit_intent = router_intent is not None
         router_intent = (router_intent or "HYBRID").upper()
 
         if router_intent == "SQL" and self._sql_fast_planner_can_handle(question):
@@ -643,7 +664,7 @@ class HybridQueryHandler:
                 ),
             ).__dict__
 
-        if router_intent == "RAG" or self._is_doc_question(question):
+        if router_intent == "RAG" or (not has_explicit_intent and self._is_doc_question(question)):
             rag_result = await self._run_rag(question)
             rag_low = (
                 rag_result.get("score") is not None
@@ -699,7 +720,13 @@ class HybridQueryHandler:
 
         llm_calls = 0
         contribution = "both_fail"
-        if sql_ok and (not rag_ok or rag_low):
+        partial_success = (sql_ok and (not rag_ok or rag_low)) or (rag_ok and not sql_ok)
+        if partial_success and not self.runtime_config.allow_partial_hybrid_fallback:
+            answer = INSUFFICIENT_EVIDENCE
+            sources = []
+            contribution = "partial_rejected"
+            fallback_mode = "PARTIAL_REJECTED"
+        elif sql_ok and (not rag_ok or rag_low):
             answer = self._deterministic_sql_answer(question, sql_result)
             sources = ["SQL"]
             contribution = "sql_only"
@@ -732,9 +759,13 @@ class HybridQueryHandler:
                     contribution = "merge_timeout"
                     fallback_mode = "TEMPLATE_MERGE"
             else:
-                answer = self._deterministic_sql_answer(question, sql_result)
-                contribution = "sql_only"
-                fallback_mode = "SQL_DOMINANT"
+                answer = (
+                    self._deterministic_sql_answer(question, sql_result)
+                    + "\n\n"
+                    + self._deterministic_rag_answer(rag_result)
+                )
+                contribution = "merged_template"
+                fallback_mode = "NONE"
         else:
             answer = INSUFFICIENT_EVIDENCE
             sources = []

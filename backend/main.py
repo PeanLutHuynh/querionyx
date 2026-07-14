@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Optional
-
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
@@ -46,12 +44,6 @@ async def query_stream(request: QueryRequest):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
     )
-
-
-@app.post("/upload")
-async def upload(file: UploadFile = File(...), embed: Optional[bool] = Form(False)):
-    content = await file.read()
-    return await query_service.upload_pdf(file.filename or "upload.pdf", content, embed=bool(embed))
 
 
 @app.get("/health")

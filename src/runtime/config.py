@@ -10,6 +10,8 @@ from typing import Any, Dict, Optional
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+VALID_EXECUTION_MODES = {"demo_no_ollama", "local_research", "evaluation_real"}
+VALID_RAG_RETRIEVAL_MODES = {"hybrid", "dense_only"}
 
 
 @dataclass
@@ -28,13 +30,16 @@ class TimeoutConfig:
 @dataclass
 class RuntimeConfig:
     config_name: str = "full_v3"
+    execution_mode: str = "demo_no_ollama"
     cache_enabled: bool = True
     parallel_enabled: bool = True
     hybrid_enabled: bool = True
     lightweight_rag: bool = True
+    rag_retrieval_mode: str = "hybrid"
     merge_llm_enabled: bool = False
     force_merge_llm: bool = False
     force_mode: Optional[str] = None
+    allow_partial_hybrid_fallback: bool = True
     use_llm_router: bool = False
     max_concurrency: int = 2
     low_resource_mode: bool = True
@@ -52,13 +57,21 @@ class RuntimeConfig:
     def from_env(cls) -> "RuntimeConfig":
         cfg = cls()
         cfg.config_name = os.getenv("QUERIONYX_CONFIG_NAME", cfg.config_name)
+        cfg.execution_mode = _execution_mode(os.getenv("QUERIONYX_EXECUTION_MODE", cfg.execution_mode))
         cfg.cache_enabled = _env_bool("QUERIONYX_CACHE_ENABLED", cfg.cache_enabled)
         cfg.parallel_enabled = _env_bool("QUERIONYX_PARALLEL_ENABLED", cfg.parallel_enabled)
         cfg.hybrid_enabled = _env_bool("QUERIONYX_HYBRID_ENABLED", cfg.hybrid_enabled)
         cfg.lightweight_rag = _env_bool("QUERIONYX_LIGHTWEIGHT_RAG", cfg.lightweight_rag)
+        cfg.rag_retrieval_mode = _rag_retrieval_mode(
+            os.getenv("QUERIONYX_RAG_RETRIEVAL_MODE", cfg.rag_retrieval_mode)
+        )
         cfg.merge_llm_enabled = _env_bool("QUERIONYX_MERGE_LLM_ENABLED", cfg.merge_llm_enabled)
         cfg.force_merge_llm = _env_bool("QUERIONYX_FORCE_MERGE_LLM", cfg.force_merge_llm)
         cfg.force_mode = os.getenv("QUERIONYX_FORCE_MODE") or cfg.force_mode
+        cfg.allow_partial_hybrid_fallback = _env_bool(
+            "QUERIONYX_ALLOW_PARTIAL_HYBRID_FALLBACK",
+            cfg.allow_partial_hybrid_fallback,
+        )
         cfg.use_llm_router = _env_bool("QUERIONYX_USE_LLM_ROUTER", cfg.use_llm_router)
         cfg.max_concurrency = int(os.getenv("QUERIONYX_MAX_CONCURRENCY", str(cfg.max_concurrency)))
         cfg.low_resource_mode = _env_bool("QUERIONYX_LOW_RESOURCE_MODE", cfg.low_resource_mode)
@@ -99,6 +112,10 @@ class RuntimeConfig:
         timeouts = TimeoutConfig(**{k: v for k, v in timeout_payload.items() if k in known_timeout_keys})
         known_keys = set(cls.__dataclass_fields__.keys()) - {"timeouts"}
         values = {k: v for k, v in payload.items() if k in known_keys}
+        if "execution_mode" in values:
+            values["execution_mode"] = _execution_mode(values["execution_mode"])
+        if "rag_retrieval_mode" in values:
+            values["rag_retrieval_mode"] = _rag_retrieval_mode(values["rag_retrieval_mode"])
         return cls(**values, timeouts=timeouts)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -120,3 +137,19 @@ def _env_int(name: str, default: int) -> int:
         return int(raw)
     except ValueError:
         return default
+
+
+def _execution_mode(value: str) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized not in VALID_EXECUTION_MODES:
+        allowed = ", ".join(sorted(VALID_EXECUTION_MODES))
+        raise ValueError(f"Invalid QUERIONYX execution mode '{value}'. Expected one of: {allowed}")
+    return normalized
+
+
+def _rag_retrieval_mode(value: str) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized not in VALID_RAG_RETRIEVAL_MODES:
+        allowed = ", ".join(sorted(VALID_RAG_RETRIEVAL_MODES))
+        raise ValueError(f"Invalid RAG retrieval mode '{value}'. Expected one of: {allowed}")
+    return normalized

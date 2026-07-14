@@ -7,12 +7,14 @@ import csv
 import json
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List
 
 from src.runtime.logging import write_json
 from src.runtime.metrics import latency_summary
+from src.evaluation.evidence import REAL_EXECUTION_MODES, build_experiment_manifest, git_state
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -45,7 +47,14 @@ def post_query(endpoint: str, question: str, debug: bool = False) -> Dict[str, A
     return data
 
 
-def run_uat(dataset: Path, endpoint: str, output_dir: Path, repeat_cache_check: int = 10) -> Dict[str, Any]:
+def run_uat(
+    dataset: Path,
+    endpoint: str,
+    output_dir: Path,
+    repeat_cache_check: int = 10,
+    execution_mode: str = "demo_no_ollama",
+) -> Dict[str, Any]:
+    run_git_state = git_state()
     output_dir.mkdir(parents=True, exist_ok=True)
     rows: List[Dict[str, Any]] = []
     queries = load_queries(dataset)
@@ -62,7 +71,37 @@ def run_uat(dataset: Path, endpoint: str, output_dir: Path, repeat_cache_check: 
         print(f"[cache {repeat_idx}/{len(cache_repeat_questions)}] status={rows[-1]['http_status']} cache={rows[-1]['cache_hit']} latency={rows[-1]['latency_ms']}")
 
     summary = _summary(rows)
+    summary["execution_mode"] = execution_mode
+    summary["evidence_type"] = "measured"
     write_json(output_dir / "uat_results.json", {"summary": summary, "rows": rows})
+    endpoint_parts = urllib.parse.urlsplit(endpoint)
+    endpoint_origin = f"{endpoint_parts.scheme}://{endpoint_parts.netloc}"
+    write_json(
+        output_dir / "manifest.json",
+        build_experiment_manifest(
+            run_id=output_dir.name,
+            execution_mode=execution_mode,
+            benchmark_path=dataset,
+            config={
+                "config_name": "api_uat",
+                "execution_mode": execution_mode,
+                "cache_enabled": repeat_cache_check > 0,
+                "lightweight_rag": execution_mode == "demo_no_ollama",
+                "use_llm_router": False,
+                "merge_llm_enabled": False,
+                "force_merge_llm": False,
+            },
+            query_count=len(queries),
+            extra={
+                "evaluation": "http_uat",
+                "endpoint_origin": endpoint_origin,
+                "repeat_cache_check": repeat_cache_check,
+                "database": "Deployment-dependent PostgreSQL",
+                "frontend": "not involved",
+            },
+            git_state_at_start=run_git_state,
+        ),
+    )
     _write_csv(output_dir / "uat_results.csv", rows)
     return summary
 
@@ -149,12 +188,23 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run Querionyx V3 UAT against /query.")
     parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks" / "datasets" / "eval_90_queries.json")
     parser.add_argument("--endpoint", default="http://127.0.0.1:8000/query")
-    parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "reports" / "experiment_runs" / "week7_uat_90")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=PROJECT_ROOT / "reports" / "experiment_runs" / f"{time.strftime('%Y%m%d_%H%M%S')}_uat_90",
+    )
     parser.add_argument("--repeat-cache-check", type=int, default=30)
+    parser.add_argument("--execution-mode", choices=sorted(REAL_EXECUTION_MODES), default="demo_no_ollama")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    result = run_uat(args.dataset, args.endpoint, args.output_dir, args.repeat_cache_check)
+    result = run_uat(
+        args.dataset,
+        args.endpoint,
+        args.output_dir,
+        args.repeat_cache_check,
+        execution_mode=args.execution_mode,
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2))

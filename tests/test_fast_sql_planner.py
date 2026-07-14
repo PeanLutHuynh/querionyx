@@ -118,7 +118,7 @@ class TestFastSqlPlanner(unittest.TestCase):
 
         self.assertEqual(
             sql,
-            "SELECT s.company_name, COUNT(p.product_id) AS product_count FROM suppliers s JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.company_name ORDER BY product_count DESC, s.company_name LIMIT 5;",
+            "SELECT s.company_name, COUNT(p.product_id) AS product_count FROM suppliers s LEFT JOIN products p ON s.supplier_id = p.supplier_id GROUP BY s.supplier_id, s.company_name ORDER BY product_count DESC, s.company_name LIMIT 1;",
         )
 
 

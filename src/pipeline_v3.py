@@ -157,7 +157,7 @@ class AdaptiveRouter:
         }
 
 
-class QueryonixPipelineV3:
+class QuerionyxPipelineV3:
     def __init__(
         self,
         router: Optional[AdaptiveRouter] = None,
@@ -172,7 +172,7 @@ class QueryonixPipelineV3:
             use_llm_for_ambiguous=self.runtime_config.use_llm_router,
             llm_timeout_seconds=max(1, self.runtime_config.timeouts.router_llm_ms // 1000),
         )
-        self.sql_pipeline = sql_pipeline or LazyTextToSQLPipeline(max_result_rows=5)
+        self.sql_pipeline = sql_pipeline or LazyTextToSQLPipeline(max_result_rows=10)
         if not self.runtime_config.cache_enabled:
             if hasattr(self.sql_pipeline, "disable_cache"):
                 self.sql_pipeline.disable_cache()
@@ -188,6 +188,9 @@ class QueryonixPipelineV3:
         )
         self.max_total_latency_ms = min(max_total_latency_ms, self.runtime_config.timeouts.end_to_end_ms)
 
+    def warm_up_retrieval(self) -> None:
+        self.hybrid_handler.warm_up_retrieval()
+
     @staticmethod
     def _format_sql_answer(sql_output: Dict[str, Any]) -> str:
         rows = sql_output.get("rows") or []
@@ -202,7 +205,7 @@ class QueryonixPipelineV3:
             "| " + " | ".join(columns) + " |",
             "| " + " | ".join("---" for _ in columns) + " |",
         ]
-        for row in rows[:5]:
+        for row in rows[:10]:
             lines.append("| " + " | ".join(str(row.get(col, "")) for col in columns) + " |")
         return "\n".join(lines)
 
@@ -393,13 +396,15 @@ class QueryonixPipelineV3:
             if timings["sql_latency_ms"] is None and timings["rag_latency_ms"] is None:
                 timings["sql_latency_ms"] = hybrid_latency if hybrid_output.get("sql_result") else None
                 timings["rag_latency_ms"] = hybrid_latency if hybrid_output.get("rag_result") else None
+            contribution = hybrid_output.get("contribution")
             branches.extend(
                 branch
-                for branch in ["rag", "sql", "merge_llm"]
+                for branch in ["rag", "sql", "merge_llm", "merge_template"]
                 if (
                     (branch == "rag" and hybrid_output.get("rag_result"))
                     or (branch == "sql" and hybrid_output.get("sql_result"))
                     or (branch == "merge_llm" and hybrid_output.get("llm_calls", 0) > 0)
+                    or (branch == "merge_template" and contribution == "merged_template")
                 )
             )
             answer = hybrid_output.get("answer") or INSUFFICIENT_EVIDENCE
@@ -411,8 +416,7 @@ class QueryonixPipelineV3:
             sql_success = None if not sql_result else sql_result.get("error") is None
             rag_success = None if not rag_result else bool(rag_result.get("context_passages") or rag_result.get("answer")) and not rag_result.get("error")
             cache_hit = (sql_result.get("timings") or {}).get("sql_cache_hit") == 1.0 if sql_result else None
-            merge_used = hybrid_output.get("llm_calls", 0) > 0
-            contribution = hybrid_output.get("contribution")
+            merge_used = contribution in {"merged_llm", "merged_template", "merge_timeout"}
             fallback_used = fallback_used or contribution in {"merge_timeout", "both_fail"}
             if contribution == "merge_timeout":
                 record_failure("merge_error", "hybrid_merge", "merge timed out or failed", "deterministic_merge_template", timings["merge_latency_ms"] or 0.0)
@@ -470,6 +474,11 @@ def _nested_timing(payload: Any, key: str) -> Optional[float]:
     if isinstance(timings, dict) and timings.get(key) is not None:
         return timings.get(key)
     return None
+
+
+# Backwards-compatible alias for experiment scripts created before the project
+# name spelling was corrected.
+QueryonixPipelineV3 = QuerionyxPipelineV3
 
 
 class LazyTextToSQLPipeline:

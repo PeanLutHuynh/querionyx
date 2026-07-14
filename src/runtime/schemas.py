@@ -1,4 +1,4 @@
-"""Standardized runtime schemas for query, failure, and ablation logs."""
+"""Standardized runtime schemas for query, failure, and benchmark logs."""
 
 from __future__ import annotations
 
@@ -101,4 +101,3 @@ class AblationResultLog:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
-

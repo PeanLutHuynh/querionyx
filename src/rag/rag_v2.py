@@ -12,7 +12,6 @@ Architecture:
 """
 
 import os
-import pickle
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -27,8 +26,9 @@ from langchain_ollama import OllamaLLM
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer
 
+from src.runtime.chunk_store import CHUNKS_FILE, load_chunks
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-CHUNKS_FILE = PROJECT_ROOT / "data" / "processed" / "chunks_recursive.pkl"
 CHROMA_DB_PATH = PROJECT_ROOT / "data" / "chroma_db"
 EMBEDDING_CACHE_DIR = PROJECT_ROOT / "data" / "models" / "sentence_transformers"
 COLLECTION_NAME = "querionyx_v1"
@@ -197,18 +197,17 @@ class RAGPipelineV2:
         return tuple(float(value) for value in embedding.tolist())
 
     def load_chunks(self, verbose: bool = True) -> int:
-        """Load preprocessed chunks from pickle, index in ChromaDB, and build BM25 index."""
+        """Load preprocessed chunks, index in ChromaDB, and build the BM25 index."""
         if not CHUNKS_FILE.exists():
             raise FileNotFoundError(f"Chunks file not found: {CHUNKS_FILE}")
 
         if verbose:
             print(f"\nLoading chunks from {CHUNKS_FILE}...", flush=True)
 
-        with open(CHUNKS_FILE, "rb") as f:
-            chunks = pickle.load(f)
+        chunks = load_chunks()
 
         if verbose:
-            print(f"   Loaded {len(chunks)} chunks from pickle", flush=True)
+            print(f"   Loaded {len(chunks)} chunks", flush=True)
 
         self.chunks_data = chunks
         existing_collections = [col.name for col in self.chroma_client.list_collections()]
