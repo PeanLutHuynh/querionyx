@@ -31,7 +31,17 @@ def score_case(case: Dict[str, Any], output: Dict[str, Any], max_latency_ms: int
     rag_ok = output.get("rag_success")
     sql_pass = (not sql_required) or sql_ok is True
     rag_pass = (not rag_required) or rag_ok is True
-    hybrid_pass = (not hybrid_required) or bool({"sql", "rag"} & set(output.get("branches") or []))
+    branches = set(output.get("branches") or [])
+    both_branches_attempted = {"sql", "rag"}.issubset(branches)
+    full_hybrid_completion = sql_ok is True and rag_ok is True
+    valid_hybrid_fallback = (
+        bool(output.get("fallback_used"))
+        and ((sql_ok is True) ^ (rag_ok is True))
+        and answer_nonempty
+    )
+    hybrid_pass = (not hybrid_required) or (
+        both_branches_attempted and (full_hybrid_completion or valid_hybrid_fallback)
+    )
 
     passed = answer_nonempty and latency_ok and intent_ok and keyword_pass and sql_pass and rag_pass and hybrid_pass
     return {
@@ -43,6 +53,9 @@ def score_case(case: Dict[str, Any], output: Dict[str, Any], max_latency_ms: int
         "sql_pass": sql_pass,
         "rag_pass": rag_pass,
         "hybrid_pass": hybrid_pass,
+        "both_branches_attempted": both_branches_attempted,
+        "full_hybrid_completion": full_hybrid_completion,
+        "valid_hybrid_fallback": valid_hybrid_fallback,
     }
 
 
@@ -58,4 +71,3 @@ def _allowed_intent_match(expected: str, actual: str) -> bool:
     if expected == "HYBRID" and actual in {"SQL", "RAG"}:
         return False
     return False
-

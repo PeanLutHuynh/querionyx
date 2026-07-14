@@ -12,6 +12,7 @@ SQL fast paths, or RAG topic terms rather than response-cache memorization.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -27,7 +28,7 @@ from src.router.rule_based_router import RuleBasedRouter
 from src.sql.text_to_sql import TextToSQLPipeline
 
 
-DEFAULT_DATASET = PROJECT_ROOT / "data" / "test_queries" / "eval_150_queries.json"
+DEFAULT_DATASET = PROJECT_ROOT / "benchmarks" / "datasets" / "eval_150_queries.json"
 
 
 def load_queries(path: Path) -> List[Dict[str, Any]]:
@@ -63,11 +64,13 @@ def audit(queries: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         issues: List[str] = []
 
         if expected and predicted != expected:
+            no_ollama_safe = False
             issues.append("route_mismatch")
         if needs_sql and not fast_sql:
             no_ollama_safe = False
             issues.append("missing_sql_fast_path")
         if annual_report and not companies:
+            no_ollama_safe = False
             issues.append("rag_missing_company_signal")
 
         if not issues:
@@ -80,7 +83,7 @@ def audit(queries: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             counters["route_correct"] += 1
         if needs_sql:
             counters["needs_sql"] += 1
-        if fast_sql:
+        if needs_sql and fast_sql:
             counters["sql_fast_path"] += 1
         if no_ollama_safe:
             counters["no_ollama_safe"] += 1
@@ -133,11 +136,19 @@ def audit(queries: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
 
 def write_markdown(report: Dict[str, Any], output: Path) -> None:
     summary = report["summary"]
+    provenance = report.get("provenance") or {}
     rows = report["rows"]
     risky = [row for row in rows if row["issues"] or not row["no_ollama_safe"]]
     output.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# No-Ollama Demo Readiness Audit",
+        "",
+        "This is a static route/planner coverage audit. It does not measure answer correctness, retrieval quality, database availability, or latency.",
+        "",
+        f"- Dataset: `{provenance.get('dataset', 'not recorded')}`",
+        f"- Dataset SHA-256: `{provenance.get('dataset_sha256', 'not recorded')}`",
+        f"- Router SHA-256: `{provenance.get('router_sha256', 'not recorded')}`",
+        f"- SQL planner SHA-256: `{provenance.get('sql_planner_sha256', 'not recorded')}`",
         "",
         "## Summary",
         "",
@@ -169,6 +180,13 @@ def main() -> int:
     args = parser.parse_args()
 
     report = audit(load_queries(args.dataset))
+    report["provenance"] = {
+        "dataset": relative_path(args.dataset),
+        "dataset_sha256": sha256(args.dataset),
+        "router_sha256": sha256(PROJECT_ROOT / "src" / "router" / "rule_based_router.py"),
+        "sql_planner_sha256": sha256(PROJECT_ROOT / "src" / "sql" / "text_to_sql.py"),
+        "evidence_type": "static_executable_audit",
+    }
     args.json_output.parent.mkdir(parents=True, exist_ok=True)
     args.json_output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     write_markdown(report, args.markdown_output)
@@ -176,6 +194,21 @@ def main() -> int:
     print(f"Wrote {args.json_output}")
     print(f"Wrote {args.markdown_output}")
     return 0
+
+
+def relative_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+    except ValueError:
+        return str(path.resolve())
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 if __name__ == "__main__":

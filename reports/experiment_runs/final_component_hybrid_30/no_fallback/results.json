@@ -1,0 +1,54 @@
+{
+  "query_count": 30,
+  "pass_rate": 1.0,
+  "technical_pass_rate": 1.0,
+  "automatic_score": 0.885,
+  "automatic_pass_rate": 1.0,
+  "sql_result_f1": 1.0,
+  "rag_evidence_score": 0.8001,
+  "hybrid_integration_score": 0.775,
+  "latency": {
+    "avg": 260.86,
+    "p50": 237.07,
+    "p95": 336.14,
+    "p99": 615.62
+  },
+  "avg_ram_mb": 1082.7633,
+  "avg_cpu_percent": 426.3833,
+  "llm_calls_avg": 0.0,
+  "timeout_rate": 0.0,
+  "fallback_rate": 0.0,
+  "empty_answer_rate": 0.0,
+  "cache_hit_rate": 0.0,
+  "sql_success_rate": 1.0,
+  "rag_success_rate": 1.0,
+  "hybrid_success_rate": 1.0,
+  "router_accuracy": 1.0,
+  "failure_counts": {},
+  "resolved_failure_rate": 0.0,
+  "per_intent": {
+    "HYBRID": {
+      "query_count": 30,
+      "pass_rate": 1.0,
+      "automatic_score": 0.885,
+      "automatic_pass_rate": 1.0,
+      "sql_result_f1": 1.0,
+      "rag_evidence_score": 0.8001,
+      "hybrid_integration_score": 0.775,
+      "latency": {
+        "avg": 260.86,
+        "p50": 237.07,
+        "p95": 336.14,
+        "p99": 615.62
+      },
+      "fallback_rate": 0.0
+    }
+  },
+  "startup_ms": 2.5,
+  "execution_mode": "evaluation_real",
+  "evidence_type": "measured",
+  "thesis_reporting_allowed": true,
+  "scoring_method": "deterministic_reference_and_evidence_alignment",
+  "automatic_reference_file": "benchmarks/references/eval_90_sql_references.json",
+  "automatic_reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213"
+}

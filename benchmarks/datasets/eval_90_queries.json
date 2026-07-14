@@ -436,9 +436,9 @@
                     },
                     {
                         "id":  "hyb_014",
-                        "question":  "Mục tiêu ESG của Vinamilk là gì và có bao nhiêu khách hàng ở thành phố X?",
+                        "question":  "Mục tiêu ESG của Vinamilk là gì và có bao nhiêu khách hàng ở thành phố London?",
                         "ground_truth_intent":  "HYBRID",
-                        "ground_truth_answer":  "RAG: mục tiêu ESG Vinamilk; SQL: customers in specific city",
+                        "ground_truth_answer":  "RAG: mục tiêu ESG Vinamilk; SQL: SELECT COUNT(*) FROM customers WHERE city = 'London';",
                         "source_hint":  "annual_reports + northwind_db",
                         "difficulty":  "medium"
                     },

@@ -1,0 +1,55 @@
+{
+  "execution_mode": "evaluation_real",
+  "evidence_type": "measured",
+  "dataset": "benchmarks\\datasets\\eval_150_queries.json",
+  "query_count": 150,
+  "router_accuracy": 1.0,
+  "misrouting_rate": 0.0,
+  "confidence_calibration_error": 0.2019,
+  "latency": {
+    "avg": 0.05,
+    "p50": 0.05,
+    "p95": 0.08,
+    "p99": 0.1
+  },
+  "confusion_matrix": {
+    "SQL": {
+      "SQL": 50,
+      "RAG": 0,
+      "HYBRID": 0
+    },
+    "RAG": {
+      "SQL": 0,
+      "RAG": 50,
+      "HYBRID": 0
+    },
+    "HYBRID": {
+      "SQL": 0,
+      "RAG": 0,
+      "HYBRID": 50
+    }
+  },
+  "per_class": {
+    "SQL": {
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "RAG": {
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "HYBRID": {
+      "precision": 1.0,
+      "recall": 1.0
+    }
+  },
+  "misrouting_breakdown": {
+    "sql_to_rag": 0,
+    "sql_to_hybrid": 0,
+    "rag_to_sql": 0,
+    "rag_to_hybrid": 0,
+    "hybrid_to_sql_collapse": 0,
+    "hybrid_to_rag_collapse": 0
+  },
+  "misrouting_cases": []
+}

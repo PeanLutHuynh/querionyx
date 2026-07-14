@@ -1,0 +1,245 @@
+answer,citations,contribution,fallback_mode,fusion_latency_ms,latency_ms,mode,output_fingerprint,paired_output_match,query_id,question,rag_latency_ms,rag_status,sources,sql_latency_ms,sql_rows,sql_status
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| order_count |
+| --- |
+| 830 |
+
+Dựa trên các đoạn được truy xuất, FPT mô tả định hướng tăng trưởng như sau:
+- Dịch chuyển mạnh mẽ cho định hướng tập trung vào hệ sinh thái sản phẩm Made by FPT Trong năm 2023, hệ sinh thái sản phẩm Made by FPT ghi nhận doanh thu 1.637 tỷ đồng, tăng trưởng 42,3% so với cùng kỳ...
+- toàn thể CBNV, FPT đã hoàn thành tốt các mục tiêu cam kết tại ĐHĐCĐ với doanh thu và lợi nhuận trước thuế đạt 102% so với kế hoạch, các khối kinh doanh đều tăng trưởng hai chữ số.
+- Tập đoàn cũng đã có sự chuyển dịch mạnh mẽ từ mô hình triển khai dự án truyền thống sang tư vấn chiến lược và thực hiện các dự án chuyển đổi số dựa trên công nghệ tiên tiến với quy mô lớn, từ hàng chục đến hàng trăm triệu USD.
+
+Nguồn: fpt_2024.pdf#p61, fpt_2023.pdf#p56","[""fpt_2024.pdf#p61"", ""fpt_2023.pdf#p56""]",merged_template,NONE,,1437.98,sequential,1d04603ebed2318cf4101519ed543ed220d74fc34addb2f37fdcfa8677d80193,True,hyb_001,FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?,1126.43,success,"[""SQL"", ""DOC:fpt_2024.pdf#p61"", ""DOC:fpt_2023.pdf#p56""]",310.8,"[{""order_count"": 830}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| order_count |
+| --- |
+| 830 |
+
+Dựa trên các đoạn được truy xuất, FPT mô tả định hướng tăng trưởng như sau:
+- Dịch chuyển mạnh mẽ cho định hướng tập trung vào hệ sinh thái sản phẩm Made by FPT Trong năm 2023, hệ sinh thái sản phẩm Made by FPT ghi nhận doanh thu 1.637 tỷ đồng, tăng trưởng 42,3% so với cùng kỳ...
+- toàn thể CBNV, FPT đã hoàn thành tốt các mục tiêu cam kết tại ĐHĐCĐ với doanh thu và lợi nhuận trước thuế đạt 102% so với kế hoạch, các khối kinh doanh đều tăng trưởng hai chữ số.
+- Tập đoàn cũng đã có sự chuyển dịch mạnh mẽ từ mô hình triển khai dự án truyền thống sang tư vấn chiến lược và thực hiện các dự án chuyển đổi số dựa trên công nghệ tiên tiến với quy mô lớn, từ hàng chục đến hàng trăm triệu USD.
+
+Nguồn: fpt_2024.pdf#p61, fpt_2023.pdf#p56","[""fpt_2024.pdf#p61"", ""fpt_2023.pdf#p56""]",merged_template,NONE,,405.25,async,1d04603ebed2318cf4101519ed543ed220d74fc34addb2f37fdcfa8677d80193,True,hyb_001,FPT có chiến lược tăng doanh thu nào và tổng số đơn hàng hiện tại trong Northwind là bao nhiêu?,68.73,success,"[""SQL"", ""DOC:fpt_2024.pdf#p61"", ""DOC:fpt_2023.pdf#p56""]",404.4,"[{""order_count"": 830}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| product_count |
+| --- |
+| 77 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- tác với nông hộ chăn nuôi bò sữa tại các địa phương trong cả nước, ký kết hợp đồng bao tiêu sản phẩm STNL, tạo cầu nối phát triển bền vững, hài hòa với mục tiêu nâng cao năng suất, chất lượng, giảm giá thành và tăng khả năng cạnh tranh với sữa nhập khẩu.
+- định của chúng tôi khi thực hiện hai dự án chiến lược trọng điểm là Tái định vị thương hiệu và Chuyển đổi số, hướng đến mục tiêu tối đa hóa giá trị cho cổ đông, phục vụ tốt nhất cho khách hàng và phát triển hài hòa cùng các đối tác.
+- Kính gửi Quý Cổ đông, Trong năm 2024, Vinamilk đã gần như hoàn thành bước chuyển mình quan trọng khi thay đổi bao bì cho hầu hết các sản phẩm theo bộ nhận diện thương hiệu mới.
+
+Nguồn: vinamilk_2023.pdf#p49, vinamilk_2024.pdf#p4","[""vinamilk_2023.pdf#p49"", ""vinamilk_2024.pdf#p4""]",merged_template,NONE,,510.03,sequential,b8eccd3a200cbf1e001592c7a13f9babec848ca976878216b26677e9c7b82e81,True,hyb_002,Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?,44.85,success,"[""SQL"", ""DOC:vinamilk_2023.pdf#p49"", ""DOC:vinamilk_2024.pdf#p4""]",464.7,"[{""product_count"": 77}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| product_count |
+| --- |
+| 77 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- tác với nông hộ chăn nuôi bò sữa tại các địa phương trong cả nước, ký kết hợp đồng bao tiêu sản phẩm STNL, tạo cầu nối phát triển bền vững, hài hòa với mục tiêu nâng cao năng suất, chất lượng, giảm giá thành và tăng khả năng cạnh tranh với sữa nhập khẩu.
+- định của chúng tôi khi thực hiện hai dự án chiến lược trọng điểm là Tái định vị thương hiệu và Chuyển đổi số, hướng đến mục tiêu tối đa hóa giá trị cho cổ đông, phục vụ tốt nhất cho khách hàng và phát triển hài hòa cùng các đối tác.
+- Kính gửi Quý Cổ đông, Trong năm 2024, Vinamilk đã gần như hoàn thành bước chuyển mình quan trọng khi thay đổi bao bì cho hầu hết các sản phẩm theo bộ nhận diện thương hiệu mới.
+
+Nguồn: vinamilk_2023.pdf#p49, vinamilk_2024.pdf#p4","[""vinamilk_2023.pdf#p49"", ""vinamilk_2024.pdf#p4""]",merged_template,NONE,,326.7,async,b8eccd3a200cbf1e001592c7a13f9babec848ca976878216b26677e9c7b82e81,True,hyb_002,Mục tiêu phát triển của Vinamilk là gì và hiện có bao nhiêu sản phẩm trong database?,38.12,success,"[""SQL"", ""DOC:vinamilk_2023.pdf#p49"", ""DOC:vinamilk_2024.pdf#p4""]",325.98,"[{""product_count"": 77}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| company_name | order_count |
+| --- | --- |
+| Save-a-lot Markets | 31 |
+| Ernst Handel | 30 |
+| QUICK-Stop | 28 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Trong tương lai, Masan đặt mục tiêu mở rộng dịch vụ này ra ngoài mạng lưới bán lẻ hiện đại và bao trùm các kênh bán lẻ truyền thống, từ đó nâng cao khả năng đáp ứng Nhu cầu Tài chính cho nhiều khách hàng hơn.
+- Không chỉ đơn thuần là một chương trình khách hàng thân thiết, Hội viên WiN chính là nền tảng cho quá trình chuyển đổi số của Masan, tận dụng tần suất mua sắm hàng tiêu dùng cao để tạo ra trải
+- nhân hóa hoạt động tiếp thị, gợi ý sản phẩm phù hợp, cũng như thúc đẩy bán chéo hiệu quả trên toàn danh mục sản phẩm của Masan, bao gồm: FMCG (MCH), bán lẻ tiêu dùng (WCM), thịt có thương hiệu (MML), dịch vụ tài chính (TCB)...
+
+Nguồn: masan_2023.pdf#p16, masan_2024.pdf#p21","[""masan_2023.pdf#p16"", ""masan_2024.pdf#p21""]",merged_template,NONE,,576.0,sequential,7b89092cb4dd9c6e7106fbd9c93b17b6895e92f440867c46c7875d701a94d0a3,True,hyb_003,Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?,38.92,success,"[""SQL"", ""DOC:masan_2023.pdf#p16"", ""DOC:masan_2024.pdf#p21""]",536.42,"[{""company_name"": ""Save-a-lot Markets"", ""order_count"": 31}, {""company_name"": ""Ernst Handel"", ""order_count"": 30}, {""company_name"": ""QUICK-Stop"", ""order_count"": 28}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| company_name | order_count |
+| --- | --- |
+| Save-a-lot Markets | 31 |
+| Ernst Handel | 30 |
+| QUICK-Stop | 28 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Trong tương lai, Masan đặt mục tiêu mở rộng dịch vụ này ra ngoài mạng lưới bán lẻ hiện đại và bao trùm các kênh bán lẻ truyền thống, từ đó nâng cao khả năng đáp ứng Nhu cầu Tài chính cho nhiều khách hàng hơn.
+- Không chỉ đơn thuần là một chương trình khách hàng thân thiết, Hội viên WiN chính là nền tảng cho quá trình chuyển đổi số của Masan, tận dụng tần suất mua sắm hàng tiêu dùng cao để tạo ra trải
+- nhân hóa hoạt động tiếp thị, gợi ý sản phẩm phù hợp, cũng như thúc đẩy bán chéo hiệu quả trên toàn danh mục sản phẩm của Masan, bao gồm: FMCG (MCH), bán lẻ tiêu dùng (WCM), thịt có thương hiệu (MML), dịch vụ tài chính (TCB)...
+
+Nguồn: masan_2023.pdf#p16, masan_2024.pdf#p21","[""masan_2023.pdf#p16"", ""masan_2024.pdf#p21""]",merged_template,NONE,,602.74,async,7b89092cb4dd9c6e7106fbd9c93b17b6895e92f440867c46c7875d701a94d0a3,True,hyb_003,Chính sách bán hàng của Masan ra sao và top 3 khách hàng theo đơn hàng là ai?,72.99,success,"[""SQL"", ""DOC:masan_2023.pdf#p16"", ""DOC:masan_2024.pdf#p21""]",602.01,"[{""company_name"": ""Save-a-lot Markets"", ""order_count"": 31}, {""company_name"": ""Ernst Handel"", ""order_count"": 30}, {""company_name"": ""QUICK-Stop"", ""order_count"": 28}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| employee_count |
+| --- |
+| 9 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Với hàng chục nghìn kỹ sư đang làm việc trên khắp thế giới, đây chính là nguồn lực quan trọng để FPT triển khai những chương trình chuyển đổi công nghệ quy mô lớn và kéo dài nhiều năm cho khách hàng toàn cầu.
+- Tuân thủ các quy định về thuế FPT luôn tuân thủ mọi quy định nghiêm ngặt về thuế tại Việt Nam cũng như các quốc gia, vùng lãnh thổ trên thế giới mà FPT đang hoạt động.
+- Lợi thế cạnh tranh khác biệt của FPT Trong làn sóng chuyển đổi mang tính lịch sử đó, FPT tin rằng mình đang sở hữu một số lợi thế cạnh tranh mà không nhiều doanh nghiệp có được.
+
+Nguồn: fpt_2023.pdf#p114, fpt_2025.pdf#p3","[""fpt_2023.pdf#p114"", ""fpt_2025.pdf#p3""]",merged_template,NONE,,357.1,sequential,d7d38ace21ef048b9156bf85fa1686d52c9698b1c2a02a7cd5fb80d766d27bd7,True,hyb_004,Quy trình sản xuất FPT được mô tả như thế nào và có bao nhiêu nhân viên đang làm việc?,48.81,success,"[""SQL"", ""DOC:fpt_2023.pdf#p114"", ""DOC:fpt_2025.pdf#p3""]",307.12,"[{""employee_count"": 9}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| employee_count |
+| --- |
+| 9 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Với hàng chục nghìn kỹ sư đang làm việc trên khắp thế giới, đây chính là nguồn lực quan trọng để FPT triển khai những chương trình chuyển đổi công nghệ quy mô lớn và kéo dài nhiều năm cho khách hàng toàn cầu.
+- Tuân thủ các quy định về thuế FPT luôn tuân thủ mọi quy định nghiêm ngặt về thuế tại Việt Nam cũng như các quốc gia, vùng lãnh thổ trên thế giới mà FPT đang hoạt động.
+- Lợi thế cạnh tranh khác biệt của FPT Trong làn sóng chuyển đổi mang tính lịch sử đó, FPT tin rằng mình đang sở hữu một số lợi thế cạnh tranh mà không nhiều doanh nghiệp có được.
+
+Nguồn: fpt_2023.pdf#p114, fpt_2025.pdf#p3","[""fpt_2023.pdf#p114"", ""fpt_2025.pdf#p3""]",merged_template,NONE,,330.66,async,d7d38ace21ef048b9156bf85fa1686d52c9698b1c2a02a7cd5fb80d766d27bd7,True,hyb_004,Quy trình sản xuất FPT được mô tả như thế nào và có bao nhiêu nhân viên đang làm việc?,41.88,success,"[""SQL"", ""DOC:fpt_2023.pdf#p114"", ""DOC:fpt_2025.pdf#p3""]",329.89,"[{""employee_count"": 9}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| category_name | product_count |
+| --- | --- |
+| Confections | 13 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- xuất và phát triển đa dạng các sản phẩm mới, đẩy mạnh vị thế kinh doanh của Vinamilk trên thị trường cạnh tranh, thúc đẩy hoạt động xuất khẩu và góp phần đáng kể vào tăng trưởng bền vững của công ty.
+- Ông Nguyễn Quốc Khánh Giám đốc Điều hành Nghiên cứu và Phát triển Vinamilk luôn nỗ lực bắt nhịp các tiêu chuẩn cao nhất của thế
+- giúp Công ty phân bổ nguồn lực hiệu quả, tạo lợi thế cạnh tranh, mở rộng thị trường trong và ngoài nước, đồng thời đáp ứng yêu cầu về phát triển bền vững và trách nhiệm xã hội.
+
+Nguồn: vinamilk_2024.pdf#p41, vinamilk_2025.pdf#p8","[""vinamilk_2024.pdf#p41"", ""vinamilk_2025.pdf#p8""]",merged_template,NONE,,531.18,sequential,bc911871d2583818875105fb2f662aebe69c9f4a52650ffb64a0afb801a96935,True,hyb_005,Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?,33.36,success,"[""SQL"", ""DOC:vinamilk_2024.pdf#p41"", ""DOC:vinamilk_2025.pdf#p8""]",497.44,"[{""category_name"": ""Confections"", ""product_count"": 13}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| category_name | product_count |
+| --- | --- |
+| Confections | 13 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- xuất và phát triển đa dạng các sản phẩm mới, đẩy mạnh vị thế kinh doanh của Vinamilk trên thị trường cạnh tranh, thúc đẩy hoạt động xuất khẩu và góp phần đáng kể vào tăng trưởng bền vững của công ty.
+- Ông Nguyễn Quốc Khánh Giám đốc Điều hành Nghiên cứu và Phát triển Vinamilk luôn nỗ lực bắt nhịp các tiêu chuẩn cao nhất của thế
+- giúp Công ty phân bổ nguồn lực hiệu quả, tạo lợi thế cạnh tranh, mở rộng thị trường trong và ngoài nước, đồng thời đáp ứng yêu cầu về phát triển bền vững và trách nhiệm xã hội.
+
+Nguồn: vinamilk_2024.pdf#p41, vinamilk_2025.pdf#p8","[""vinamilk_2024.pdf#p41"", ""vinamilk_2025.pdf#p8""]",merged_template,NONE,,413.32,async,bc911871d2583818875105fb2f662aebe69c9f4a52650ffb64a0afb801a96935,True,hyb_005,Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?,35.82,success,"[""SQL"", ""DOC:vinamilk_2024.pdf#p41"", ""DOC:vinamilk_2025.pdf#p8""]",412.56,"[{""category_name"": ""Confections"", ""product_count"": 13}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| avg_freight |
+| --- |
+| 78.24 |
+
+Dựa trên các đoạn được truy xuất, MASAN đề cập một số rủi ro và cách quản trị liên quan:
+- tôi cũng chủ động quản lý rủi ro để đảm bảo mang đến sản phẩm chất lượng cao, đủ số lượng với chi phí hợp lý.
+- Những khoản chi phí này có thể khiến tỷ suất lợi nhuận giảm sút và do đó ảnh hưởng bất lợi đến kết quả hoạt động của chúng tôi.
+- Masan MEATLife đã chuyển đổi sang kinh doanh thịt có thương hiệu với nhiều cấp độ cạnh tranh khác nhau trong chuỗi giá trị tích hợp ngành thịt.
+
+Nguồn: masan_2023.pdf#p60, masan_2023.pdf#p31","[""masan_2023.pdf#p60"", ""masan_2023.pdf#p31""]",merged_template,NONE,,387.08,sequential,b8816335206be096492654481f06c2f242c7fbb0d65581a52406751d38003999,True,hyb_006,Rủi ro kinh doanh của Masan là gì và chi phí vận chuyển trung bình là bao nhiêu?,58.55,success,"[""SQL"", ""DOC:masan_2023.pdf#p60"", ""DOC:masan_2023.pdf#p31""]",328.1,"[{""avg_freight"": ""78.24""}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| avg_freight |
+| --- |
+| 78.24 |
+
+Dựa trên các đoạn được truy xuất, MASAN đề cập một số rủi ro và cách quản trị liên quan:
+- tôi cũng chủ động quản lý rủi ro để đảm bảo mang đến sản phẩm chất lượng cao, đủ số lượng với chi phí hợp lý.
+- Những khoản chi phí này có thể khiến tỷ suất lợi nhuận giảm sút và do đó ảnh hưởng bất lợi đến kết quả hoạt động của chúng tôi.
+- Masan MEATLife đã chuyển đổi sang kinh doanh thịt có thương hiệu với nhiều cấp độ cạnh tranh khác nhau trong chuỗi giá trị tích hợp ngành thịt.
+
+Nguồn: masan_2023.pdf#p60, masan_2023.pdf#p31","[""masan_2023.pdf#p60"", ""masan_2023.pdf#p31""]",merged_template,NONE,,350.08,async,b8816335206be096492654481f06c2f242c7fbb0d65581a52406751d38003999,True,hyb_006,Rủi ro kinh doanh của Masan là gì và chi phí vận chuyển trung bình là bao nhiêu?,59.14,success,"[""SQL"", ""DOC:masan_2023.pdf#p60"", ""DOC:masan_2023.pdf#p31""]",349.38,"[{""avg_freight"": ""78.24""}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| employee_name | order_count |
+| --- | --- |
+| Margaret Peacock | 156 |
+
+Dựa trên các đoạn được truy xuất, FPT mô tả định hướng tăng trưởng như sau:
+- toàn thể CBNV, FPT đã hoàn thành tốt các mục tiêu cam kết tại ĐHĐCĐ với doanh thu và lợi nhuận trước thuế đạt 102% so với kế hoạch, các khối kinh doanh đều tăng trưởng hai chữ số.
+- BÁO CÁO ESG BÁO CÀO TÀI CHÍNH HỢP NHẤT 70 Năm 2025, kiên định với mục tiêu trở thành công ty hàng đầu về truyền thông và quảng cáo, Công ty tiếp tục mang đến trải nghiệm vượt trội cho khách hàng, duy trì đà tăng trưởng và khẳng định vị thế trên thị trường...
+- Năm 2026 với kế hoạch tăng trưởng doanh thu và lợi nhuận hai con số, công ty sẽ tập trung ứng dụng công nghệ AI, dữ liệu vào dây chuyển
+
+Nguồn: fpt_2024.pdf#p61, fpt_2025.pdf#p70","[""fpt_2024.pdf#p61"", ""fpt_2025.pdf#p70""]",merged_template,NONE,,444.32,sequential,4149ce8ef25e377a8e19e196abd883c78b413fb4ca66c42ca7b4805da693ad66,True,hyb_007,Kế hoạch tăng trưởng của FPT là gì và nhân viên nào xử lý nhiều đơn hàng nhất?,68.94,success,"[""SQL"", ""DOC:fpt_2024.pdf#p61"", ""DOC:fpt_2025.pdf#p70""]",374.9,"[{""employee_name"": ""Margaret Peacock"", ""order_count"": 156}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| employee_name | order_count |
+| --- | --- |
+| Margaret Peacock | 156 |
+
+Dựa trên các đoạn được truy xuất, FPT mô tả định hướng tăng trưởng như sau:
+- toàn thể CBNV, FPT đã hoàn thành tốt các mục tiêu cam kết tại ĐHĐCĐ với doanh thu và lợi nhuận trước thuế đạt 102% so với kế hoạch, các khối kinh doanh đều tăng trưởng hai chữ số.
+- BÁO CÁO ESG BÁO CÀO TÀI CHÍNH HỢP NHẤT 70 Năm 2025, kiên định với mục tiêu trở thành công ty hàng đầu về truyền thông và quảng cáo, Công ty tiếp tục mang đến trải nghiệm vượt trội cho khách hàng, duy trì đà tăng trưởng và khẳng định vị thế trên thị trường...
+- Năm 2026 với kế hoạch tăng trưởng doanh thu và lợi nhuận hai con số, công ty sẽ tập trung ứng dụng công nghệ AI, dữ liệu vào dây chuyển
+
+Nguồn: fpt_2024.pdf#p61, fpt_2025.pdf#p70","[""fpt_2024.pdf#p61"", ""fpt_2025.pdf#p70""]",merged_template,NONE,,476.72,async,4149ce8ef25e377a8e19e196abd883c78b413fb4ca66c42ca7b4805da693ad66,True,hyb_007,Kế hoạch tăng trưởng của FPT là gì và nhân viên nào xử lý nhiều đơn hàng nhất?,81.69,success,"[""SQL"", ""DOC:fpt_2024.pdf#p61"", ""DOC:fpt_2025.pdf#p70""]",475.98,"[{""employee_name"": ""Margaret Peacock"", ""order_count"": 156}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| customer_count |
+| --- |
+| 91 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Chúng tôi kiên định thực hiện chương trình hành động “Vinamilk hướng đến Net Zero 2050” với lộ trình rõ ràng và tập trung vào 4 lĩnh vực chính: Nông nghiệp bền vững – Sản xuất xanh – Logistics thân thiện môi trường – Tiêu dùng bền vững.
+- Vinamilk tiếp tục khẳng định cam kết phát triển bền vững, tiếp nối những nỗ lực đã được triển khai từ các năm trước.
+- Những thành tích này phản ánh nỗ lực không ngừng nghỉ và sự để tâm đến các thay đổi, cải tiến của chúng tôi với mục tiêu tối đa hóa giá trị cho cổ đông, phục vụ tốt nhất cho khách hàng, phát triển hài hòa cùng các đối tác, và chung tay bảo vệ môi trường.
+
+Nguồn: vinamilk_2023.pdf#p4, vinamilk_2024.pdf#p4","[""vinamilk_2023.pdf#p4"", ""vinamilk_2024.pdf#p4""]",merged_template,NONE,,427.4,sequential,0e773e94a1100525a909a5e9fd3dc6d9fcf45db8a3d9ef26f5cfc3994cdcc6ae,True,hyb_008,Vinamilk có mục tiêu bền vững như thế nào và có bao nhiêu khách hàng hiện tại?,31.99,success,"[""SQL"", ""DOC:vinamilk_2023.pdf#p4"", ""DOC:vinamilk_2024.pdf#p4""]",394.85,"[{""customer_count"": 91}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| customer_count |
+| --- |
+| 91 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Chúng tôi kiên định thực hiện chương trình hành động “Vinamilk hướng đến Net Zero 2050” với lộ trình rõ ràng và tập trung vào 4 lĩnh vực chính: Nông nghiệp bền vững – Sản xuất xanh – Logistics thân thiện môi trường – Tiêu dùng bền vững.
+- Vinamilk tiếp tục khẳng định cam kết phát triển bền vững, tiếp nối những nỗ lực đã được triển khai từ các năm trước.
+- Những thành tích này phản ánh nỗ lực không ngừng nghỉ và sự để tâm đến các thay đổi, cải tiến của chúng tôi với mục tiêu tối đa hóa giá trị cho cổ đông, phục vụ tốt nhất cho khách hàng, phát triển hài hòa cùng các đối tác, và chung tay bảo vệ môi trường.
+
+Nguồn: vinamilk_2023.pdf#p4, vinamilk_2024.pdf#p4","[""vinamilk_2023.pdf#p4"", ""vinamilk_2024.pdf#p4""]",merged_template,NONE,,566.46,async,0e773e94a1100525a909a5e9fd3dc6d9fcf45db8a3d9ef26f5cfc3994cdcc6ae,True,hyb_008,Vinamilk có mục tiêu bền vững như thế nào và có bao nhiêu khách hàng hiện tại?,40.75,success,"[""SQL"", ""DOC:vinamilk_2023.pdf#p4"", ""DOC:vinamilk_2024.pdf#p4""]",565.6,"[{""customer_count"": 91}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| product_name | unit_price |
+| --- | --- |
+| Côte de Blaye | 263.5 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Tập đoàn Masan hoạt động trong những ngành có mức độ cạnh tranh cao, và vị thế dẫn đầu thị trường của chúng tôi có thể bị thách thức nếu các đối thủ đạt được bước tiến đáng kể trong việc giành thị phần.
+- Ngoài ra, việc bổ sung các chất dinh dưỡng khác như protein cho nước tăng lực có thể tăng sức hấp dẫn và giá trị của sản phẩm, thu hút những khách hàng quan tâm đến sức khỏe và mở rộng thị trường...
+- WCM vận hành một trong những hệ thống bán lẻ hiện đại lớn nhất tại Việt Nam và cạnh tranh chủ yếu dựa trên hình ảnh thương hiệu, giá cả, mạng lưới phân phối và danh mục sản phẩm.
+
+Nguồn: masan_2024.pdf#p64, masan_2023.pdf#p55","[""masan_2024.pdf#p64"", ""masan_2023.pdf#p55""]",merged_template,NONE,,338.56,sequential,f040aa84f0e1fc24c0fb22db798d3968b9633da4e2445d733e70e91365201c32,True,hyb_009,Masan giải thích thách thức ngành ra sao và sản phẩm nào có giá cao nhất?,43.85,success,"[""SQL"", ""DOC:masan_2024.pdf#p64"", ""DOC:masan_2023.pdf#p55""]",294.28,"[{""product_name"": ""Côte de Blaye"", ""unit_price"": 263.5}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| product_name | unit_price |
+| --- | --- |
+| Côte de Blaye | 263.5 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- Tập đoàn Masan hoạt động trong những ngành có mức độ cạnh tranh cao, và vị thế dẫn đầu thị trường của chúng tôi có thể bị thách thức nếu các đối thủ đạt được bước tiến đáng kể trong việc giành thị phần.
+- Ngoài ra, việc bổ sung các chất dinh dưỡng khác như protein cho nước tăng lực có thể tăng sức hấp dẫn và giá trị của sản phẩm, thu hút những khách hàng quan tâm đến sức khỏe và mở rộng thị trường...
+- WCM vận hành một trong những hệ thống bán lẻ hiện đại lớn nhất tại Việt Nam và cạnh tranh chủ yếu dựa trên hình ảnh thương hiệu, giá cả, mạng lưới phân phối và danh mục sản phẩm.
+
+Nguồn: masan_2024.pdf#p64, masan_2023.pdf#p55","[""masan_2024.pdf#p64"", ""masan_2023.pdf#p55""]",merged_template,NONE,,346.43,async,f040aa84f0e1fc24c0fb22db798d3968b9633da4e2445d733e70e91365201c32,True,hyb_009,Masan giải thích thách thức ngành ra sao và sản phẩm nào có giá cao nhất?,42.1,success,"[""SQL"", ""DOC:masan_2024.pdf#p64"", ""DOC:masan_2023.pdf#p55""]",345.56,"[{""product_name"": ""Côte de Blaye"", ""unit_price"": 263.5}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| out_of_stock_products |
+| --- |
+| 5 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- trong mảng quản lý chất lượng, là đầu tàu trong việc cải tiến quy trình và đảm bảo chất lượng cho các sản phẩm phần mềm, dự án của FPT Software.
+- FPT sớm đầu tư và chú trọng phát triển các sản phẩm mới, nóng của thị trường như chíp bán dẫn, các sản phẩm dịch vụ liên quan tới ESG.
+- Bà từng đảm nhiệm nhiều vị trí quan trọng dẫn dắt việc kiểm soát, đảm bảo chất lượng tại công ty thành viên, đồng thời liên tiếp đạt danh hiệu Cá nhân xuất sắc (Top 100) cấp Tập đoàn năm 2013, 2014.
+
+Nguồn: fpt_2023.pdf#p56, fpt_2023.pdf#p36","[""fpt_2023.pdf#p56"", ""fpt_2023.pdf#p36""]",merged_template,NONE,,361.94,sequential,ad2e9d530650851489586b1d78544614bd58f9699176f24a6d2ec61a5b3e157f,True,hyb_010,Hướng dẫn chất lượng của FPT là gì và có bao nhiêu sản phẩm bị hết hàng?,52.96,success,"[""SQL"", ""DOC:fpt_2023.pdf#p56"", ""DOC:fpt_2023.pdf#p36""]",308.37,"[{""out_of_stock_products"": 5}]",success
+"Kết quả từ cơ sở dữ liệu cho câu hỏi này:
+
+| out_of_stock_products |
+| --- |
+| 5 |
+
+Dựa trên các đoạn được truy xuất, thông tin liên quan là:
+- trong mảng quản lý chất lượng, là đầu tàu trong việc cải tiến quy trình và đảm bảo chất lượng cho các sản phẩm phần mềm, dự án của FPT Software.
+- FPT sớm đầu tư và chú trọng phát triển các sản phẩm mới, nóng của thị trường như chíp bán dẫn, các sản phẩm dịch vụ liên quan tới ESG.
+- Bà từng đảm nhiệm nhiều vị trí quan trọng dẫn dắt việc kiểm soát, đảm bảo chất lượng tại công ty thành viên, đồng thời liên tiếp đạt danh hiệu Cá nhân xuất sắc (Top 100) cấp Tập đoàn năm 2013, 2014.
+
+Nguồn: fpt_2023.pdf#p56, fpt_2023.pdf#p36","[""fpt_2023.pdf#p56"", ""fpt_2023.pdf#p36""]",merged_template,NONE,,361.77,async,ad2e9d530650851489586b1d78544614bd58f9699176f24a6d2ec61a5b3e157f,True,hyb_010,Hướng dẫn chất lượng của FPT là gì và có bao nhiêu sản phẩm bị hết hàng?,44.7,success,"[""SQL"", ""DOC:fpt_2023.pdf#p56"", ""DOC:fpt_2023.pdf#p36""]",360.98,"[{""out_of_stock_products"": 5}]",success

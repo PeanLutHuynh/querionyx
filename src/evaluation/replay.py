@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     manifest = json.loads((args.run_dir / "manifest.json").read_text(encoding="utf-8"))
     output = args.output_dir or PROJECT_ROOT / "reports" / "experiment_runs" / f"{time.strftime('%Y%m%d_%H%M%S')}_replay"
-    config_path = args.run_dir / "ablation_config.json"
+    config_path = args.run_dir / "run_config.json"
     run_benchmark(
         Path(manifest["dataset"]),
         config_path if config_path.exists() else None,

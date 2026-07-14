@@ -1,0 +1,188 @@
+{
+  "execution_mode": "evaluation_real",
+  "evidence_type": "measured",
+  "dataset": "benchmarks\\datasets\\router_stress_100.json",
+  "query_count": 100,
+  "router_accuracy": 0.89,
+  "misrouting_rate": 0.11,
+  "confidence_calibration_error": 0.261,
+  "latency": {
+    "avg": 0.05,
+    "p50": 0.04,
+    "p95": 0.09,
+    "p99": 0.1
+  },
+  "confusion_matrix": {
+    "SQL": {
+      "SQL": 25,
+      "RAG": 6,
+      "HYBRID": 2
+    },
+    "RAG": {
+      "SQL": 0,
+      "RAG": 33,
+      "HYBRID": 0
+    },
+    "HYBRID": {
+      "SQL": 2,
+      "RAG": 1,
+      "HYBRID": 31
+    }
+  },
+  "per_class": {
+    "SQL": {
+      "precision": 0.9259,
+      "recall": 0.7576
+    },
+    "RAG": {
+      "precision": 0.825,
+      "recall": 1.0
+    },
+    "HYBRID": {
+      "precision": 0.9394,
+      "recall": 0.9118
+    }
+  },
+  "misrouting_breakdown": {
+    "sql_to_rag": 6,
+    "sql_to_hybrid": 2,
+    "rag_to_sql": 0,
+    "rag_to_hybrid": 0,
+    "hybrid_to_sql_collapse": 2,
+    "hybrid_to_rag_collapse": 1
+  },
+  "misrouting_cases": [
+    {
+      "query_id": "str_013",
+      "question": "Khách hàng nào ở thành phố nào?",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.45,
+      "calibration_error": 0.45,
+      "latency_ms": 0.04,
+      "router_type": "rule_router",
+      "reason": "No keywords matched; defaulting to RAG (safe fallback)"
+    },
+    {
+      "query_id": "sql_adv_021",
+      "question": "How many products are stored in the database?",
+      "expected_intent": "SQL",
+      "actual_intent": "HYBRID",
+      "correct": false,
+      "confidence": 0.68,
+      "calibration_error": 0.68,
+      "latency_ms": 0.04,
+      "router_type": "rule_router",
+      "reason": "Found mixed SQL (1) and RAG (1) signals"
+    },
+    {
+      "query_id": "sql_adv_025",
+      "question": "Which category has the fewest products?",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.45,
+      "calibration_error": 0.45,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "No keywords matched; defaulting to RAG (safe fallback)"
+    },
+    {
+      "query_id": "sql_adv_026",
+      "question": "Show products priced above 50",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.65,
+      "calibration_error": 0.65,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "Found 1 RAG keyword(s)"
+    },
+    {
+      "query_id": "sql_adv_029",
+      "question": "Which orders have freight above 100?",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.45,
+      "calibration_error": 0.45,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "No keywords matched; defaulting to RAG (safe fallback)"
+    },
+    {
+      "query_id": "sql_adv_030",
+      "question": "Show order count by month",
+      "expected_intent": "SQL",
+      "actual_intent": "HYBRID",
+      "correct": false,
+      "confidence": 0.7113,
+      "calibration_error": 0.7113,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "Found mixed SQL (1) and RAG (1) signals"
+    },
+    {
+      "query_id": "sql_adv_031",
+      "question": "Which products have never been ordered?",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.45,
+      "calibration_error": 0.45,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "No keywords matched; defaulting to RAG (safe fallback)"
+    },
+    {
+      "query_id": "sql_adv_032",
+      "question": "Which customers have never placed an order?",
+      "expected_intent": "SQL",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.45,
+      "calibration_error": 0.45,
+      "latency_ms": 0.03,
+      "router_type": "rule_router",
+      "reason": "No keywords matched; defaulting to RAG (safe fallback)"
+    },
+    {
+      "query_id": "hyb_010",
+      "question": "FPT trình bày định hướng AI ra sao và doanh thu trung bình mỗi đơn hàng là bao nhiêu?",
+      "expected_intent": "HYBRID",
+      "actual_intent": "SQL",
+      "correct": false,
+      "confidence": 0.91,
+      "calibration_error": 0.91,
+      "latency_ms": 0.07,
+      "router_type": "rule_router",
+      "reason": "Found 3 SQL keyword(s)"
+    },
+    {
+      "query_id": "hyb_014",
+      "question": "Vinamilk đánh giá xu hướng ngành thế nào và top 5 sản phẩm bán chạy là gì?",
+      "expected_intent": "HYBRID",
+      "actual_intent": "SQL",
+      "correct": false,
+      "confidence": 0.835,
+      "calibration_error": 0.835,
+      "latency_ms": 0.05,
+      "router_type": "rule_router",
+      "reason": "Found 2 SQL keyword(s)"
+    },
+    {
+      "query_id": "hyb_adv_033",
+      "question": "Hãy dùng cả báo cáo và database để trả lời về FPT cùng khách hàng chưa đặt hàng",
+      "expected_intent": "HYBRID",
+      "actual_intent": "RAG",
+      "correct": false,
+      "confidence": 0.71,
+      "calibration_error": 0.71,
+      "latency_ms": 0.06,
+      "router_type": "rule_router",
+      "reason": "Found 1 RAG keyword(s)"
+    }
+  ]
+}

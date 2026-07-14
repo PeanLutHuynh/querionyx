@@ -1,0 +1,11 @@
+# Optional local RAG, Ollama, data preparation, and thesis figures
+-r requirements.txt
+
+chromadb==1.5.9
+langchain-community==0.4.1
+langchain-ollama==1.1.0
+langchain-text-splitters==1.1.2
+matplotlib==3.10.9
+PyMuPDF==1.27.2.3
+rank-bm25==0.2.2
+sentence-transformers==5.4.1

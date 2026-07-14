@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "artifact": "baseline_automatic_evaluation_summary",
+  "evidence_type": "measured",
+  "thesis_reporting_allowed": true,
+  "scoring_method": "deterministic_reference_and_evidence_alignment",
+  "reference_file": "benchmarks/references/eval_90_sql_references.json",
+  "reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213",
+  "summary": {
+    "llm_only": {
+      "query_count": 20,
+      "automatic_score": 0.2336,
+      "automatic_pass_rate": 0.0,
+      "technical_success_rate": 1.0,
+      "mean_latency_ms": 6022.15,
+      "per_intent_score": {
+        "RAG": 0.3516,
+        "SQL": 0.15,
+        "HYBRID": 0.2164
+      }
+    },
+    "plain_rag": {
+      "query_count": 20,
+      "automatic_score": 0.5187,
+      "automatic_pass_rate": 0.25,
+      "technical_success_rate": 1.0,
+      "mean_latency_ms": 114.57,
+      "per_intent_score": {
+        "RAG": 0.9525,
+        "SQL": 0.15,
+        "HYBRID": 0.4861
+      }
+    },
+    "querionyx": {
+      "query_count": 20,
+      "automatic_score": 0.9446,
+      "automatic_pass_rate": 1.0,
+      "technical_success_rate": 1.0,
+      "mean_latency_ms": 173.19,
+      "per_intent_score": {
+        "RAG": 0.8133,
+        "SQL": 1.0,
+        "HYBRID": 0.9826
+      }
+    }
+  }
+}

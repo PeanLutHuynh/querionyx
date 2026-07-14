@@ -13,6 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.pipeline_v3 import AdaptiveRouter
+from src.evaluation.evidence import REAL_EXECUTION_MODES, build_experiment_manifest, git_state
 from src.runtime.logging import write_csv, write_json
 from src.runtime.metrics import latency_summary
 
@@ -26,7 +27,12 @@ def expected_intent(case: Dict[str, Any]) -> str:
     return str(case.get("expected_intent") or case.get("ground_truth_intent") or "").upper()
 
 
-def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
+def run_router_stress(
+    dataset: Path,
+    output_dir: Path,
+    execution_mode: str = "evaluation_real",
+) -> Dict[str, Any]:
+    run_git_state = git_state()
     output_dir.mkdir(parents=True, exist_ok=True)
     router = AdaptiveRouter(use_llm_for_ambiguous=False)
     rows = []
@@ -83,6 +89,8 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
         "hybrid_to_rag_collapse": sum(1 for row in wrong if row["expected_intent"] == "HYBRID" and row["actual_intent"] == "RAG"),
     }
     summary = {
+        "execution_mode": execution_mode,
+        "evidence_type": "measured",
         "dataset": str(dataset),
         "query_count": total,
         "router_accuracy": round((total - len(wrong)) / total, 4) if total else 0.0,
@@ -95,6 +103,28 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
         "misrouting_cases": wrong,
     }
     write_json(output_dir / "router_stress_summary.json", summary)
+    manifest = build_experiment_manifest(
+        run_id=output_dir.name,
+        execution_mode=execution_mode,
+        benchmark_path=dataset,
+        config={
+            "config_name": "deterministic_router_stress",
+            "execution_mode": execution_mode,
+            "cache_enabled": False,
+            "lightweight_rag": True,
+            "use_llm_router": False,
+            "merge_llm_enabled": False,
+            "force_merge_llm": False,
+        },
+        query_count=total,
+        extra={
+            "evaluation": "router_stress",
+            "frontend": "not involved",
+            "database": "not involved",
+        },
+        git_state_at_start=run_git_state,
+    )
+    write_json(output_dir / "manifest.json", manifest)
     write_json(PROJECT_ROOT / "metrics" / "latency" / "router_stress_summary.json", summary)
     write_csv(output_dir / "router_stress_rows.csv", rows)
     write_csv(output_dir / "router_misrouting_cases.csv", wrong)
@@ -104,10 +134,15 @@ def run_router_stress(dataset: Path, output_dir: Path) -> Dict[str, Any]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run router stress test.")
     parser.add_argument("--dataset", type=Path, default=PROJECT_ROOT / "benchmarks" / "datasets" / "router_stress_100.json")
-    parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "reports" / "experiment_runs" / "week7_router_stress")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=PROJECT_ROOT / "reports" / "experiment_runs" / f"{time.strftime('%Y%m%d_%H%M%S')}_router_stress",
+    )
+    parser.add_argument("--execution-mode", choices=sorted(REAL_EXECUTION_MODES), default="evaluation_real")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    print(json.dumps(run_router_stress(args.dataset, args.output_dir), ensure_ascii=False, indent=2))
+    print(json.dumps(run_router_stress(args.dataset, args.output_dir, args.execution_mode), ensure_ascii=False, indent=2))

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "artifact": "automatic_answer_quality_summary",
+  "evidence_type": "measured",
+  "thesis_reporting_allowed": true,
+  "scoring_method": "deterministic_reference_and_evidence_alignment",
+  "reference_file": "benchmarks/references/eval_90_sql_references.json",
+  "reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213",
+  "summary": {
+    "query_count": 30,
+    "pass_rate": 1.0,
+    "technical_pass_rate": 1.0,
+    "automatic_score": 0.941,
+    "automatic_pass_rate": 1.0,
+    "sql_result_f1": 1.0,
+    "rag_evidence_score": 0.8409,
+    "hybrid_integration_score": 0.9833,
+    "latency": {
+      "avg": 166.87,
+      "p50": 133.19,
+      "p95": 313.75,
+      "p99": 374.83
+    },
+    "avg_ram_mb": 1052.2447,
+    "avg_cpu_percent": 407.5067,
+    "llm_calls_avg": 0.0,
+    "timeout_rate": 0.0,
+    "fallback_rate": 0.0667,
+    "empty_answer_rate": 0.0,
+    "cache_hit_rate": 0.0,
+    "sql_success_rate": 1.0,
+    "rag_success_rate": 1.0,
+    "hybrid_success_rate": 1.0,
+    "router_accuracy": 1.0,
+    "failure_counts": {
+      "hybrid_fallback": 2
+    },
+    "resolved_failure_rate": 1.0,
+    "per_intent": {
+      "HYBRID": {
+        "query_count": 30,
+        "pass_rate": 1.0,
+        "automatic_score": 0.941,
+        "automatic_pass_rate": 1.0,
+        "sql_result_f1": 1.0,
+        "rag_evidence_score": 0.8409,
+        "hybrid_integration_score": 0.9833,
+        "latency": {
+          "avg": 166.87,
+          "p50": 133.19,
+          "p95": 313.75,
+          "p99": 374.83
+        },
+        "fallback_rate": 0.0667
+      }
+    },
+    "startup_ms": 1.57,
+    "execution_mode": "evaluation_real",
+    "evidence_type": "measured",
+    "thesis_reporting_allowed": true,
+    "scoring_method": "deterministic_reference_and_evidence_alignment",
+    "automatic_reference_file": "benchmarks/references/eval_90_sql_references.json",
+    "automatic_reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213"
+  }
+}

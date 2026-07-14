@@ -1,0 +1,15 @@
+{
+  "config_name": "component_dense_only",
+  "execution_mode": "evaluation_real",
+  "cache_enabled": false,
+  "parallel_enabled": true,
+  "hybrid_enabled": true,
+  "lightweight_rag": false,
+  "rag_retrieval_mode": "dense_only",
+  "merge_llm_enabled": false,
+  "force_merge_llm": false,
+  "force_mode": "HYBRID",
+  "allow_partial_hybrid_fallback": true,
+  "use_llm_router": false,
+  "low_resource_mode": false
+}

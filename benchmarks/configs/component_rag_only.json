@@ -1,0 +1,15 @@
+{
+  "config_name": "component_rag_only",
+  "execution_mode": "evaluation_real",
+  "cache_enabled": false,
+  "parallel_enabled": false,
+  "hybrid_enabled": false,
+  "lightweight_rag": false,
+  "rag_retrieval_mode": "hybrid",
+  "merge_llm_enabled": false,
+  "force_merge_llm": false,
+  "force_mode": "RAG",
+  "allow_partial_hybrid_fallback": true,
+  "use_llm_router": false,
+  "low_resource_mode": false
+}

@@ -27,6 +27,16 @@ def aggregate(query_rows: List[Dict[str, Any]], failure_rows: Optional[List[Dict
     result = {
         "query_count": total,
         "pass_rate": round(passed / total, 4) if total else 0.0,
+        "technical_pass_rate": round(passed / total, 4) if total else 0.0,
+        "automatic_score": _avg([row.get("automatic_score") for row in query_rows]),
+        "automatic_pass_rate": _conditional_success_rate(
+            query_rows,
+            lambda row: row.get("automatic_pass") is not None,
+            "automatic_pass",
+        ),
+        "sql_result_f1": _avg([row.get("sql_result_f1") for row in query_rows]),
+        "rag_evidence_score": _avg([row.get("rag_evidence_score") for row in query_rows]),
+        "hybrid_integration_score": _avg([row.get("hybrid_integration_score") for row in query_rows]),
         "latency": summary,
         "avg_ram_mb": _avg([row.get("ram_mb") for row in query_rows]),
         "avg_cpu_percent": _avg([row.get("cpu_percent") for row in query_rows]),
@@ -55,6 +65,15 @@ def aggregate(query_rows: List[Dict[str, Any]], failure_rows: Optional[List[Dict
         result["per_intent"][intent] = {
             "query_count": len(rows),
             "pass_rate": round(sum(1 for row in rows if row.get("passed") is True) / len(rows), 4) if rows else 0.0,
+            "automatic_score": _avg([row.get("automatic_score") for row in rows]),
+            "automatic_pass_rate": _conditional_success_rate(
+                rows,
+                lambda row: row.get("automatic_pass") is not None,
+                "automatic_pass",
+            ),
+            "sql_result_f1": _avg([row.get("sql_result_f1") for row in rows]),
+            "rag_evidence_score": _avg([row.get("rag_evidence_score") for row in rows]),
+            "hybrid_integration_score": _avg([row.get("hybrid_integration_score") for row in rows]),
             "latency": latency_summary(row.get("latency_ms") for row in rows),
             "fallback_rate": round(sum(1 for row in rows if row.get("fallback_used") is True) / len(rows), 4) if rows else 0.0,
         }
@@ -65,6 +84,12 @@ def flatten_summary(summary: Dict[str, Any]) -> List[Dict[str, Any]]:
     row = {
         "query_count": summary["query_count"],
         "pass_rate": summary["pass_rate"],
+        "technical_pass_rate": summary.get("technical_pass_rate"),
+        "automatic_score": summary.get("automatic_score"),
+        "automatic_pass_rate": summary.get("automatic_pass_rate"),
+        "sql_result_f1": summary.get("sql_result_f1"),
+        "rag_evidence_score": summary.get("rag_evidence_score"),
+        "hybrid_integration_score": summary.get("hybrid_integration_score"),
         "avg_latency": summary["latency"]["avg"],
         "p50_latency": summary["latency"]["p50"],
         "p95_latency": summary["latency"]["p95"],
@@ -90,6 +115,11 @@ def write_summary_markdown(path: Path, summary: Dict[str, Any]) -> None:
         "",
         f"- Query count: {summary['query_count']}",
         f"- Pass rate: {summary['pass_rate']}",
+        f"- Automatic evidence score: {summary.get('automatic_score')}",
+        f"- Automatic pass rate: {summary.get('automatic_pass_rate')}",
+        f"- SQL result F1: {summary.get('sql_result_f1')}",
+        f"- RAG evidence score: {summary.get('rag_evidence_score')}",
+        f"- Hybrid integration score: {summary.get('hybrid_integration_score')}",
         f"- Avg latency: {summary['latency']['avg']} ms",
         f"- p50 latency: {summary['latency']['p50']} ms",
         f"- p95 latency: {summary['latency']['p95']} ms",
@@ -101,12 +131,13 @@ def write_summary_markdown(path: Path, summary: Dict[str, Any]) -> None:
         "",
         "## Per Intent",
         "",
-        "| Intent | Queries | Pass Rate | Avg Latency | p95 Latency | Fallback Rate |",
-        "|---|---:|---:|---:|---:|---:|",
+        "| Intent | Queries | Technical pass | Automatic score | Automatic pass | Avg latency | p95 latency | Fallback rate |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for intent, row in summary["per_intent"].items():
         lines.append(
             f"| {intent} | {row['query_count']} | {row['pass_rate']} | "
+            f"{row.get('automatic_score')} | {row.get('automatic_pass_rate')} | "
             f"{row['latency']['avg']} | {row['latency']['p95']} | {row['fallback_rate']} |"
         )
     path.parent.mkdir(parents=True, exist_ok=True)

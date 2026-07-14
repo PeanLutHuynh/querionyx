@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "artifact": "async_hybrid_automatic_summary",
+  "evidence_type": "measured",
+  "thesis_reporting_allowed": true,
+  "equivalence_method": "canonical_exact_fingerprint",
+  "summary": {
+    "sequential": {
+      "queries": 10,
+      "p50_ms": 435.86,
+      "p95_ms": 1050.09,
+      "avg_ms": 537.16
+    },
+    "async": {
+      "queries": 10,
+      "p50_ms": 383.51,
+      "p95_ms": 586.41,
+      "avg_ms": 418.01
+    },
+    "speedup_p50": 1.137,
+    "paired_outputs": 10,
+    "exact_output_matches": 10,
+    "exact_output_match_rate": 1.0
+  }
+}

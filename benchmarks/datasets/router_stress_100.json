@@ -7,7 +7,7 @@
       "HYBRID": 34
     },
     "created_date": "2026-05-07",
-    "purpose": "Week 7 paper-grade router stress dataset with ambiguity and adversarial phrasing"
+    "purpose": "Frozen router stress dataset with ambiguity and adversarial phrasing"
   },
   "queries": [
     { "id": "unstr_001", "question": "FPT có chiến lược phát triển nào cho năm 2025?", "ground_truth_intent": "RAG" },

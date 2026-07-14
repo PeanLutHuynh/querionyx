@@ -1,0 +1,12 @@
+actual_intent,calibration_error,confidence,correct,expected_intent,latency_ms,query_id,question,reason,router_type
+RAG,0.45,0.45,False,SQL,0.04,str_013,Khách hàng nào ở thành phố nào?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+HYBRID,0.68,0.68,False,SQL,0.04,sql_adv_021,How many products are stored in the database?,Found mixed SQL (1) and RAG (1) signals,rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_025,Which category has the fewest products?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+RAG,0.65,0.65,False,SQL,0.03,sql_adv_026,Show products priced above 50,Found 1 RAG keyword(s),rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_029,Which orders have freight above 100?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+HYBRID,0.7113,0.7113,False,SQL,0.03,sql_adv_030,Show order count by month,Found mixed SQL (1) and RAG (1) signals,rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_031,Which products have never been ordered?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_032,Which customers have never placed an order?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+SQL,0.91,0.91,False,HYBRID,0.07,hyb_010,FPT trình bày định hướng AI ra sao và doanh thu trung bình mỗi đơn hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.835,0.835,False,HYBRID,0.05,hyb_014,Vinamilk đánh giá xu hướng ngành thế nào và top 5 sản phẩm bán chạy là gì?,Found 2 SQL keyword(s),rule_router
+RAG,0.71,0.71,False,HYBRID,0.06,hyb_adv_033,Hãy dùng cả báo cáo và database để trả lời về FPT cùng khách hàng chưa đặt hàng,Found 1 RAG keyword(s),rule_router

@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.2",
+  "frozen_at": "2026-07-15",
+  "change_policy": "Any question, label, selection, or source-file change requires a new manifest version and affected experiment reruns.",
+  "corpus": {
+    "path": "data/processed/chunks_recursive.json.gz",
+    "sha256": "12fcd9ad0a2036b483380fd4b07506fc2ea1126702a09e6d15abdeee86a932d9",
+    "chunk_count": 9670,
+    "source_manifest": "data/source_manifest.json",
+    "source_manifest_sha256": "9a3a97c997276a9d6bc2d7338ff36d2dc73b6657665ce9d26e739d253a67e99b"
+  },
+  "datasets": {
+    "curated_router_150": {
+      "path": "benchmarks/datasets/eval_150_queries.json",
+      "sha256": "e023155a6fa492fe6871156a634eab7263b1133ca2c30ccba154bcca644f6232",
+      "role": "development_validation"
+    },
+    "answer_quality_90": {
+      "path": "benchmarks/datasets/eval_90_queries.json",
+      "sha256": "2190d358ebe53016c7c7371c0acc37009e81308600ede4f859cb234f81e0c149",
+      "role": "stratified_answer_quality"
+    },
+    "router_stress_100": {
+      "path": "benchmarks/datasets/router_stress_100.json",
+      "sha256": "f5e86afc110ef652b4622e217752bd78cabd82d7071b05a3624d71e1dfa93363",
+      "role": "adversarial_robustness"
+    }
+  },
+  "automatic_references": {
+    "answer_quality_90_sql": {
+      "path": "benchmarks/references/eval_90_sql_references.json",
+      "sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213",
+      "coverage": "30 SQL and 30 HYBRID cases",
+      "method": "read-only canonical SQL result equivalence"
+    }
+  },
+  "baseline_20": {
+    "source_dataset": "answer_quality_90",
+    "query_ids": [
+      "unstr_001",
+      "unstr_002",
+      "unstr_003",
+      "unstr_004",
+      "unstr_005",
+      "str_001",
+      "str_002",
+      "str_003",
+      "str_004",
+      "str_005",
+      "hyb_001",
+      "hyb_002",
+      "hyb_003",
+      "hyb_004",
+      "hyb_005",
+      "hyb_006",
+      "hyb_007",
+      "hyb_008",
+      "hyb_009",
+      "hyb_010"
+    ],
+    "systems": ["llm_only", "plain_rag", "querionyx"],
+    "llm_only": {
+      "model": "qwen2.5:3b",
+      "temperature": 0.1,
+      "prompt_version": "baseline_llm_only_v1",
+      "prompt_sha256": "f758567b75ef3964ed7a156bdc1b122cd1c4deacef1bc0240f3d279d56ab6652"
+    },
+    "querionyx_config": {
+      "path": "benchmarks/configs/full_v3.json",
+      "sha256": "42e3f3877d4f4da396fa25a005cf4299e3eab5acacca3348ac30466ff359130e"
+    },
+    "status": "automatic_execution_pending"
+  },
+  "component_hybrid_30": {
+    "source_dataset": "answer_quality_90",
+    "query_ids": [
+      "hyb_001",
+      "hyb_002",
+      "hyb_003",
+      "hyb_004",
+      "hyb_005",
+      "hyb_006",
+      "hyb_007",
+      "hyb_008",
+      "hyb_009",
+      "hyb_010",
+      "hyb_011",
+      "hyb_012",
+      "hyb_013",
+      "hyb_014",
+      "hyb_015",
+      "hyb_016",
+      "hyb_017",
+      "hyb_018",
+      "hyb_019",
+      "hyb_020",
+      "hyb_021",
+      "hyb_022",
+      "hyb_023",
+      "hyb_024",
+      "hyb_025",
+      "hyb_026",
+      "hyb_027",
+      "hyb_028",
+      "hyb_029",
+      "hyb_030"
+    ],
+    "variants": ["full_querionyx", "dense_only", "rag_only", "sql_only", "no_fallback"],
+    "variant_configs": {
+      "full_querionyx": {
+        "path": "benchmarks/configs/component_full.json",
+        "sha256": "3a0242399284f6ce6dec404f54fcdb14600cbeb2c35e38441d7e1daefb51d844"
+      },
+      "dense_only": {
+        "path": "benchmarks/configs/component_dense_only.json",
+        "sha256": "310e3f67aea16f7f68389218ff7cfd540523c0743d1c7b8948cc50ad71bf50ac"
+      },
+      "rag_only": {
+        "path": "benchmarks/configs/component_rag_only.json",
+        "sha256": "1302ea7275dfdd73f5019f4a2cad0c35f3bed34705c2ef3437e05737d45a5b70"
+      },
+      "sql_only": {
+        "path": "benchmarks/configs/component_sql_only.json",
+        "sha256": "bb66afc2afd9510e0f2b94bfb8952010be5fb268a42af2dfb542efee8b4ac378"
+      },
+      "no_fallback": {
+        "path": "benchmarks/configs/component_no_fallback.json",
+        "sha256": "e009c92e6b83eaa32031cf4e6db27b78818c52f8351cad4fa405025f301f24a1"
+      }
+    },
+    "status": "automatic_execution_pending"
+  }
+}

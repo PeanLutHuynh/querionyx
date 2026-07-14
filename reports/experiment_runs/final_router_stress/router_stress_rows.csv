@@ -1,0 +1,101 @@
+actual_intent,calibration_error,confidence,correct,expected_intent,latency_ms,query_id,question,reason,router_type
+RAG,0.32999999999999996,0.67,True,RAG,0.14,unstr_001,FPT có chiến lược phát triển nào cho năm 2025?,Found 1 RAG keyword(s),rule_router
+RAG,0.22999999999999998,0.77,True,RAG,0.1,unstr_002,Chính sách bán hàng của Vinamilk là gì?,Found 2 RAG keyword(s),rule_router
+RAG,0.15000000000000002,0.85,True,RAG,0.09,unstr_003,Masan mô tả quy trình sản xuất như thế nào?,Found 3 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.07,unstr_004,Mục tiêu tăng trưởng của FPT là gì?,Found 2 RAG keyword(s),rule_router
+RAG,0.13,0.87,True,RAG,0.07,unstr_005,Vinamilk giải thích rủi ro kinh doanh như thế nào?,Found 3 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.05,unstr_006,Cấu trúc tổ chức của Masan là gì?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_007,FPT có những hướng dẫn gì cho nhân viên?,Found 1 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.05,unstr_008,Chương trình phát triển bền vững của Vinamilk là gì?,Found 1 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.05,unstr_009,Masan mô tả các thách thức trong ngành như thế nào?,Found 2 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,unstr_010,Quy trình quản lý chất lượng của FPT là gì?,Found 2 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,unstr_011,Vinamilk có kế hoạch mở rộng thị trường nào?,Found 1 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.04,unstr_012,Masan nói gì về chiến lược tăng trưởng dài hạn?,Found 1 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,unstr_013,FPT mô tả định hướng AI như thế nào?,Found 2 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.04,unstr_014,Vinamilk có chính sách ESG nào nổi bật?,Found 1 RAG keyword(s),rule_router
+RAG,0.22999999999999998,0.77,True,RAG,0.07,unstr_015,Masan trình bày rủi ro chuỗi cung ứng ra sao?,Found 2 RAG keyword(s),rule_router
+RAG,0.15000000000000002,0.85,True,RAG,0.09,unstr_016,Tài liệu nói gì về kế hoạch chuyển đổi số của FPT?,Found 3 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.09,unstr_017,Báo cáo Vinamilk nêu mục tiêu phát triển nhân sự thế nào?,Found 2 RAG keyword(s),rule_router
+RAG,0.15000000000000002,0.85,True,RAG,0.07,unstr_018,Masan giải thích lợi thế cạnh tranh của mình như thế nào?,Found 3 RAG keyword(s),rule_router
+RAG,0.22999999999999998,0.77,True,RAG,0.07,unstr_019,FPT mô tả chiến lược thị trường quốc tế ra sao?,Found 2 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.06,unstr_020,Vinamilk đánh giá xu hướng ngành như thế nào?,Found 1 RAG keyword(s),rule_router
+RAG,0.22999999999999998,0.77,True,RAG,0.05,rag_adv_021,"Trong PDF, phần strategy của FPT cho 2025 viết gì?",Found 2 RAG keyword(s),rule_router
+RAG,0.35,0.65,True,RAG,0.04,rag_adv_022,Nếu chỉ đọc báo cáo thì Vinamilk đang theo định hướng nào?,Found 1 RAG keyword(s),rule_router
+RAG,0.32999999999999996,0.67,True,RAG,0.06,rag_adv_023,Masan nêu ra những policy nào quan trọng?,Found 1 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.05,rag_adv_024,Tài liệu của FPT nói gì về plan tăng trưởng?,Found 2 RAG keyword(s),rule_router
+RAG,0.050000000000000044,0.95,True,RAG,0.05,rag_adv_025,Báo cáo annual report của Vinamilk mô tả risk ra sao?,Found 4 RAG keyword(s),rule_router
+RAG,0.13,0.87,True,RAG,0.05,rag_adv_026,"Chỉ dựa trên tài liệu, chiến lược của Masan là gì?",Found 3 RAG keyword(s),rule_router
+RAG,0.22999999999999998,0.77,True,RAG,0.05,rag_adv_027,FPT có hướng dẫn hay chính sách nào cho nhân viên mới?,Found 2 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,rag_adv_028,Masan có mô tả operating model như thế nào không?,Found 2 RAG keyword(s),rule_router
+RAG,0.55,0.45,True,RAG,0.04,rag_adv_029,Vinamilk nói gì về sustainability roadmap?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+RAG,0.25,0.75,True,RAG,0.05,rag_adv_030,"Trong tài liệu, FPT đánh giá cơ hội thị trường AI thế nào?",Found 2 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,rag_adv_031,Báo cáo của Masan có giải thích business challenge không?,Found 2 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,rag_adv_032,Vinamilk mô tả định hướng xuất khẩu bằng lời như thế nào?,Found 2 RAG keyword(s),rule_router
+RAG,0.25,0.75,True,RAG,0.04,rag_adv_033,Tài liệu FPT có nhắc đến mục tiêu dài hạn nào?,Found 2 RAG keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_001,Bao nhiêu sản phẩm trong cơ sở dữ liệu?,Found 1 SQL keyword(s),rule_router
+SQL,0.125,0.875,True,SQL,0.06,str_002,Top 5 khách hàng có tổng số đơn hàng cao nhất?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_003,Tổng số đơn hàng là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_004,Bao nhiêu khách hàng hiện có?,Found 1 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_005,Bao nhiêu nhà cung cấp trong hệ thống?,Found 2 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_006,Chi phí vận chuyển trung bình là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_007,Tổng chi phí vận chuyển là bao nhiêu?,Found 2 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.04,str_008,Tổng số lượng sản phẩm còn trong kho là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_009,Có bao nhiêu sản phẩm đã hết hàng?,Found 1 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_010,5 sản phẩm có đơn giá cao nhất là gì?,Found 2 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_011,5 sản phẩm có đơn giá thấp nhất?,Found 2 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_012,Sản phẩm nào có đơn giá trong khoảng 20 đến 30?,Found 1 SQL keyword(s),rule_router
+RAG,0.45,0.45,False,SQL,0.04,str_013,Khách hàng nào ở thành phố nào?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+SQL,0.125,0.875,True,SQL,0.04,str_014,Top 5 khách hàng chi tiêu nhiều nhất?,Found 3 SQL keyword(s),rule_router
+SQL,0.15000000000000002,0.85,True,SQL,0.04,str_015,Doanh thu trung bình mỗi đơn hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_016,Đơn hàng nào có giá trị cao nhất?,Found 2 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_017,Danh mục nào có nhiều sản phẩm nhất?,Found 1 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_018,Nhà cung cấp nào có nhiều sản phẩm nhất?,Found 1 SQL keyword(s),rule_router
+SQL,0.25,0.75,True,SQL,0.04,str_019,Nhân viên nào xử lý nhiều đơn hàng nhất?,Found 2 SQL keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.04,str_020,5 đơn hàng gần nhất là gì?,Found 1 SQL keyword(s),rule_router
+HYBRID,0.68,0.68,False,SQL,0.04,sql_adv_021,How many products are stored in the database?,Found mixed SQL (1) and RAG (1) signals,rule_router
+SQL,0.09999999999999998,0.9,True,SQL,0.03,sql_adv_022,List the top 5 customers by order count,Found 3 SQL keyword(s),rule_router
+SQL,0.32499999999999996,0.675,True,SQL,0.03,sql_adv_023,Count all employees,Found 1 SQL keyword(s),rule_router
+SQL,0.32499999999999996,0.675,True,SQL,0.03,sql_adv_024,Average freight cost?,Found 1 SQL keyword(s),rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_025,Which category has the fewest products?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+RAG,0.65,0.65,False,SQL,0.03,sql_adv_026,Show products priced above 50,Found 1 RAG keyword(s),rule_router
+SQL,0.35,0.65,True,SQL,0.03,sql_adv_027,List customers in Germany,Found 1 SQL keyword(s),rule_router
+SQL,0.22499999999999998,0.775,True,SQL,0.03,sql_adv_028,Rank categories by product count,Found 2 SQL keyword(s),rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_029,Which orders have freight above 100?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+HYBRID,0.7113,0.7113,False,SQL,0.03,sql_adv_030,Show order count by month,Found mixed SQL (1) and RAG (1) signals,rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_031,Which products have never been ordered?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+RAG,0.45,0.45,False,SQL,0.03,sql_adv_032,Which customers have never placed an order?,No keywords matched; defaulting to RAG (safe fallback),rule_router
+SQL,0.32499999999999996,0.675,True,SQL,0.03,sql_adv_033,Revenue by customer country,Found 1 SQL keyword(s),rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_001,FPT có chiến lược phát triển nào và top 5 khách hàng có tổng số đơn hàng cao nhất là ai?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_002,Vinamilk có chính sách gì cho phát triển bền vững và tổng số đơn hàng là bao nhiêu?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_003,Masan mô tả quy trình sản xuất như thế nào và bao nhiêu sản phẩm hiện có?,Found mixed SQL (1) and RAG (3) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.1,hyb_004,FPT nói gì về mục tiêu tăng trưởng và khách hàng nào chi tiêu nhiều nhất?,Found mixed SQL (2) and RAG (1) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.08,hyb_005,Vinamilk mô tả lợi thế cạnh tranh thế nào và danh mục nào có nhiều sản phẩm nhất?,Found mixed SQL (1) and RAG (2) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.06,hyb_006,Masan giải thích rủi ro kinh doanh ra sao và đơn hàng nào có giá trị cao nhất?,Found mixed SQL (2) and RAG (2) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_007,Kế hoạch tăng trưởng của FPT là gì và nhân viên nào xử lý nhiều đơn hàng nhất?,Found mixed SQL (2) and RAG (2) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_008,Vinamilk nói gì về chiến lược thị trường và có bao nhiêu nhà cung cấp?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_009,Masan mô tả cơ hội ngành thế nào và 5 sản phẩm có giá cao nhất là gì?,Found mixed SQL (1) and RAG (3) signals,rule_router
+SQL,0.91,0.91,False,HYBRID,0.07,hyb_010,FPT trình bày định hướng AI ra sao và doanh thu trung bình mỗi đơn hàng là bao nhiêu?,Found 3 SQL keyword(s),rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_011,Vinamilk có mục tiêu ESG gì và quốc gia khách hàng nào mang lại doanh thu cao nhất?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_012,Masan nói gì về chuỗi cung ứng và nhà cung cấp nào có nhiều sản phẩm nhất?,Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_013,FPT mô tả thị trường quốc tế thế nào và đơn hàng theo tháng ra sao?,Found mixed SQL (1) and RAG (1) signals,rule_router
+SQL,0.835,0.835,False,HYBRID,0.05,hyb_014,Vinamilk đánh giá xu hướng ngành thế nào và top 5 sản phẩm bán chạy là gì?,Found 2 SQL keyword(s),rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_015,Masan có lợi thế cạnh tranh gì và còn bao nhiêu sản phẩm trong kho?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.04,hyb_016,FPT có chính sách nhân sự gì và có bao nhiêu nhân viên?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_017,Chính sách phát triển nhân sự của Vinamilk ra sao và nhân viên nào kinh doanh giỏi nhất?,Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_018,Masan có những sản phẩm chính nào và danh mục nào có ít sản phẩm nhất?,Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.05,hyb_019,Kế hoạch mở rộng thị trường của FPT là gì và tính toàn bộ chi phí vận chuyển?,Found mixed SQL (1) and RAG (2) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_020,Vinamilk mô tả sustainability roadmap ra sao và có bao nhiêu khách hàng?,Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.03,hyb_adv_021,Explain FPT strategy and also count total orders,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_adv_022,What is Vinamilk policy and who are the top spenders?,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.31999999999999995,0.68,True,HYBRID,0.03,hyb_adv_023,"Describe Masan process, then list highest-priced products",Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_adv_024,Show me the growth plan from the report and average freight,Found mixed SQL (1) and RAG (2) signals,rule_router
+HYBRID,0.31999999999999995,0.68,True,HYBRID,0.03,hyb_adv_025,"If the document says FPT targets AI, which customer spends the most?",Found mixed SQL (1) and RAG (1) signals,rule_router
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.03,hyb_adv_026,Need both the PDF explanation and the database ranking for categories,Found mixed SQL (1) and RAG (2) signals,rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.03,hyb_adv_027,Use the annual report plus SQL: Vinamilk sustainability and total freight,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.03,hyb_adv_028,"Báo cáo Masan nói gì, và top 5 customers by orders là ai?",Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.06,hyb_adv_029,Vừa giải thích risk của Vinamilk vừa đếm số supplier,Found mixed SQL (1) and RAG (2) signals,rule_router
+HYBRID,0.19999999999999996,0.8,True,HYBRID,0.05,hyb_adv_030,Cho tôi cả strategy của FPT lẫn doanh thu theo quốc gia khách hàng,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.050000000000000044,0.95,True,HYBRID,0.04,hyb_adv_031,Cần mô tả policy của Masan và thống kê order count by month,Both document and structured-data signals detected.,adaptive_rule
+HYBRID,0.31999999999999995,0.68,True,HYBRID,0.05,hyb_adv_032,Đọc tài liệu Vinamilk rồi cho biết danh mục nào nhiều sản phẩm nhất,Found mixed SQL (1) and RAG (1) signals,rule_router
+RAG,0.71,0.71,False,HYBRID,0.06,hyb_adv_033,Hãy dùng cả báo cáo và database để trả lời về FPT cùng khách hàng chưa đặt hàng,Found 1 RAG keyword(s),rule_router
+HYBRID,0.17000000000000004,0.83,True,HYBRID,0.05,hyb_adv_034,Tôi muốn document context của Masan và số lượng đơn hàng của từng shipper,Found mixed SQL (1) and RAG (1) signals,rule_router

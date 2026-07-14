@@ -1,0 +1,89 @@
+{
+  "query_count": 90,
+  "pass_rate": 1.0,
+  "technical_pass_rate": 1.0,
+  "automatic_score": 0.9193,
+  "automatic_pass_rate": 0.9444,
+  "sql_result_f1": 1.0,
+  "rag_evidence_score": 0.8345,
+  "hybrid_integration_score": 0.9917,
+  "latency": {
+    "avg": 112.39,
+    "p50": 98.75,
+    "p95": 203.87,
+    "p99": 484.11
+  },
+  "avg_ram_mb": 119.6492,
+  "avg_cpu_percent": 6.6933,
+  "llm_calls_avg": 0.0,
+  "timeout_rate": 0.0,
+  "fallback_rate": 0.0111,
+  "empty_answer_rate": 0.0,
+  "cache_hit_rate": 0.0,
+  "sql_success_rate": 1.0,
+  "rag_success_rate": 1.0,
+  "hybrid_success_rate": 1.0,
+  "router_accuracy": 1.0,
+  "failure_counts": {
+    "router_ambiguous": 25,
+    "hybrid_fallback": 1
+  },
+  "resolved_failure_rate": 1.0,
+  "per_intent": {
+    "RAG": {
+      "query_count": 30,
+      "pass_rate": 1.0,
+      "automatic_score": 0.788,
+      "automatic_pass_rate": 0.8333,
+      "sql_result_f1": null,
+      "rag_evidence_score": 0.7506,
+      "hybrid_integration_score": null,
+      "latency": {
+        "avg": 80.8,
+        "p50": 42.31,
+        "p95": 93.73,
+        "p99": 818.06
+      },
+      "fallback_rate": 0.0
+    },
+    "SQL": {
+      "query_count": 30,
+      "pass_rate": 1.0,
+      "automatic_score": 1.0,
+      "automatic_pass_rate": 1.0,
+      "sql_result_f1": 1.0,
+      "rag_evidence_score": null,
+      "hybrid_integration_score": null,
+      "latency": {
+        "avg": 133.89,
+        "p50": 96.83,
+        "p95": 234.38,
+        "p99": 361.64
+      },
+      "fallback_rate": 0.0
+    },
+    "HYBRID": {
+      "query_count": 30,
+      "pass_rate": 1.0,
+      "automatic_score": 0.9698,
+      "automatic_pass_rate": 1.0,
+      "sql_result_f1": 1.0,
+      "rag_evidence_score": 0.9184,
+      "hybrid_integration_score": 0.9917,
+      "latency": {
+        "avg": 122.49,
+        "p50": 113.81,
+        "p95": 171.26,
+        "p99": 214.87
+      },
+      "fallback_rate": 0.0333
+    }
+  },
+  "startup_ms": 2.91,
+  "execution_mode": "evaluation_real",
+  "evidence_type": "measured",
+  "thesis_reporting_allowed": true,
+  "scoring_method": "deterministic_reference_and_evidence_alignment",
+  "automatic_reference_file": "benchmarks/references/eval_90_sql_references.json",
+  "automatic_reference_sha256": "24ad6eebd19213f454c504814aa7987aa84d0b88d9f934e9762870276ed07213"
+}
