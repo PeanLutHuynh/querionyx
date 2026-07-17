@@ -7,17 +7,17 @@
   "summary": {
     "sequential": {
       "queries": 10,
-      "p50_ms": 309.63,
-      "p95_ms": 863.03,
-      "avg_ms": 408.04
+      "p50_ms": 364.55,
+      "p95_ms": 993.45,
+      "avg_ms": 465.79
     },
     "async": {
       "queries": 10,
-      "p50_ms": 340.84,
-      "p95_ms": 459.52,
-      "avg_ms": 339.14
+      "p50_ms": 338.13,
+      "p95_ms": 415.0,
+      "avg_ms": 354.01
     },
-    "speedup_p50": 0.908,
+    "speedup_p50": 1.078,
     "paired_outputs": 10,
     "exact_output_matches": 10,
     "exact_output_match_rate": 1.0

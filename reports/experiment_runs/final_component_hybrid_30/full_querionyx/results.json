@@ -8,13 +8,13 @@
   "rag_evidence_score": 0.8244,
   "hybrid_integration_score": 0.775,
   "latency": {
-    "avg": 292.81,
-    "p50": 249.47,
-    "p95": 622.04,
-    "p99": 684.36
+    "avg": 278.85,
+    "p50": 252.88,
+    "p95": 375.67,
+    "p99": 646.94
   },
-  "avg_ram_mb": 1036.876,
-  "avg_cpu_percent": 430.7233,
+  "avg_ram_mb": 1033.914,
+  "avg_cpu_percent": 395.7567,
   "llm_calls_avg": 0.0,
   "timeout_rate": 0.0,
   "fallback_rate": 0.9,
@@ -38,15 +38,15 @@
       "rag_evidence_score": 0.8244,
       "hybrid_integration_score": 0.775,
       "latency": {
-        "avg": 292.81,
-        "p50": 249.47,
-        "p95": 622.04,
-        "p99": 684.36
+        "avg": 278.85,
+        "p50": 252.88,
+        "p95": 375.67,
+        "p99": 646.94
       },
       "fallback_rate": 0.9
     }
   },
-  "startup_ms": 1.84,
+  "startup_ms": 2.63,
   "execution_mode": "evaluation_real",
   "evidence_type": "measured",
   "thesis_reporting_allowed": true,

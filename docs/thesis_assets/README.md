@@ -3,7 +3,7 @@
 These assets are generated only from the current source tree, frozen benchmark files, the versioned chunk corpus, and reportable automatic summaries.
 Reportable final summary groups included: answer_quality, async, baseline, components.
 
-- Source commit: `c0b782cb59f6d3c6f95e2eb5b0d5b886a9927ed8`
+- Source commit: `fae9e1082b4ff0e9a53314fbce025b7549465534`
 - Working tree dirty at generation: `yes`
 - Regenerate: `python scripts/generate_thesis_assets.py`
 

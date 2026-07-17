@@ -5,7 +5,7 @@
 | Area | Status | Meaning |
 | --- | --- | --- |
 | Public demo software | Feature-frozen | Only reproducible defect, security, and evidence fixes are allowed |
-| Deployment | Action required | Vercel and Render are reachable; the Render Supabase secret must be reset before the final demo |
+| Deployment | Final backend redeploy required | Vercel, Render, and Supabase were reachable on 2026-07-17; push the retrieval warm-up fix and verify health once more |
 | Repository layout | Cleaned | Legacy simulations, weekly logs, duplicate datasets, and invalid result artifacts were removed; local runtime caches remain available |
 | Benchmark datasets/configs | Frozen | Paths, query IDs, labels, and SHA-256 hashes are in `benchmarks/manifests/frozen_evaluation_sets.json` |
 | Router/static readiness | Complete | Curated accuracy is 100%; frozen stress accuracy is 89% |
@@ -16,7 +16,7 @@
 | Credential hygiene | User action required | Rotate credentials previously shared outside secret stores |
 
 The software and research evidence are frozen under source snapshot
-`4e01bbfb21aee8b3a57033a15ecf2df06a39c6b8bb1b5c7bac995a7e38d9ecaf`.
+`76ed4ff2c1f0ea25d0011b8f8006b6cd02b2fe680b29b2463f448d357bb2294e`.
 All six final evidence groups are reportable and the project lock passes.
 
 ## Allowed Changes
@@ -32,8 +32,8 @@ content, or scoring require a new evaluation version and affected reruns.
 ## Remaining Release Steps
 
 1. Rotate the previously exposed service credentials.
-2. Set the current `PGPASSWORD` in Render and verify `/health` reports `db_status=ok`.
-3. Push the frozen commits and wait for Render/Vercel deployments.
+2. Push the frozen commits and wait for the final Render deployment.
+3. Verify `/health` reports `db_status=ok` and retrieval warm-up `status=ready`.
 4. Capture final UI, API health, SQL, RAG, HYBRID, and unsupported-query screenshots.
 5. Archive the complete workspace and optionally tag the evidence state.
 

@@ -3,14 +3,13 @@
 ## Before Deploying
 
 ```powershell
-python -m unittest tests.test_db_connect tests.test_fast_sql_planner tests.test_evaluation_lock
-python scripts/audit_no_ollama_readiness.py
-python scripts/check_project_lock.py
+.\run.ps1 check
 ```
 
-Expected static audit: 150/150 routes covered and 100/100 SQL-required
-questions matched by deterministic planners. This is readiness coverage, not
-semantic answer quality.
+Expected result: 34 tests pass, the static audit covers all 150 routes and all
+100 SQL-required questions have deterministic planners, and the project lock
+reports zero pending research warnings. Readiness coverage is not a semantic
+answer-quality claim.
 
 ## Render Backend
 

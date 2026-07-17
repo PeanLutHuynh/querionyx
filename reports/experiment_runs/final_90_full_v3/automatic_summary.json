@@ -16,13 +16,13 @@
     "rag_evidence_score": 0.8345,
     "hybrid_integration_score": 0.9917,
     "latency": {
-      "avg": 114.48,
-      "p50": 95.5,
-      "p95": 208.15,
-      "p99": 462.13
+      "avg": 102.55,
+      "p50": 87.34,
+      "p95": 159.35,
+      "p99": 377.27
     },
-    "avg_ram_mb": 119.543,
-    "avg_cpu_percent": 13.3544,
+    "avg_ram_mb": 120.2812,
+    "avg_cpu_percent": 10.0711,
     "llm_calls_avg": 0.0,
     "timeout_rate": 0.0,
     "fallback_rate": 0.0111,
@@ -47,10 +47,10 @@
         "rag_evidence_score": 0.7506,
         "hybrid_integration_score": null,
         "latency": {
-          "avg": 89.76,
-          "p50": 45.18,
-          "p95": 76.45,
-          "p99": 934.8
+          "avg": 80.51,
+          "p50": 40.38,
+          "p95": 79.64,
+          "p99": 824.82
         },
         "fallback_rate": 0.0
       },
@@ -63,10 +63,10 @@
         "rag_evidence_score": null,
         "hybrid_integration_score": null,
         "latency": {
-          "avg": 123.08,
-          "p50": 91.47,
-          "p95": 230.96,
-          "p99": 329.96
+          "avg": 114.47,
+          "p50": 85.17,
+          "p95": 196.61,
+          "p99": 267.05
         },
         "fallback_rate": 0.0
       },
@@ -79,15 +79,15 @@
         "rag_evidence_score": 0.9184,
         "hybrid_integration_score": 0.9917,
         "latency": {
-          "avg": 130.6,
-          "p50": 119.47,
-          "p95": 206.53,
-          "p99": 224.77
+          "avg": 112.65,
+          "p50": 109.91,
+          "p95": 128.01,
+          "p99": 158.07
         },
         "fallback_rate": 0.0333
       }
     },
-    "startup_ms": 2.76,
+    "startup_ms": 3.0,
     "execution_mode": "evaluation_real",
     "evidence_type": "measured",
     "thesis_reporting_allowed": true,

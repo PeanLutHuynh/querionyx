@@ -1,2 +1,2 @@
 automatic_pass_rate,automatic_score,avg_cpu_percent,avg_latency,avg_ram_mb,cache_hit_rate,empty_answer_rate,fallback_rate,hybrid_integration_score,hybrid_success_rate,llm_calls_avg,p50_latency,p95_latency,p99_latency,pass_rate,query_count,rag_evidence_score,rag_success_rate,router_accuracy,sql_result_f1,sql_success_rate,technical_pass_rate,timeout_rate
-0.0,0.402,5.14,112.64,1075.22,0.0,0.0,0.0,0.25,0.0,0.0,98.04,200.28,257.48,0.0,30,0.0058,0.0,0.0,1.0,1.0,0.0,0.0
+0.0,0.402,10.09,121.89,1072.76,0.0,0.0,0.0,0.25,0.0,0.0,99.3,183.53,266.5,0.0,30,0.0058,0.0,0.0,1.0,1.0,0.0,0.0

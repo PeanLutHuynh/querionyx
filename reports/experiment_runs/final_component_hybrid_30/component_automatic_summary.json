@@ -12,7 +12,7 @@
       "automatic_score": 0.8935,
       "automatic_pass_rate": 1.0,
       "technical_pass_rate": 1.0,
-      "mean_latency_ms": 292.81,
+      "mean_latency_ms": 278.85,
       "sql_result_f1": 1.0,
       "rag_evidence_score": 0.8244,
       "hybrid_integration_score": 0.775
@@ -22,7 +22,7 @@
       "automatic_score": 0.941,
       "automatic_pass_rate": 1.0,
       "technical_pass_rate": 1.0,
-      "mean_latency_ms": 145.54,
+      "mean_latency_ms": 168.94,
       "sql_result_f1": 1.0,
       "rag_evidence_score": 0.8409,
       "hybrid_integration_score": 0.9833
@@ -32,7 +32,7 @@
       "automatic_score": 0.0347,
       "automatic_pass_rate": 0.0,
       "technical_pass_rate": 0.0,
-      "mean_latency_ms": 199.44,
+      "mean_latency_ms": 238.72,
       "sql_result_f1": 0.0,
       "rag_evidence_score": 0.085,
       "hybrid_integration_score": 0.025
@@ -42,7 +42,7 @@
       "automatic_score": 0.402,
       "automatic_pass_rate": 0.0,
       "technical_pass_rate": 0.0,
-      "mean_latency_ms": 112.64,
+      "mean_latency_ms": 121.89,
       "sql_result_f1": 1.0,
       "rag_evidence_score": 0.0058,
       "hybrid_integration_score": 0.25
@@ -52,7 +52,7 @@
       "automatic_score": 0.885,
       "automatic_pass_rate": 1.0,
       "technical_pass_rate": 1.0,
-      "mean_latency_ms": 262.16,
+      "mean_latency_ms": 267.17,
       "sql_result_f1": 1.0,
       "rag_evidence_score": 0.8001,
       "hybrid_integration_score": 0.775
