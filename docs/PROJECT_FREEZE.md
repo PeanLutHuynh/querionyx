@@ -55,7 +55,7 @@ Exact commands are maintained in
 
 ```powershell
 python -m compileall -q backend services src scripts tests
-python -m unittest tests.test_db_connect tests.test_fast_sql_planner tests.test_evaluation_lock tests.test_chunk_store tests.test_automatic_scoring tests.test_hybrid_merge tests.test_no_ollama_audit
+python -m unittest tests.test_db_connect tests.test_fast_sql_planner tests.test_evaluation_lock tests.test_chunk_store tests.test_automatic_scoring tests.test_hybrid_merge tests.test_no_ollama_audit tests.test_query_service_warmup
 python scripts/audit_no_ollama_readiness.py
 python scripts/generate_thesis_assets.py
 python scripts/check_project_lock.py

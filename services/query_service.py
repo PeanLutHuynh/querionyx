@@ -303,6 +303,11 @@ class QueryService:
         load_dotenv(PROJECT_ROOT / ".env")
         self.runtime_config = runtime_config or RuntimeConfig.from_env()
         self.pipeline = QuerionyxPipelineV3(runtime_config=self.runtime_config)
+        self.retrieval_warmup: Dict[str, Any] = {
+            "status": "not_started",
+            "latency_ms": None,
+        }
+        self._warm_retrieval()
         self.cache = TTLResponseCache(
             max_size=int(os.getenv("QUERIONYX_RESPONSE_CACHE_SIZE", "256")),
             ttl_seconds=int(os.getenv("QUERIONYX_RESPONSE_CACHE_TTL", "1800")),
@@ -455,16 +460,26 @@ class QueryService:
 
     def _rag_status(self) -> Dict[str, Any]:
         if not CHUNKS_FILE.exists():
-            return {"chunks_file": "missing", "chunk_count": 0}
+            return {
+                "chunks_file": "missing",
+                "chunk_count": 0,
+                "retrieval_warmup": dict(self.retrieval_warmup),
+            }
         try:
             chunks = load_chunks()
             return {
                 "chunks_file": "ok",
                 "chunk_count": len(chunks) if isinstance(chunks, list) else 0,
                 "size_mb": round(CHUNKS_FILE.stat().st_size / (1024 * 1024), 2),
+                "retrieval_warmup": dict(self.retrieval_warmup),
             }
         except Exception as exc:
-            return {"chunks_file": "unreadable", "chunk_count": 0, "error": str(exc)[:120]}
+            return {
+                "chunks_file": "unreadable",
+                "chunk_count": 0,
+                "error": str(exc)[:120],
+                "retrieval_warmup": dict(self.retrieval_warmup),
+            }
 
     def _load_router_summary_if_available(self) -> None:
         path = PROJECT_ROOT / "metrics" / "latency" / "router_stress_summary.json"
@@ -494,6 +509,31 @@ class QueryService:
                 self.cache.set(question, str(response.get("intent") or "UNKNOWN"), str(response.get("router_type_used") or "warm_cache"), response)
         except Exception:
             return
+
+    def _warm_retrieval(self) -> None:
+        enabled = os.getenv("QUERIONYX_PREWARM_RETRIEVAL", "1").strip().lower() in {
+            "1",
+            "true",
+            "yes",
+            "on",
+        }
+        if not enabled:
+            self.retrieval_warmup = {"status": "disabled", "latency_ms": 0.0}
+            return
+
+        started = time.perf_counter()
+        try:
+            self.pipeline.warm_up_retrieval()
+            self.retrieval_warmup = {
+                "status": "ready",
+                "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+            }
+        except Exception as exc:
+            self.retrieval_warmup = {
+                "status": "unavailable",
+                "latency_ms": round((time.perf_counter() - started) * 1000, 2),
+                "error": str(exc)[:120],
+            }
 
     @staticmethod
     def _sse(event: str, payload: Dict[str, Any]) -> str:

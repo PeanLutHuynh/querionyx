@@ -23,6 +23,7 @@ Keep the public service in no-Ollama mode:
 QUERIONYX_EXECUTION_MODE=demo_no_ollama
 ENABLE_HEAVY_RAG=0
 QUERIONYX_LIGHTWEIGHT_RAG=1
+QUERIONYX_PREWARM_RETRIEVAL=1
 QUERIONYX_MERGE_LLM_ENABLED=0
 QUERIONYX_USE_LLM_ROUTER=0
 PGSSLMODE=require
@@ -38,6 +39,7 @@ status: ok
 db_status: ok
 rag_status.chunks_file: ok
 rag_status.chunk_count: 9670
+rag_status.retrieval_warmup.status: ready
 ```
 
 ## Vercel Frontend

@@ -123,12 +123,12 @@ try {
         }
         "test" {
             $python = Ensure-VenvPython
-            Invoke-PythonCommand -Python $python -Arguments @("-m", "unittest", "tests.test_db_connect", "tests.test_fast_sql_planner", "tests.test_evaluation_lock", "tests.test_chunk_store", "tests.test_automatic_scoring", "tests.test_hybrid_merge", "tests.test_no_ollama_audit")
+            Invoke-PythonCommand -Python $python -Arguments @("-m", "unittest", "tests.test_db_connect", "tests.test_fast_sql_planner", "tests.test_evaluation_lock", "tests.test_chunk_store", "tests.test_automatic_scoring", "tests.test_hybrid_merge", "tests.test_no_ollama_audit", "tests.test_query_service_warmup")
         }
         "check" {
             $python = Ensure-VenvPython
             Invoke-PythonCommand -Python $python -Arguments @("-m", "compileall", "-q", "backend", "services", "src", "scripts", "tests")
-            Invoke-PythonCommand -Python $python -Arguments @("-m", "unittest", "tests.test_db_connect", "tests.test_fast_sql_planner", "tests.test_evaluation_lock", "tests.test_chunk_store", "tests.test_automatic_scoring", "tests.test_hybrid_merge", "tests.test_no_ollama_audit")
+            Invoke-PythonCommand -Python $python -Arguments @("-m", "unittest", "tests.test_db_connect", "tests.test_fast_sql_planner", "tests.test_evaluation_lock", "tests.test_chunk_store", "tests.test_automatic_scoring", "tests.test_hybrid_merge", "tests.test_no_ollama_audit", "tests.test_query_service_warmup")
             Invoke-PythonCommand -Python $python -Arguments @("scripts/audit_no_ollama_readiness.py")
             Invoke-PythonCommand -Python $python -Arguments @("scripts/check_project_lock.py")
         }
