@@ -611,7 +611,7 @@ def figure_difficulty_distribution(datasets: dict[str, list[dict[str, Any]]]) ->
 
 def figure_router_recall(router_metrics: dict[str, dict[str, Any]]) -> None:
     names = list(router_metrics)
-    fig, ax = plt.subplots(figsize=(9, 5.2))
+    fig, ax = plt.subplots(figsize=(9, 5.8))
     width = 0.24
     positions = list(range(len(names)))
     for offset, intent in enumerate(INTENTS):
@@ -620,8 +620,8 @@ def figure_router_recall(router_metrics: dict[str, dict[str, Any]]) -> None:
     ax.set_xticks(positions, names)
     ax.set_ylim(0, 105)
     ax.set_ylabel("Recall (%)")
-    ax.set_title("Deterministic Router Recall by Intent", weight="bold")
-    ax.legend(ncol=3)
+    ax.set_title("Deterministic Router Recall by Intent", weight="bold", pad=46)
+    ax.legend(ncol=3, loc="lower center", bbox_to_anchor=(0.5, 1.01), frameon=False, borderaxespad=0)
     ax.grid(axis="y", color=GRID, alpha=0.5)
     save_figure(fig, "fig04_router_recall_by_intent")
 
@@ -694,21 +694,31 @@ def figure_answer_quality(summary: dict[str, Any]) -> None:
     technical = [per_intent[label]["pass_rate"] * 100 for label in labels]
     positions = list(range(len(labels)))
     width = 0.34
-    fig, ax = plt.subplots(figsize=(8.5, 5.2))
+    fig, ax = plt.subplots(figsize=(8.5, 5.8))
     ax.bar([value - width / 2 for value in positions], quality, width, label="Evidence score", color="#2563eb")
     ax.bar([value + width / 2 for value in positions], technical, width, label="Technical pass", color="#0f766e")
     ax.set_xticks(positions, labels)
     ax.set_ylim(0, 105)
     ax.set_ylabel("Rate (%)")
-    ax.set_title("Automatic Evidence Score by Intent", weight="bold")
-    ax.legend(ncol=2)
+    ax.set_title("Automatic Evidence Score by Intent", weight="bold", pad=46)
+    ax.legend(ncol=2, loc="lower center", bbox_to_anchor=(0.5, 1.01), frameon=False, borderaxespad=0)
     ax.grid(axis="y", color=GRID, alpha=0.5)
     save_figure(fig, "fig09_answer_quality")
 
 
 def figure_system_comparison(summary: dict[str, Any], title: str, filename: str) -> None:
     keys = list(summary)
-    labels = [key.replace("_", " ").title() for key in keys]
+    label_map = {
+        "llm_only": "LLM Only",
+        "plain_rag": "Plain RAG",
+        "querionyx": "Querionyx",
+        "full_querionyx": "Full Querionyx",
+        "dense_only": "Dense Only",
+        "rag_only": "RAG Only",
+        "sql_only": "SQL Only",
+        "no_fallback": "No Fallback",
+    }
+    labels = [label_map.get(key, key.replace("_", " ").title()) for key in keys]
     quality = [summary[key]["automatic_score"] * 100 for key in keys]
     technical = [
         summary[key].get("technical_success_rate", summary[key].get("technical_pass_rate", 0.0)) * 100
@@ -716,14 +726,14 @@ def figure_system_comparison(summary: dict[str, Any], title: str, filename: str)
     ]
     positions = list(range(len(keys)))
     width = 0.34
-    fig, ax = plt.subplots(figsize=(max(8.5, len(keys) * 1.7), 5.4))
+    fig, ax = plt.subplots(figsize=(max(8.5, len(keys) * 1.7), 6.0))
     ax.bar([value - width / 2 for value in positions], quality, width, label="Evidence score", color="#2563eb")
     ax.bar([value + width / 2 for value in positions], technical, width, label="Technical success", color="#d97706")
     ax.set_xticks(positions, labels, rotation=18, ha="right")
     ax.set_ylim(0, 105)
     ax.set_ylabel("Rate (%)")
-    ax.set_title(title, weight="bold")
-    ax.legend(ncol=2)
+    ax.set_title(title, weight="bold", pad=46)
+    ax.legend(ncol=2, loc="lower center", bbox_to_anchor=(0.5, 1.01), frameon=False, borderaxespad=0)
     ax.grid(axis="y", color=GRID, alpha=0.5)
     save_figure(fig, filename)
 
