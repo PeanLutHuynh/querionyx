@@ -18,6 +18,14 @@ The API runs lightweight RAG directly from the tracked JSON gzip file. Install
 `requirements-research.txt` and run `python -m src.data_prep.reindex_chromadb`
 only when reproducing dense-retrieval experiments.
 
-The PDF files are intentionally not redistributed. Place exact copies under
-`data/raw/annual_reports/` and compare their hashes with
-`data/source_manifest.json` before regenerating the corpus.
+The tracked compressed corpus is sufficient for the default API, lightweight
+RAG, and optional ChromaDB reindexing. The PDF files are intentionally not
+redistributed and are not required for those workflows. They are needed only
+to regenerate the chunk corpus from source documents; in that case, place
+exact copies under `data/raw/annual_reports/` and compare their hashes with
+`data/source_manifest.json` first.
+
+Northwind is a separate PostgreSQL data source and is not stored in this
+directory. Follow the root README to import the compatible
+[`pthom/northwind_psql`](https://github.com/pthom/northwind_psql) dataset before
+testing SQL or complete HYBRID questions.

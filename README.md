@@ -18,6 +18,8 @@ Querionyx is a graduation-project framework for bilingual enterprise question an
 
 The public profile is designed to run without Ollama. It combines a deterministic bilingual router, read-only Northwind SQL fast paths, and lightweight extractive retrieval over 9,670 annual-report chunks. Dense retrieval, BM25 fusion, and local Qwen generation remain available as optional research components.
 
+> **Why the live web has no Ollama:** the backend uses Render's Free web-service tier, which currently provides a small compute envelope, spins down after inactivity, and uses an ephemeral filesystem. Querionyx therefore deploys `demo_no_ollama` on Render and keeps Ollama integration in the optional local research profile. This is a deployment choice, not a missing implementation. See Render's [Free service limitations](https://render.com/docs/free) and [instance types](https://render.com/docs/compute-plans).
+
 > The Render backend may sleep after inactivity. The first live request can take up to approximately two minutes while the service starts; later requests are normally faster.
 
 ---
@@ -158,7 +160,7 @@ FastAPI is exposed through `backend/main.py`. Runtime orchestration, response ca
 | Operating system | Windows 10/11, Linux, or macOS |
 | Python | **3.12 recommended**; `run.ps1` targets Python 3.12 |
 | Node.js | **22 recommended** for the Next.js frontend |
-| Database | PostgreSQL-compatible database populated with Northwind |
+| Database | PostgreSQL-compatible database populated with Northwind; local PostgreSQL tools or Docker for first-time import |
 | RAM | 4 GB minimum; 8 GB recommended |
 | GPU | Not required |
 | Ollama | Not required |
@@ -232,6 +234,18 @@ The clone-level check compiles the Python modules, runs focused tests, audits de
 
 ## 7. Data and Database Setup
 
+### What a Fresh Clone Contains
+
+| Artifact | Included in GitHub | Required for |
+| --- | ---: | --- |
+| `data/processed/chunks_recursive.json.gz` | Yes | Default lightweight RAG over all 9,670 chunks |
+| `data/source_manifest.json` | Yes | Corpus identity, source filenames, sizes, and SHA-256 verification |
+| Nine original annual-report PDFs | No | Only re-parsing and regenerating the chunk corpus |
+| Populated Northwind PostgreSQL database | No | SQL and complete HYBRID execution |
+| ChromaDB index, embedding weights, and Ollama models | No | Optional local research profile |
+
+A fresh clone can run the API, lightweight RAG, tests, and static no-Ollama audit without the nine PDFs, ChromaDB, or Ollama. It still needs a populated Northwind connection for SQL and complete HYBRID questions. Without that connection, the service starts and RAG remains usable, but SQL-dependent requests return an explicit unavailable or insufficient-evidence response.
+
 ### 7.1 Annual-Report Corpus
 
 The runtime-ready corpus is already included:
@@ -240,7 +254,7 @@ The runtime-ready corpus is already included:
 data/processed/chunks_recursive.json.gz
 ```
 
-It contains 9,670 validated chunks in gzip-compressed UTF-8 JSON. The original nine PDFs are not redistributed in Git. Their filenames, sizes, and SHA-256 checksums are recorded in [`data/source_manifest.json`](data/source_manifest.json).
+It contains 9,670 validated chunks in gzip-compressed UTF-8 JSON. The original nine PDFs are not redistributed in Git. Their filenames, sizes, and SHA-256 checksums are recorded in [`data/source_manifest.json`](data/source_manifest.json). The PDFs are not required to answer questions from the existing corpus or to rebuild the optional ChromaDB index; they are required only when regenerating the chunk corpus from the original documents.
 
 Optional full-RAG experiments require rebuilding the ChromaDB index:
 
@@ -262,7 +276,44 @@ PGPASSWORD=change-me
 PGSSLMODE=prefer
 ```
 
-A compatible PostgreSQL source is [`pthom/northwind_psql`](https://github.com/pthom/northwind_psql), which provides an importable `northwind.sql` script. Before reproducing the frozen evaluation, verify the imported table names and row counts against [`docs/data_prep/northwind_schema.md`](docs/data_prep/northwind_schema.md).
+A compatible PostgreSQL source is [`pthom/northwind_psql`](https://github.com/pthom/northwind_psql), which provides both an importable `northwind.sql` script and a Docker Compose setup.
+
+**Option A - Northwind through Docker**
+
+```powershell
+# Run from the parent directory that contains querionyx/.
+git clone https://github.com/pthom/northwind_psql.git northwind_psql
+Set-Location northwind_psql
+docker compose up -d
+Set-Location ..\querionyx
+```
+
+Use these values in the Querionyx `.env` file:
+
+```dotenv
+PGHOST=localhost
+PGPORT=55432
+PGDATABASE=northwind
+PGUSER=postgres
+PGPASSWORD=postgres
+PGSSLMODE=disable
+```
+
+These credentials belong only to the local sample container. Do not reuse them for Render, Supabase, or another shared database.
+
+**Option B - Existing local PostgreSQL installation**
+
+```powershell
+# Run from the parent directory that contains querionyx/.
+git clone https://github.com/pthom/northwind_psql.git northwind_psql
+createdb -U postgres northwind
+psql -U postgres -d northwind -f .\northwind_psql\northwind.sql
+
+# Confirm the dataset matches the expected Northwind state.
+psql -U postgres -d northwind -c "SELECT (SELECT COUNT(*) FROM products) AS products, (SELECT COUNT(*) FROM orders) AS orders, (SELECT COUNT(*) FROM order_details) AS order_details;"
+```
+
+The expected core counts are 77 products, 830 orders, and 2,155 order-detail rows. If `createdb` or `psql` is not on `PATH`, create the `northwind` database and execute `northwind.sql` through pgAdmin's Query Tool instead. Before reproducing frozen results, also compare the table and column names with [`docs/data_prep/northwind_schema.md`](docs/data_prep/northwind_schema.md).
 
 For Supabase or another hosted PostgreSQL service, use its connection values and set `PGSSLMODE=require`. The database account should be read-only for evaluation.
 
@@ -271,6 +322,34 @@ Without a database connection, the API and RAG path still start. SQL and complet
 ### 7.3 Cache Semantics
 
 Runtime Text-to-SQL and response caches improve latency for repeated questions. They do not add knowledge, train the router, or count as evaluation references. Cache hits and match types are recorded separately in the response metrics.
+
+### 7.4 Optional Local Ollama Profile
+
+Ollama is not needed for the default clone. To inspect the model-assisted components locally:
+
+```powershell
+.\run.ps1 research-setup
+ollama pull qwen2.5:3b
+ollama serve
+```
+
+In another terminal, rebuild the optional dense index and update `.env`:
+
+```powershell
+.\.venv\Scripts\python.exe -m src.data_prep.reindex_chromadb
+```
+
+```dotenv
+QUERIONYX_EXECUTION_MODE=local_research
+ENABLE_HEAVY_RAG=1
+QUERIONYX_LIGHTWEIGHT_RAG=0
+QUERIONYX_LOW_RESOURCE_MODE=0
+QUERIONYX_USE_LLM_ROUTER=1
+QUERIONYX_MERGE_LLM_ENABLED=1
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+```
+
+The router and merge switches are optional. Leave either value at `0` when testing heavy retrieval without enabling that particular Ollama call.
 
 ---
 
